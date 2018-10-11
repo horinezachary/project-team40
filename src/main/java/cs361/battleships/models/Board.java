@@ -25,8 +25,24 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		// TODO Implement
-		return false;
+        List<Square> shipsquares = new ArrayList<Square>();
+		for (int i = 0; i < ship.getLength(); i++){
+		    if (isVertical){
+		        if (this.isSquareEmpty(x, y + i)) {
+                    shipsquares.add(boardarray[x][y+i]);
+                }
+                else return false;
+            }
+            else{
+                if (this.isSquareEmpty(x+i, y)) {
+                    shipsquares.add(boardarray[x+i][y]);
+                }
+                else return false;
+            }
+        }
+        ship.setOccupiedSquares(shipsquares);
+		this.addShip(ship);
+		return true;
 	}
 
 	/*
@@ -38,13 +54,15 @@ public class Board {
 	}
 
 	public List<Ship> getShips() {
-		//TODO implement
-		return null;
+		return ships;
 	}
 
 	public void setShips(List<Ship> ships) {
 		//TODO implement
 	}
+	public void addShip(Ship ship) {
+	    ships.add(ship);
+    }
 
 	public List<Result> getAttacks() {
 		//TODO implement
@@ -54,4 +72,14 @@ public class Board {
 	public void setAttacks(List<Result> attacks) {
 		//TODO implement
 	}
+
+	public boolean isSquareEmpty (int x, int y){
+        for (int i = 0; i < ships.size(); i++){
+            for (int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
+                if(ships.get(i).getOccupiedSquares().get(j).getColumn() == (char)(y+65)){return false;}
+                if(ships.get(i).getOccupiedSquares().get(j).getRow() == (char)(x+1)){return false;}
+            }
+        }
+	    return true;
+    }
 }
