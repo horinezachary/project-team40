@@ -23,16 +23,22 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		// TODO Implement
-		return false;
+		// TODO Implement (added conditions so other tests may progress)
+		return (x >= 0 && x <= 9 && y >= 'A' && y <= 'J');
 	}
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
-		//TODO Implement
-		return null;
+		//TODO Implement fully, just stubbed so other tests work right now
+		Result r = new Result();
+		if(x >= 0 && x <= 9 && y >= 'A' && y <= 'J') {
+			r.setResult(AtackStatus.MISS);
+		} else {
+			r.setResult(AtackStatus.INVALID);
+		}
+		return r;
 	}
 
 	public List<Ship> getShips() {
