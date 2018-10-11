@@ -51,6 +51,8 @@ public class Board {
         }
         ship.setOccupiedSquares(shipsquares);
 		this.addShip(ship);
+
+        printBoard();
 		return true;
 	}
 
@@ -90,5 +92,16 @@ public class Board {
             }
         }
 	    return true;
+    }
+
+    private void printBoard (){
+	    for (int i = 0; i < boardarray.length;i++){
+	        System.out.print("|");
+	        for (int j = 0; j < boardarray[0].length; j++){
+                if(isSquareEmpty(i,j)){System.out.print("O|");}
+                else{System.out.print("X|");}
+            }
+            System.out.print("\n");
+        }
     }
 }
