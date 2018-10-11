@@ -56,7 +56,7 @@ public class Game {
     }
 
     private int randRow() {
-        return (int)(Math.random()*9);
+        return (int)(Math.random()*9)+1;
     }
 
     private boolean randVertical() {
