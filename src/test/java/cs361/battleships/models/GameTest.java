@@ -23,7 +23,8 @@ public class GameTest {
     public void testGoodplaceship(){
         String shipname2 = "BATTLESHIP";
         Ship shipper = new Ship(shipname2);
-        assertEquals(true, gametwo.placeShip(shipper, 3, 'A', true));
+        assertEquals(true, gametwo.placeShip(shipper, 5, 'A', true));
+        assertEquals(true, gametwo.placeShip(shipper, 1, 'A', true));
     }
 
     @Test
