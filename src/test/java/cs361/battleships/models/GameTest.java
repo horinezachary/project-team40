@@ -1,39 +1,51 @@
 package cs361.battleships.models;
 
 import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+
 public class GameTest {
 
-    /**
-     * Tests an attack on an invalid space
-     */
+    Game testgame = new Game();
+    Game gametwo = new Game();
+
+
     @Test
-    public void testInvalidAttacks() {
-        Game g = new Game();
-        // test bad, with low Y
-        assertFalse(g.attack(-1,'A'));
-        // test bad, with low X
-        assertFalse(g.attack(0,'K'));
-        // test bad, with high Y
-        assertFalse(g.attack(10,'J'));
-        // test bad, with high X
-        assertFalse(g.attack(9,'K'));
-        // test bad with both high
-        assertFalse(g.attack(10,'K'));
+    public void testBadplaceship(){ //
+        String shipname = "Battleship";
+        Ship shippy = new Ship(shipname);
+        assertEquals(false,testgame.placeShip(shippy, 12, 'A', true));
     }
 
-    /**
-     * Tests an attack on a space that exists
-     */
     @Test
-    public void testValidAttacks() {
-        Game g = new Game();
-        // test upper & lower limits of good coordinates
-        // note there are not ships here
-        assertTrue(g.attack(0,'A'));
-        assertTrue(g.attack(9,'J'));
+    public void testGoodplaceship(){
+        String shipname2 = "Battleship";
+        Ship shipper = new Ship(shipname2);
+        assertEquals(true, gametwo.placeShip(shipper, 3, 'A', true));
+    }
+
+    @Test
+    public void testBadattack(){
+        Game game = new Game();
+        assertFalse(game.attack(11, 'C'));
+        // test bad, with low X
+        assertFalse(game.attack(0,'K'));
+        // test bad, with high X
+        assertFalse(game.attack(10,'J'));
+        // test bad, with high Y
+        assertFalse(game.attack(9,'K'));
+        // test bad with both high
+        assertFalse(game.attack(10,'K'));
+
+    }
+
+    @Test
+    public void testGoodattack(){
+        Game game = new Game();
+        assertTrue(game.attack(9, 'A'));
+        assertTrue(game.attack(0,'J'));
     }
 
     /**
