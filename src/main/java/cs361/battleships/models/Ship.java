@@ -13,6 +13,7 @@ public class Ship {
 	@JsonProperty private List<Square> occupiedSquares;
 	
 	public Ship(String kind) {
+		//use the string given to set the length of the ship
 		switch(kind) {
             case "BATTLESHIP":
                 length = 4;
@@ -27,18 +28,17 @@ public class Ship {
                 length = 0;
                 break;
         }
+        //save the ship string
         shipType = kind;
 		occupiedSquares = new ArrayList<>();
 	}
 
 	public List<Square> getOccupiedSquares() {
-
 	    return occupiedSquares;
 	}
 
 	public void setOccupiedSquares(List<Square> squaresIn){
-
-	    occupiedSquares = squaresIn;
+		occupiedSquares = squaresIn;
     }
     public int getLength() {
 	    return length;

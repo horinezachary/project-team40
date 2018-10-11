@@ -32,6 +32,7 @@ public class Square {
 	public void setOccupied(boolean oc){
 		occupied = oc;
 	}
+
 	public boolean getOccupied(){
 		return occupied;
 	}

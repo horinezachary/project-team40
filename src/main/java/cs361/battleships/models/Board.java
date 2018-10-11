@@ -5,10 +5,11 @@ import java.util.List;
 
 public class Board {
     private Square[][] boardarray;
-    private List<Ship> ships;
 
     final int BOARDSIZE_X = 10;
     final int BOARDSIZE_Y = 10;
+
+	private List<Ship> ships;
 
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
@@ -29,30 +30,33 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-	    if (x > boardarray.length || ((int)y)-65 > boardarray[0].length){return false;}
+	    if (x > boardarray.length || ((int)y)-65 > boardarray[0].length){return false;} //check for ships that are out of bounds
         List<Square> shipsquares = new ArrayList<Square>();
 		for (int i = 0; i < ship.getLength(); i++){
-		    if (isVertical){
+		    if (isVertical){    //check if the values exist within the array bounds, and make sure that the square isn't occupied
 		        if ((x-1+i < BOARDSIZE_X) && (((int)y)-65) < BOARDSIZE_Y && !boardarray[x-1+i][((int)y)-65].getOccupied()) {
-                    System.out.println(x-1+","+ (((int)y)-65+i));
+                    //System.out.println(x-1+","+ (((int)y)-65+i));
+			        //add the square to the ship square list and set the square as occupied
                     shipsquares.add(boardarray[x-1+i][((int)y)-65]);
 			        boardarray[x-1+i][((int)y)-65].setOccupied(true);
                 }
                 else return false;
             }
-            else{
+            else{   //check if the values exist within the array bounds, and make sure that the square isn't occupied
                 if ((x-1+i < BOARDSIZE_X) && (((int)y)-65+i) < BOARDSIZE_Y && !boardarray[x-1][((int)y)-65+i].getOccupied()) {
-                    System.out.println(x-1+","+ (((int)y)-65+i));
+                    //System.out.println(x-1+","+ (((int)y)-65+i));
+	                //add the square to the ship square list and set the square as occupied
                     shipsquares.add(boardarray[x-1][((int)y)-65+i]);
                     boardarray[x-1][((int)y)-65+i].setOccupied(true);
                 }
                 else return false;
             }
         }
+        //add the squares to the ship and the ship to the board
         ship.setOccupiedSquares(shipsquares);
 		this.addShip(ship);
 
-        printBoard();
+        //printBoard();
 		return true;
 	}
 
@@ -84,7 +88,7 @@ public class Board {
 		//TODO implement
 	}
 
-    private void printBoard (){
+    private void printBoard (){ //method for printing out the board on the backend
 	    for (int i = 0; i < boardarray.length;i++){
 	        System.out.print("|");
 	        for (int j = 0; j < boardarray[0].length; j++){
