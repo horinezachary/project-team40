@@ -14,19 +14,13 @@ public class Ship {
 	
 	public Ship(String kind) {
 		switch(kind) {
-            case "Carrier":
-                length = 5;
-                break;
-            case "Battleship":
+            case "BATTLESHIP":
                 length = 4;
                 break;
-            case "Cruiser":
+            case "DESTROYER":
                 length = 3;
                 break;
-            case "Submarine":
-                length = 3;
-                break;
-            case "Destroyer":
+            case "MINESWEEPER":
                 length = 2;
                 break;
             default:
