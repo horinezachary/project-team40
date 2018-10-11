@@ -58,10 +58,10 @@ public class GameTest {
         Ship s = new Ship("DESTROYER");
 
         // attempt to place the ship
-        assertTrue(g.placeShip(s,0,'A',false));
+        assertTrue(g.placeShip(s,1,'A',false));
 
         // attack the space with this ship now
-        assertTrue(g.attack(0,'A'));
+        assertTrue(g.attack(1,'A'));
 
     }
 
