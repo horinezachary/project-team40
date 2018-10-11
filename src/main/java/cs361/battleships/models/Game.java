@@ -56,18 +56,16 @@ public class Game {
     }
 
     private int randRow() {
-        // TODO implement
         return (int)(Math.random()*9);
     }
 
     private boolean randVertical() {
-        // TODO implement
-	double x = Math.random();
-	if(x > 0.50){
-		return true;
-	}
-	else {
-   	     return false;
-   	}
+	    double x = Math.random();
+	    if(x > 0.50){
+		    return true;
+	    }
+	    else {
+	        return false;
+   	    }
    }
 }

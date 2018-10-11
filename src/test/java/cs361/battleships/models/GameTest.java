@@ -14,14 +14,14 @@ public class GameTest {
 
     @Test
     public void testBadplaceship(){ //
-        String shipname = "Battleship";
+        String shipname = "BATTLESHIP";
         Ship shippy = new Ship(shipname);
         assertEquals(false,testgame.placeShip(shippy, 12, 'A', true));
     }
 
     @Test
     public void testGoodplaceship(){
-        String shipname2 = "Battleship";
+        String shipname2 = "BATTLESHIP";
         Ship shipper = new Ship(shipname2);
         assertEquals(true, gametwo.placeShip(shipper, 3, 'A', true));
     }
@@ -55,7 +55,7 @@ public class GameTest {
     public void testAttackOnShip() {
         // setup a new game & add a ship
         Game g = new Game();
-        Ship s = new Ship("Destroyer");
+        Ship s = new Ship("DESTROYER");
 
         // attempt to place the ship
         assertTrue(g.placeShip(s,0,'A',false));
