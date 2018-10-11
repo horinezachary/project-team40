@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import java.lang.Math;
 import static cs361.battleships.models.AtackStatus.*;
 
 public class Game {
@@ -44,23 +44,28 @@ public class Game {
             // AI does random attacks, so it might attack the same spot twice
             // let it try until it gets it right
             opponentAttackResult = playersBoard.attack(randRow(), randCol());
-        } while(opponentAttackResult.getResult() != INVALID);
+        } while(opponentAttackResult.getResult() == INVALID);
 
         return true;
     }
 
     private char randCol() {
-        // TODO implement
-        return 'X';
+	    String column = "ABCDEFGHIJ";
+	    int x = (int)(Math.random()*9);
+        return column.charAt(x);
     }
 
     private int randRow() {
-        // TODO implement
-        return 0;
+        return (int)(Math.random()*9);
     }
 
     private boolean randVertical() {
-        // TODO implement
-        return false;
-    }
+	    double x = Math.random();
+	    if(x > 0.50){
+		    return true;
+	    }
+	    else {
+	        return false;
+   	    }
+   }
 }

@@ -2,13 +2,15 @@ package cs361.battleships.models;
 
 public class Result {
 
+	// stores the status of the last attack
+	private AtackStatus attackStatus;
+
 	public AtackStatus getResult() {
-		//TODO implement
-		return null;
+		return attackStatus;
 	}
 
 	public void setResult(AtackStatus result) {
-		//TODO implement
+		attackStatus = result;
 	}
 
 	public Ship getShip() {
