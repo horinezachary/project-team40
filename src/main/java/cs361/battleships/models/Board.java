@@ -11,7 +11,7 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
-		boardarray = new Square[8][8];
+		boardarray = new Square[10][10];
 		for (int i = 0; i < boardarray.length; i++) {
             for (int j = 0; j < boardarray[0].length; j++) {
                 boardarray[i][j].setRow(i + 1); //sets row values as 1 thru 8
