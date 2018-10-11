@@ -71,4 +71,20 @@ public class Game {
 	        return false;
    	    }
    }
+
+    /**
+     * Returns the player's current board
+     * @return Board
+     */
+   public Board getPlayersBoard() {
+        return playersBoard;
+   }
+
+    /**
+     * Returns the opponent's board
+     * @return board
+     */
+   public Board getOpponentsBoard() {
+        return opponentsBoard;
+   }
 }
