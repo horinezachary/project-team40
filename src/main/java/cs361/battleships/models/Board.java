@@ -29,19 +29,22 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-	    if (x > boardarray.length){return false;}
-        if ((int)(y+65) > boardarray[0].length){return false;}
+	    if (x > boardarray.length || ((int)y)-65 > boardarray[0].length){return false;}
         List<Square> shipsquares = new ArrayList<Square>();
 		for (int i = 0; i < ship.getLength(); i++){
 		    if (isVertical){
-		        if (this.isSquareEmpty(x, y + i)) {
-                    shipsquares.add(boardarray[x][y+i]);
+		        if (this.isSquareEmpty(x-1+i, ((int)y)-65) && (x-1+i < BOARDSIZE_X) && (((int)y)-65) < BOARDSIZE_Y) {
+                    System.out.println(x-1+","+ (((int)y)-65+i));
+                    shipsquares.add(boardarray[x-1+i][((int)y)-65]);
+			        boardarray[x-1+i][((int)y)-65].setOccupied(true);
                 }
                 else return false;
             }
             else{
-                if (this.isSquareEmpty(x+i, y)) {
-                    shipsquares.add(boardarray[x+i][y]);
+                if (this.isSquareEmpty(x-1, ((int)y)-65+i) && (x-1+i < BOARDSIZE_X) && (((int)y)-65+i) < BOARDSIZE_Y) {
+                    System.out.println(x-1+","+ (((int)y)-65+i));
+                    shipsquares.add(boardarray[x-1][((int)y)-65+i]);
+                    boardarray[x-1][((int)y)-65+i].setOccupied(true);
                 }
                 else return false;
             }
@@ -83,7 +86,7 @@ public class Board {
         for (int i = 0; i < ships.size(); i++){
             for (int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
                 if(ships.get(i).getOccupiedSquares().get(j).getColumn() == (char)(y+65)){return false;}
-                if(ships.get(i).getOccupiedSquares().get(j).getRow() == (char)(x+1)){return false;}
+                if(ships.get(i).getOccupiedSquares().get(j).getRow() == (x+1)){return false;}
             }
         }
 	    return true;
