@@ -5,7 +5,6 @@ import java.util.List;
 
 public class Board {
     private Square[][] boardarray;
-    private List<Ship> ships;
 
     final int BOARDSIZE_X = 10;
     final int BOARDSIZE_Y = 10;
