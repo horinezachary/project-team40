@@ -25,6 +25,8 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
+	    if (x > boardarray.length){return false;}
+        if ((int)(y+65) > boardarray[0].length){return false;}
         List<Square> shipsquares = new ArrayList<Square>();
 		for (int i = 0; i < ship.getLength(); i++){
 		    if (isVertical){
