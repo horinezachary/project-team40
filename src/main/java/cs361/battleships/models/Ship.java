@@ -38,7 +38,13 @@ public class Ship {
 	}
 
 	public List<Square> getOccupiedSquares() {
-		//TODO implement
-		return null;
+		return occupiedSquares;
 	}
+
+	public void setOccupiedSquares(List<Square> squaresIn){
+        occupiedSquares = squaresIn;
+    }
+    public int getLength() {
+	    return length;
+    }
 }
