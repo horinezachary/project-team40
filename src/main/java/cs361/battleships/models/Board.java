@@ -7,18 +7,22 @@ public class Board {
     private Square[][] boardarray;
     private List<Ship> ships;
 
+    final int BOARDSIZE_X = 10;
+    final int BOARDSIZE_Y = 10;
+
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Board() {
-		boardarray = new Square[10][10];
+		boardarray = new Square[BOARDSIZE_X][BOARDSIZE_Y];
 		for (int i = 0; i < boardarray.length; i++) {
             for (int j = 0; j < boardarray[0].length; j++) {
-                boardarray[i][j].setRow(i + 1); //sets row values as 1 thru 8
-                boardarray[i][j].setColumn((char) (65 + j));   //sets column values as 'A' thru 'H'
+                //sets row values as 1 thru 10 and column values as 'A' thru 'J'
+                boardarray[i][j] = new Square(i+1,(char) (65 + j));
             }
         }
         ships = new ArrayList<Ship>();
+		printBoard();
 	}
 
 	/*
