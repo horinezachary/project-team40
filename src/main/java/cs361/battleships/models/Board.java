@@ -85,6 +85,7 @@ public class Board {
 	}
 
 	public boolean isSquareEmpty (int x, int y){
+		/*
         for (int i = 0; i < ships.size(); i++){
             for (int j = 0; j < ships.get(i).getOccupiedSquares().size(); j++) {
                 if(ships.get(i).getOccupiedSquares().get(j).getColumn() == (char)(y+65)){return false;}
@@ -92,6 +93,8 @@ public class Board {
             }
         }
 	    return true;
+        */
+		return !boardarray[x][y].getOccupied();
     }
 
     private void printBoard (){
