@@ -14,8 +14,11 @@ public class Ship {
 		occupiedSquares = new ArrayList<>();
 	}
 
+	public void setOccupiedSquares(List<Square> squares) {
+		occupiedSquares = squares;
+	}
+
 	public List<Square> getOccupiedSquares() {
-		//TODO implement
-		return null;
+		return occupiedSquares;
 	}
 }
