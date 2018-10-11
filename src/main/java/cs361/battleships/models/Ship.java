@@ -32,13 +32,18 @@ public class Ship {
 	}
 
 	public List<Square> getOccupiedSquares() {
-		return occupiedSquares;
+
+	    return occupiedSquares;
 	}
 
 	public void setOccupiedSquares(List<Square> squaresIn){
-        occupiedSquares = squaresIn;
+
+	    occupiedSquares = squaresIn;
     }
     public int getLength() {
 	    return length;
+    }
+    public String getShipType() {
+	    return shipType;
     }
 }
