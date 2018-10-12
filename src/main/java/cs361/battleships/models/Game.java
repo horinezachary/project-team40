@@ -2,6 +2,7 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.lang.Math;

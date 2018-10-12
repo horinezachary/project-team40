@@ -5,6 +5,12 @@ public class Result {
 	// stores the status of the last attack
 	private AtackStatus attackStatus;
 
+	//store ship
+	private Ship sShip;
+
+	//store attack location
+	private Square loc;
+
 	public AtackStatus getResult() {
 		return attackStatus;
 	}
@@ -14,20 +20,19 @@ public class Result {
 	}
 
 	public Ship getShip() {
-		//TODO implement
-		return null;
+		return sShip;
 	}
 
 	public void setShip(Ship ship) {
-		//TODO implement
+		sShip = ship;
 	}
 
 	public Square getLocation() {
-		//TODO implement
-		return null;
+		return loc;
 	}
 
 	public void setLocation(Square square) {
-		//TODO implement
+		loc = square;
 	}
+
 }
