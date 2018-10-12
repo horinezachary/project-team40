@@ -34,7 +34,7 @@ public class GameTest {
         // test bad, with low X
         assertFalse(game.attack(0,'K'));
         // test bad, with high X
-        assertFalse(game.attack(10,'J'));
+        assertFalse(game.attack(11,'J'));
         // test bad, with high Y
         assertFalse(game.attack(9,'K'));
         // test bad with both high
@@ -45,8 +45,8 @@ public class GameTest {
     @Test
     public void testGoodattack(){
         Game game = new Game();
-        assertTrue(game.attack(9, 'A'));
-        assertTrue(game.attack(0,'J'));
+        assertTrue(game.attack(10, 'A'));
+        assertTrue(game.attack(1,'J'));
     }
 
     /**
