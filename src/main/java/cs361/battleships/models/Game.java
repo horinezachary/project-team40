@@ -53,13 +53,13 @@ public class Game {
         return true;
     }
 
-    private char randCol() {
+    char randCol() {
 	    String column = "ABCDEFGHIJ";
 	    int x = (int)(Math.random()*10);
         return column.charAt(x);
     }
 
-    private int randRow() {
+    int randRow() {
         return (int)(Math.random()*10)+1;
     }
 
