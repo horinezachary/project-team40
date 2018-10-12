@@ -25,10 +25,10 @@ public class GameTest {
 
     @Test
     public void testGoodplaceship(){
-        String shipname2 = "BATTLESHIP";
-        Ship shipper = new Ship(shipname2);
-        assertEquals(true, gametwo.placeShip(shipper, 5, 'A', true));
-        assertEquals(true, gametwo.placeShip(shipper, 1, 'A', true));
+        Ship shipper1 = new Ship("BATTLESHIP");
+        Ship shipper2 = new Ship("DESTROYER");
+        assertEquals(true, gametwo.placeShip(shipper1, 5, 'A', true));
+        assertEquals(true, gametwo.placeShip(shipper2, 1, 'A', true));
     }
 
     @Test

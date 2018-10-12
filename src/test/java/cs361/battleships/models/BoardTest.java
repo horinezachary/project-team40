@@ -75,6 +75,21 @@ public class BoardTest {
     }
 
     @Test
+    public void testAddingDuplicateShips() {
+        // Tests adding a duplicate ship, which should return false
+        Board b = new Board();
+        // setup initial ships
+        assertTrue(b.placeShip(new Ship("MINESWEEPER"), 1, 'A', false));
+        assertTrue(b.placeShip(new Ship("DESTROYER"), 2, 'A', false));
+        assertTrue(b.placeShip(new Ship("BATTLESHIP"), 3, 'A', false));
+
+        // test duplicating them, should all return false
+        assertFalse(b.placeShip(new Ship("MINESWEEPER"), 4, 'A', false));
+        assertFalse(b.placeShip(new Ship("DESTROYER"), 5, 'A', false));
+        assertFalse(b.placeShip(new Ship("BATTLESHIP"), 6, 'A', false));
+    }
+
+    @Test
     public void testAddingAttack() {
         // Tests adding a single attack and getting it back from the board
         Board board = new Board();

@@ -33,10 +33,33 @@ public class Board {
 		//printBoard();
 	}
 
+	/**
+	 * Determines whether this ship is a duplicate of an existing one
+	 *
+	 * @param ship Ship to check for duplication
+	 * @return whether or not the ship is a duplicate
+	 */
+	private boolean is_duplicate_ship(Ship ship) {
+		for(Ship s: ships) {
+			if(s.getShipType().equals(ship.getShipType())) {
+				// same type
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/*
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
+
+		// check for duplicate ships first
+		if(is_duplicate_ship(ship)) {
+			// can't place the same ship twice
+			return false;
+		}
+
 		int yint = ((int)y)-65;
 		int xint = x-1;
 		setOccupied();
