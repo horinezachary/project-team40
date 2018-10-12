@@ -5,6 +5,7 @@ import java.util.List;
 
 public class Board {
     private Square[][] boardarray;
+    private boolean[][] occupied;
 
     final int BOARDSIZE_X = 10;
     final int BOARDSIZE_Y = 10;
@@ -19,10 +20,12 @@ public class Board {
 	 */
 	public Board() {
 		boardarray = new Square[BOARDSIZE_X][BOARDSIZE_Y];
+		occupied = new boolean[BOARDSIZE_X][BOARDSIZE_Y];
 		for (int i = 0; i < boardarray.length; i++) {
             for (int j = 0; j < boardarray[0].length; j++) {
                 //sets row values as 1 thru 10 and column values as 'A' thru 'J'
                 boardarray[i][j] = new Square(i+1,(char) (65 + j));
+                occupied[i][j] = false;
             }
         }
         ships = new ArrayList<Ship>();
@@ -34,24 +37,26 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-	    if (x > boardarray.length || ((int)y)-65 > boardarray[0].length){return false;}
+		int yint = ((int)y)-65;
+		int xint = x-1;
+		setOccupied();
+		//printBoard();
+	    if (x > boardarray.length || yint > boardarray[0].length){return false;}
         List<Square> shipsquares = new ArrayList<Square>();
 		for (int i = 0; i < ship.getLength(); i++){
 		    if (isVertical){    //check if the values exist within the array bounds, and make sure that the square isn't occupied
-		        if ((x-1+i < BOARDSIZE_X) && (((int)y)-65) < BOARDSIZE_Y && !boardarray[x-1+i][((int)y)-65].getOccupied()) {
-                    //System.out.println(x-1+","+ (((int)y)-65+i));
+		        if ((xint+i < BOARDSIZE_X) && (yint) < BOARDSIZE_Y && !occupied[xint+i][yint]) {
+                    //System.out.println(xint+i+","+ (yint));
 			        //add the square to the ship square list and set the square as occupied
-                    shipsquares.add(boardarray[x-1+i][((int)y)-65]);
-			        boardarray[x-1+i][((int)y)-65].setOccupied(true);
+                    shipsquares.add(boardarray[xint+i][yint]);
                 }
                 else return false;
             }
             else{   //check if the values exist within the array bounds, and make sure that the square isn't occupied
-                if ((x-1+i < BOARDSIZE_X) && (((int)y)-65+i) < BOARDSIZE_Y && !boardarray[x-1][((int)y)-65+i].getOccupied()) {
-                    //System.out.println(x-1+","+ (((int)y)-65+i));
+                if ((xint < BOARDSIZE_X) &&((yint+i) < BOARDSIZE_Y) && (!occupied[xint][yint+i])) {
+                    //System.out.println(xint+","+ (yint+i));
 	                //add the square to the ship square list and set the square as occupied
-                    shipsquares.add(boardarray[x-1][((int)y)-65+i]);
-                    boardarray[x-1][((int)y)-65+i].setOccupied(true);
+                    shipsquares.add(boardarray[xint][yint+i]);
                 }
                 else return false;
             }
@@ -148,13 +153,24 @@ public class Board {
 	}
 
     private void printBoard (){ //method for printing out the board on the backend
+		setOccupied();
 	    for (int i = 0; i < boardarray.length;i++){
 	        System.out.print("|");
 	        for (int j = 0; j < boardarray[0].length; j++){
-                if(!boardarray[i][j].getOccupied()){System.out.print("O|");}
+                if(!occupied[i][j]){System.out.print("O|");}
                 else{System.out.print("X|");}
             }
             System.out.print("\n");
         }
+    }
+    private void setOccupied(){
+		for (int i = 0; i < ships.size(); i++){
+			List <Square> shipSquares = ships.get(i).getOccupiedSquares();
+			for (int j = 0; j < shipSquares.size(); j++){
+				int x = shipSquares.get(j).getRow()-1;
+				int y = shipSquares.get(j).getColumn()-65;
+				occupied[x][y] = true;
+			}
+		}
     }
 }
