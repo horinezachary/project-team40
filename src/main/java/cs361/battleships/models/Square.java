@@ -30,12 +30,4 @@ public class Square {
 	public void setRow(int row) {
 		this.row = row;
 	}
-
-	public void setOccupied(boolean oc){
-		occupied = oc;
-	}
-
-	public boolean getOccupied(){
-		return occupied;
-	}
 }
