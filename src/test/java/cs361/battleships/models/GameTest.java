@@ -98,7 +98,6 @@ public class GameTest {
 		    char x = g.randCol();
 		    assertEquals(true, x <= 'J' && x >= 'A');
 		    int y = g.randRow();
-		    System.out.println(y);
 		    assertEquals(true, (y<= 10 && y>= 1));
 	    }
     }
