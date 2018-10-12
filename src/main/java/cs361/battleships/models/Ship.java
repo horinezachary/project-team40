@@ -11,6 +11,10 @@ public class Ship {
     String shipType;
 
 	@JsonProperty private List<Square> occupiedSquares;
+
+	public Ship(){
+        occupiedSquares = new ArrayList<>();
+    }
 	
 	public Ship(String kind) {
 		//use the string given to set the length of the ship
