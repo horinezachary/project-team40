@@ -71,7 +71,7 @@ public class Board {
 		Result r = new Result();
 		r.setLocation(new Square(x,y));
 
-		if(x >= 0 && x <= 9 && y >= 'A' && y <= 'J') {
+		if(x >= 1 && x <= 10 && y >= 'A' && y <= 'J') {
 			// loop over each ship to check for a hit
 			for(Ship ship: ships) {
 				// get this ship's squares
