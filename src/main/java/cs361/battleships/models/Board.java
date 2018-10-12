@@ -79,9 +79,8 @@ public class Board {
 				List<Square> squares = ship.getOccupiedSquares();
 				for(Square shipSquare: squares) {
 					if(shipSquare.getRow() == x && shipSquare.getColumn() == y) {
-						// Hit! remove this square, set back, & break
-						squares.remove(shipSquare);
-						ship.setOccupiedSquares(squares);
+						// Hit! mark this ship down health
+						ship.decrementHealth();
 
 						// set the ship hit in this result
 						r.setShip(ship);
@@ -92,26 +91,39 @@ public class Board {
 					}
 				}
 
-				if(didHit && squares.size() == 0) {
+				if(didHit && ship.getHealth() == 0) {
 					// hit and SUNK, remove this ship
 					ships.remove(ship);
 
+					// mark each part of this ship as SUNK
+					// CSS of 'sink' class will take precedence over hit
+					// turning all affected pieces red
+					Result rr = new Result();
+					for(Square sq: ship.getOccupiedSquares()) {
+						rr = new Result();
+						rr.setLocation(sq);
+						rr.setShip(ship);
+						rr.setResult(AtackStatus.SUNK);
+						attacks.add(rr);
+					}
+
 					// check to see if the game is over
 					if(ships.size() > 0) {
-						// at least one more ship
-						r.setResult(AtackStatus.SUNK);
+						// at least one more ship, return our last sunken result
+						return rr;
 
 					} else {
 						// this was the last ship, game over!
 						r.setResult(AtackStatus.SURRENDER);
+						attacks.add(r);
+						return r;
 
 					}
-
-					return r;
 
 				} else if(didHit) {
 					// just a hit, not sunk
 					r.setResult(AtackStatus.HIT);
+					attacks.add(r);
 					return r;
 
 				}
@@ -125,6 +137,7 @@ public class Board {
 			r.setResult(AtackStatus.INVALID);
 		}
 
+		attacks.add(r);
 		return r;
 	}
 

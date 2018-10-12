@@ -148,6 +148,14 @@ public class BoardTest {
         board.attack(1,'A');
         Result r = board.attack(1,'B');
         assertEquals(AtackStatus.SUNK, r.getResult());
+
+        // check to see that the last 2 events were sunk, preceded by 1 hits
+        // 2nd hit became a sunk automatically
+        List<Result> attacks = board.getAttacks();
+        assertEquals(3, attacks.size());
+        assertEquals(AtackStatus.HIT, attacks.get(0).getResult());
+        assertEquals(AtackStatus.SUNK, attacks.get(1).getResult());
+        assertEquals(AtackStatus.SUNK, attacks.get(2).getResult());
     }
 
     /**

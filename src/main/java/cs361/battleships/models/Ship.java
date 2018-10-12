@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 public class Ship {
 
+    int health;
     int length;
     String shipType;
 
@@ -32,6 +33,10 @@ public class Ship {
                 length = 0;
                 break;
         }
+
+        // health equivalent to length
+        health = length;
+
         //save the ship string
         shipType = kind;
 		occupiedSquares = new ArrayList<>();
@@ -49,5 +54,13 @@ public class Ship {
     }
     public String getShipType() {
 	    return shipType;
+    }
+
+    public void decrementHealth() {
+	    health--;
+    }
+
+    public int getHealth() {
+	    return health;
     }
 }
