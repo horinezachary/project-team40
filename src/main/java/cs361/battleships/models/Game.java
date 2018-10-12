@@ -20,11 +20,14 @@ public class Game {
         if (!successful)
             return false;
 
+        // setup a new ship for the bot
+        Ship s2 = new Ship(ship.getShipType());
+
         boolean opponentPlacedSuccessfully;
         do {
             // AI places random ships, so it might try and place overlapping ships
             // let it try until it gets it right
-            opponentPlacedSuccessfully = opponentsBoard.placeShip(ship, randRow(), randCol(), randVertical());
+            opponentPlacedSuccessfully = opponentsBoard.placeShip(s2, randRow(), randCol(), randVertical());
         } while (!opponentPlacedSuccessfully);
 
         return true;
@@ -67,5 +70,21 @@ public class Game {
 	    else {
 	        return false;
    	    }
+   }
+
+    /**
+     * Returns the player's current board
+     * @return Board
+     */
+   public Board getPlayersBoard() {
+        return playersBoard;
+   }
+
+    /**
+     * Returns the opponent's board
+     * @return board
+     */
+   public Board getOpponentsBoard() {
+        return opponentsBoard;
    }
 }
