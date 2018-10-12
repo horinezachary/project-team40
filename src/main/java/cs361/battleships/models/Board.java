@@ -76,6 +76,19 @@ public class Board {
 		Result r = new Result();
 		r.setLocation(new Square(x,y));
 
+		for(Result check: attacks) { //begin iterating through attack list
+			if(
+					check.getLocation() != null &&
+							check.getLocation().getRow() == x &&
+							check.getLocation().getColumn() == y
+			) {
+				// already attacked this space, return invalid
+				r.setResult(AtackStatus.INVALID);
+				return r;
+			}
+		}
+
+
 		if(x >= 1 && x <= 10 && y >= 'A' && y <= 'J') {
 			// loop over each ship to check for a hit
 			for(Ship ship: ships) {
@@ -140,6 +153,7 @@ public class Board {
 		} else {
 			// invalid coordinates
 			r.setResult(AtackStatus.INVALID);
+			return r;
 		}
 
 		attacks.add(r);

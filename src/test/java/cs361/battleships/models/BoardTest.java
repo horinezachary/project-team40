@@ -12,6 +12,14 @@ import static org.junit.Assert.assertTrue;
 public class BoardTest {
 
     @Test
+    public void testDoubleattack(){
+        Board board = new Board();
+        board.attack(5, 'A');
+        Result r = board.attack(5, 'A');
+        assertEquals(AtackStatus.INVALID, r.getResult());
+    }
+
+    @Test
     public void testInvalidPlacement() {
         Board board = new Board();
         assertFalse(board.placeShip(new Ship("MINESWEEPER"), 11, 'C', true));
