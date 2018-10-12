@@ -82,7 +82,14 @@ public class BoardTest {
     @Test
     public void testAttackInvalid() {
         Board board = new Board();
+
         Result r = board.attack(-1,'A');
+        assertEquals(AtackStatus.INVALID, r.getResult());
+
+        r = board.attack(0,'A');
+        assertEquals(AtackStatus.INVALID, r.getResult());
+
+        r = board.attack(11,'A');
         assertEquals(AtackStatus.INVALID, r.getResult());
     }
 
@@ -92,7 +99,7 @@ public class BoardTest {
     @Test
     public void testAttackMiss() {
         Board board = new Board();
-        Result r = board.attack(0,'A');
+        Result r = board.attack(1,'A');
         assertEquals(AtackStatus.MISS, r.getResult());
     }
 
@@ -107,14 +114,14 @@ public class BoardTest {
         // create a new minesweeper to set
         Ship s = new Ship("MINESWEEPER");
         List<Square> spaces = new ArrayList<>();
-        spaces.add(new Square(0,'A'));
-        spaces.add(new Square(0,'B'));
+        spaces.add(new Square(1,'A'));
+        spaces.add(new Square(1,'B'));
         s.setOccupiedSquares(spaces);
 
         ships.add(s);
 
         board.setShips(ships);
-        Result r = board.attack(0,'A');
+        Result r = board.attack(1,'A');
         assertEquals(AtackStatus.HIT, r.getResult());
     }
 
@@ -130,8 +137,8 @@ public class BoardTest {
         for(int x = 0; x < 3; x++) {
             Ship s = new Ship("MINESWEEPER");
             List<Square> spaces = new ArrayList<>();
-            spaces.add(new Square(x, 'A'));
-            spaces.add(new Square(x, 'B'));
+            spaces.add(new Square(x+1, 'A'));
+            spaces.add(new Square(x+1, 'B'));
             s.setOccupiedSquares(spaces);
             ships.add(s);
         }
@@ -154,15 +161,15 @@ public class BoardTest {
         // create a new minesweeper to set
         Ship s = new Ship("MINESWEEPER");
         List<Square> spaces = new ArrayList<>();
-        spaces.add(new Square(0,'A'));
-        spaces.add(new Square(0,'B'));
+        spaces.add(new Square(1,'A'));
+        spaces.add(new Square(1,'B'));
         s.setOccupiedSquares(spaces);
 
         ships.add(s);
 
         board.setShips(ships);
-        board.attack(0,'A');
-        Result r = board.attack(0,'B');
+        board.attack(1,'A');
+        Result r = board.attack(1,'B');
         assertEquals(AtackStatus.SURRENDER, r.getResult());
     }
 }

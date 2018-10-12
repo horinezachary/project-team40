@@ -1,9 +1,13 @@
 package cs361.battleships.models;
 
 import org.junit.Test;
+
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotEquals;
 
 
 public class GameTest {
@@ -34,7 +38,7 @@ public class GameTest {
         // test bad, with low X
         assertFalse(game.attack(0,'K'));
         // test bad, with high X
-        assertFalse(game.attack(10,'J'));
+        assertFalse(game.attack(11,'J'));
         // test bad, with high Y
         assertFalse(game.attack(9,'K'));
         // test bad with both high
@@ -45,8 +49,8 @@ public class GameTest {
     @Test
     public void testGoodattack(){
         Game game = new Game();
-        assertTrue(game.attack(9, 'A'));
-        assertTrue(game.attack(0,'J'));
+        assertTrue(game.attack(10, 'A'));
+        assertTrue(game.attack(1,'J'));
     }
 
     /**
@@ -64,6 +68,27 @@ public class GameTest {
         // attack the space with this ship now
         assertTrue(g.attack(1,'A'));
 
+    }
+
+    /**
+     * Ensures player & bot ships are not accidentally the same
+     */
+    @Test
+    public void testPlayerAndBotShipsIndependent() {
+        Game g = new Game();
+        g.placeShip(new Ship("MINESWEEPER"), 5,'B',true);
+
+        // get the player's ship
+        Board b1 = g.getPlayersBoard();
+        List<Ship> playerShips = b1.getShips();
+        Ship playerShip = playerShips.get(0);
+
+        // get the bot's ship
+        Board b2 = g.getOpponentsBoard();
+        List<Ship> botShips = b2.getShips();
+        Ship botShip = botShips.get(0);
+
+        assertNotEquals(playerShip, botShip);
     }
 
 }

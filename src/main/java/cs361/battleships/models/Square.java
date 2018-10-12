@@ -7,6 +7,8 @@ public class Square {
 	private char column;
 	private boolean occupied;
 
+	public Square() {}
+
 	public Square(int row, char column) {
 		this.row = row;
 		this.column = column;
