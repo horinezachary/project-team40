@@ -91,4 +91,15 @@ public class GameTest {
         assertNotEquals(playerShip, botShip);
     }
 
+    @Test
+	public void randomTest(){
+    	Game g = new Game();
+    	for(int i = 0; i < 1000; i++) {
+		    char x = g.randCol();
+		    assertEquals(true, x <= 'J' && x >= 'A');
+		    int y = g.randRow();
+		    System.out.println(y);
+		    assertEquals(true, (y<= 10 && y>= 1));
+	    }
+    }
 }
