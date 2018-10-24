@@ -1,41 +1,55 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
-.battleGrid {
-    border: 1px solid black;
-    border-spacing: 0px;
-}
 
-.battleGrid tr {
-    border: 1px solid black;
-    height: 30px;
-}
 
-.battleGrid td {
-    border: 1px solid black;
-    width: 30px;
-}
+ .battleGrid {
+     border: 1px solid black;
+     border-spacing: 0px;
+     position:relative;
+     margin-bottom:10px;
+     left:10%;
+ }
 
-td:hover {
-    background-color: gray;
-}
+ .battleGrid tr {
+     border: 1px solid black;
+     height: 30px;
+ }
 
-.placed {
-    background-color: gray;
-}
+ .battleGrid td {
+     border: 1px solid black;
+     width: 30px;
+ }
+ #headertest{
+     position:absolute;
+     width:10px;
+     margin-top:5px;
+     top:-0;
+     line-height:30px;
+     left:10%;
+     word-wrap:break-word;
+ }
 
-.occupied {
-    background-color: black;
-}
+ td:hover {
+     background-color: gray;
+ }
 
-.hit {
-    background-color: orange;
-}
+ .placed {
+     background-color: gray;
+ }
 
-.sink {
-    background-color: red;
-}
+ .occupied {
+     background-color: black;
+ }
 
-.miss {
-    background-color: blue;
-}
+ .hit {
+     background-color: orange;
+ }
+
+ .sink {
+     background-color: red;
+ }
+
+ .miss {
+     background-color: blue;
+ }
