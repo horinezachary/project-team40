@@ -20,7 +20,7 @@
      border: 1px solid black;
      width: 30px;
  }
- #headertest{
+/* #headertest{
      position:absolute;
      width:10px;
      margin-top:5px;
@@ -28,7 +28,7 @@
      line-height:30px;
      left:10%;
      word-wrap:break-word;
- }
+ }*/
 
  td:hover {
      background-color: gray;
