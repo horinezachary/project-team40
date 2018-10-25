@@ -66,6 +66,8 @@ function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
     console.log(col);
+    console.log(row);
+    document.getElementById("output").innerHTML = col;
     if (isSetup) {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
@@ -99,11 +101,35 @@ function sendXhr(method, url, data, handler) {
     req.send(JSON.stringify(data));
 }
 
+/*document.addEventListener("keydown", verticalButton);*/
+/*document.keydown = verticalButton''
+function verticalButton(e){
+    alert ("Hello World!");
+
+    /*V keycode 86*/
+/*}*/
+ document.addEventListener("keydown", function(event) {
+            console.log("V was pressed");
+            var x = event.keyCode;
+            if (x == 86 && vertical == false){
+                console.log("Test");
+                vertical = true;
+            }
+            else if (x == 86 && vertical == true){
+                vertical = false;
+            }
+            else{
+                vertical = false;
+            }
+        });
+
 function place(size) {
     return function() {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
-        vertical = document.getElementById("is_vertical").checked;
+        document.addEventListener
+       /* vertical = false; /*document.getElementById("is_vertical").checked;*/
+
         let table = document.getElementById("player");
         for (let i=0; i<size; i++) {
             let cell;
