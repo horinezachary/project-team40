@@ -77,6 +77,9 @@ function cellClick() {
                 isSetup = false;
                 registerCellListener((e) => {});
             }
+            // clear placing mode, so hitting 'V' again
+            // doesn't reshow our ship on the screen
+            placingMode = 0;
         });
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
@@ -128,32 +131,57 @@ function place(size) {
     }
 }
 
+// Tracks and restores placing when 'V' is pressed
+// Is cleared when a piece is placed successfully
+var placingMode = 0;
+
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
        registerCellListener(place(2));
+       placingMode = 1;
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
         shipType = "DESTROYER";
        registerCellListener(place(3));
+       placingMode = 2;
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
         shipType = "BATTLESHIP";
        registerCellListener(place(4));
+       placingMode = 3;
     });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
     });
-    document.addEventListener("keydown", function(event) {
-                    var key = event.keyCode;
-                    if (key === 86 && vertical == false){
-                        vertical = true;
-                    }
-                    else if (key === 86 && vertical == true){
-                        vertical = false;
-                    }
 
-                });
+    // Adds keydown listener to flip pieces with 'v'
+    document.addEventListener("keydown", function(event) {
+        var key = event.keyCode;
+        if (key === 86 && vertical == false){
+            vertical = true;
+        }
+        else if (key === 86 && vertical == true){
+            vertical = false;
+        }
+
+        // Find and clear any pieces that are currently 'placed'
+        // Restore current placing mode as well
+        redrawGrid();
+        if(placingMode == 1) {
+            shipType = "MINESWEEPER";
+            registerCellListener(place(2));
+
+        } else if(placingMode == 2) {
+            shipType = "DESTROYER";
+            registerCellListener(place(3));
+
+        } else if(placingMode == 3) {
+            shipType = "BATTLESHIP";
+           registerCellListener(place(4));
+
+        }
+    });
 };
