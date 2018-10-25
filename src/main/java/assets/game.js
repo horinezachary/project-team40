@@ -100,30 +100,13 @@ function sendXhr(method, url, data, handler) {
     req.send(JSON.stringify(data));
 }
 
-/*document.addEventListener("keydown", verticalButton);*/
-/*document.keydown = verticalButton''
-function verticalButton(e){
-    alert ("Hello World!");
-
-    /*V keycode 86*/
-/*}*/
- document.addEventListener("keydown", function(event) {
-            var key = event.keyCode;
-            if (key == 86 && vertical == false){
-                vertical = true;
-            }
-            else if (key == 86 && vertical == true){
-                vertical = false;
-            }
-
-        });
 
 function place(size) {
     return function() {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
 
-       /* vertical = false; /*document.getElementById("is_vertical").checked;*/
+       vertical = document.getElementById("is_vertical").checked;
 
         let table = document.getElementById("player");
         for (let i=0; i<size; i++) {
@@ -165,4 +148,14 @@ function initGame() {
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
     });
+    document.addEventListener("keydown", function(event) {
+                var key = event.keyCode;
+                if (key === 86 && vertical == false){
+                    vertical = true;
+                }
+                else if (key === 86 && vertical == true){
+                    vertical = false;
+                }
+
+            });
 };
