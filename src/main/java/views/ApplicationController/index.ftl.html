@@ -1,14 +1,91 @@
 <#import "../layout/defaultLayout.ftl.html" as layout> 
 <@layout.myLayout "Home page">
 
-<h1>Battleship</h1>
+<div id="game-wrapper">
+    <div id="right-panel">
+        <div class="black-grey-box">How to play?</div>
+        <div style="height:312px"></div>
+        <div class="black-grey-box">
+            <h3>Battle Report</h3>
+            <div style="text-align:left">
+                somebody attacked...<br/>
+                somebody missed...<br/>
+                somebody made an invalid move...
+            </div>
+        </div>
+    </div>
+    <h1 id="game-title">
+        B<br/>
+        A<br/>
+        T<br/>
+        T<br/>
+        L<br/>
+        E<br/>
+        S<br/>
+        H<br/>
+        I<br/>
+        P
+    </h1>
+    <div class="player-name-box">OPPONENT</div>
+    <div id="central-boards-box">
 
-
-<table id="opponent" class="battleGrid">
-</table>
-<table id="player" class="battleGrid">
-</table>
-
+        <div class="top-pane">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+        </div>
+        <div class="left-pane">
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+            <div>D</div>
+            <div>E</div>
+            <div>F</div>
+            <div>G</div>
+            <div>H</div>
+            <div>I</div>
+            <div>J</div>
+        </div>
+        <table id="opponent" class="battleGrid">
+        </table>
+        <div class="right-pane">
+            oh wow some cool stuff here
+        </div>
+        <hr/>
+        <div class="left-pane">Ships probably go in here?</div>
+        <div class="right-pane">
+            <div class="peg red"></div>
+            <div class="peg red"></div>
+            <div class="peg red"></div>
+            <div class="peg red"></div>
+            <div class="peg white"></div>
+            <div class="peg white"></div>
+            <div class="peg white"></div>
+            <div class="peg white"></div>
+        </div>
+        <table id="player" class="battleGrid"></table>
+        <div class="top-pane">
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+        </div>
+    </div>
+    <div class="player-name-box">PLAYER</div>
+</div>
 
 <ul>
     <li><button id="place_minesweeper">Place Minesweeper</button></li>
