@@ -105,10 +105,8 @@ function place(size) {
     return function() {
         let row = this.parentNode.rowIndex;
         let col = this.cellIndex;
-
-       vertical = document.getElementById("is_vertical").checked;
-
         let table = document.getElementById("player");
+
         for (let i=0; i<size; i++) {
             let cell;
             if(vertical) {
@@ -149,13 +147,13 @@ function initGame() {
         game = data;
     });
     document.addEventListener("keydown", function(event) {
-                var key = event.keyCode;
-                if (key === 86 && vertical == false){
-                    vertical = true;
-                }
-                else if (key === 86 && vertical == true){
-                    vertical = false;
-                }
+                    var key = event.keyCode;
+                    if (key === 86 && vertical == false){
+                        vertical = true;
+                    }
+                    else if (key === 86 && vertical == true){
+                        vertical = false;
+                    }
 
-            });
+                });
 };

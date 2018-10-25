@@ -6,9 +6,6 @@
  .battleGrid {
      border: 1px solid black;
      border-spacing: 0px;
-     position:relative;
-     margin-bottom:10px;
-     left:10%;
  }
 
  .battleGrid tr {
@@ -20,15 +17,6 @@
      border: 1px solid black;
      width: 30px;
  }
-/* #headertest{
-     position:absolute;
-     width:10px;
-     margin-top:5px;
-     top:-0;
-     line-height:30px;
-     left:10%;
-     word-wrap:break-word;
- }*/
 
  td:hover {
      background-color: gray;
