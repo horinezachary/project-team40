@@ -41,6 +41,8 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
+    let counter = 0;//tracks current iteration
+
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
@@ -61,7 +63,33 @@ function markHits(board, elementId, surrenderText) {
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.add(className);
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.remove("hidden");
 
+        //on the last iteration, write the attacked square
+        if(counter == (board.attacks.length - 1))
+        {
+            writeBRAttack(elementId, attack.location.row, attack.location.column, attack.result);
+        }
+        counter++;
     });
+}
+
+/*
+    writes the result of an attack
+*/
+function writeBRAttack(attacker, locY, locX, attRes)
+{
+    let newRow = numCharInvert(true, locY);//turn row from number to letter
+    let newCol = numCharInvert(false, locX);//turn  col from letter to number
+    let oppElem = "";
+
+
+    if(attacker == "opponent"){
+        oppElem = "PLAYER";
+    }
+    else{
+        oppElem = "OPPONENT"
+    }
+
+    handleBattleReport(oppElem+" attacked "+newRow+""+newCol+" and "+attRes+"!<br/>");
 }
 
 function redrawGrid() {
@@ -109,20 +137,24 @@ function cellClick() {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
 
+            setDisabled(shipType);
+
             //Once a ship is successfully place, a report is sent to battle report
             let s="Player placed "+shipType+" at: " +newRow+""+newCol+"<br/>";//format output
             handleBattleReport(s);
+            // lockout this ship type now that it's placed
+
 
             redrawGrid();
             placedShips++;
 
-            let p="<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>";//format output
-            handleBattleReport(p);
+            //Once a ship is successfully place, a report is sent to battle report
+            handleBattleReport("<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>");
 
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
-
+              
                 let n= "<span class='shipsPlacedBR'>All ships have been placed. Begin attack on the enemy!</span><br/>";
                 handleBattleReport(n);
 
@@ -139,10 +171,18 @@ function cellClick() {
             game = data;
             redrawGrid();
 
-            let m = "<span class='shipsPlacedBR'>Player attacked opponent at "+newRow+""+newCol+"</span><br/>";
-            handleBattleReport(m);
         })
     }
+}
+
+function setDisabled(shipType) {
+    if (shipType === "MINESWEEPER"){shipId = "place_minesweeper";}
+    else if (shipType === "DESTROYER"){shipId = "place_destroyer";}
+    else if (shipType === "BATTLESHIP"){shipId = "place_battleship";}
+    else {console.warn("!! Unknown ship found in lockout code, '"+shipType+"' !!"); return;} // warn of an unknown ship type
+
+    document.getElementById(shipId).disabled = true;
+    document.getElementById(shipId).classList.add("ship-placed");
 }
 
 function sendXhr(method, url, data, handler) {

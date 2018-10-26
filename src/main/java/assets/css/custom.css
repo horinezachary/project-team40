@@ -207,6 +207,9 @@ td:hover {
     transition: 0.3s;
 }
 
+.ship-placed {
+    opacity: 0.5;
+}
 
 .Game-over,
 .modal {
@@ -229,7 +232,9 @@ td:hover {
     border: 1px solid black;
     width: 750px;
 }
-
+.no-bullet-list {
+    list-style-type: none;
+}
 #instructions{
     margin-left:15px;
 }
@@ -252,7 +257,7 @@ td:hover {
     background-color: black;
     margin: 15% auto;
     padding: 20px;
-    border: 1px solid black;
+    border: 2px solid #0f0;
     width: 750px;
     border: 2px double #0f0;
     border-radius: 8px;
@@ -261,7 +266,7 @@ td:hover {
 #Reload{
     background-color:black;
     color:#0f0;
-    border:1px solid white;
+    border:1px solid #0f0;
     position:absolute;
     margin-top:40px;
     margin-left:41px;
@@ -273,6 +278,7 @@ td:hover {
 #Reload:hover {
     border-color: #0f0;
     cursor: pointer;
+    padding: 10px;
 }
 
 #Surrendertext,
@@ -286,9 +292,19 @@ td:hover {
    position:relative;
    top:250px;
 }
-
+#Surrendertext {
+    border-bottom: 1px solid #0f0;
+    border-left: 1px solid #0f0;
+    border-right: 1px solid #0f0;
+ }
+ #Gameend {
+    padding-top: 10px;
+    border-left: 1px solid #0f0;
+    border-top: 1px solid #0f0;
+    border-right: 1px solid #0f0;
+ }
 .close{
-    color: #aaa;
+    color: #0f0;
     float: right;
     font-size:28px;
     font-weight:bold;
