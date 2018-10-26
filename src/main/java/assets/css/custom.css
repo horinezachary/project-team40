@@ -185,6 +185,11 @@ td:hover {
 .white {
     background-color: #fff;
 }
+.ship-container {
+    center;
+    list-style-type: none;
+    padding-inline-start: 20px;
+}
 .ship-button {
     margin: 0px;
     border-width: 0px;
