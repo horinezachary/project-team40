@@ -1,6 +1,9 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
-
+body {
+    background: url(background_gradient.png);
+    background-repeat-y: no-repeat;
+}
 .battleGrid {
     border: 1px solid black;
     border-spacing: 0px;
