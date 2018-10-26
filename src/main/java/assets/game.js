@@ -61,6 +61,7 @@ function markHits(board, elementId, surrenderText) {
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.add(className);
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.remove("hidden");
 
+        handleBattleReport(className+"!<br/>");
     });
 }
 
@@ -110,21 +111,16 @@ function cellClick() {
             game = data;
 
             //Once a ship is successfully place, a report is sent to battle report
-            let s="Player placed "+shipType+" at: " +newRow+""+newCol+"<br/>";//format output
-            handleBattleReport(s);
+            handleBattleReport("Player placed "+shipType+" at: " +newRow+""+newCol+"<br/>");//format output
 
             redrawGrid();
             placedShips++;
-
-            let p="<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>";//format output
-            handleBattleReport(p);
 
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
 
-                let n= "<span class='shipsPlacedBR'>All ships have been placed. Begin attack on the enemy!</span><br/>";
-                handleBattleReport(n);
+                handleBattleReport("<span class='shipsPlacedBR'>All ships have been placed. Begin attack on the enemy!</span><br/>");
             }
             // clear placing mode, so hitting 'V' again
             // doesn't reshow our ship on the screen
@@ -133,10 +129,9 @@ function cellClick() {
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
+            handleBattleReport("<span class='shipsPlacedBR'>Player attacked opponent at "+newRow+""+newCol+"</span><br/>");
             redrawGrid();
 
-            let m = "<span class='shipsPlacedBR'>Player attacked opponent at "+newRow+""+newCol+"</span><br/>";
-            handleBattleReport(m);
         })
     }
 }
