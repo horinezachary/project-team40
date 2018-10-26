@@ -97,9 +97,10 @@ td:hover {
 #right-panel {
     position: absolute;
     width: 275px;
+    height: 730px;
     padding: 8px;
     margin-left: 650px;
-    margin-top: 42px;
+    margin-top: 44px;
     text-align: center;
     color: #0f0;
 
