@@ -85,6 +85,9 @@ function cellClick() {
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+
+                let n= "<span class='shipsPlacedBR'>All ships placed. Begin attack on the enemy!</span><br/>";
+                handleBattleReport(n);
             }
             // clear placing mode, so hitting 'V' again
             // doesn't reshow our ship on the screen
@@ -95,7 +98,7 @@ function cellClick() {
             game = data;
             redrawGrid();
 
-            let m = "Player attacked opponent at "+newRow+""+newCol+"<br/>";
+            let m = "<span class='shipsPlacedBR'>Player attacked opponent at "+newRow+""+newCol+"</span><br/>";
             handleBattleReport(m);
         })
     }
