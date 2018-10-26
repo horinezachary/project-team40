@@ -211,6 +211,9 @@ td:hover {
     margin: 0px;
     border-width: 0px;
 }
+.ship-placed {
+    opacity: 0.5;
+}
 .Game-over,
 .modal {
     display: none;

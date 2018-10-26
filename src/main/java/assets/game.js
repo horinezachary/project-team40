@@ -209,16 +209,22 @@ function initGame() {
     makeGrid(document.getElementById("player"), true);
     gameStart = true;
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
+    document.getElementById("place_minesweeper").disabled = true;
+    document.getElementById("place_minesweeper").classList.add("ship-placed");
         shipType = "MINESWEEPER";
        registerCellListener(place(2));
        placingMode = 1;
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
+    document.getElementById("place_destroyer").disabled = true;
+    document.getElementById("place_destroyer").classList.add("ship-placed");
         shipType = "DESTROYER";
        registerCellListener(place(3));
        placingMode = 2;
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
+    document.getElementById("place_battleship").disabled = true;
+    document.getElementById("place_battleship").classList.add("ship-placed");
         shipType = "BATTLESHIP";
        registerCellListener(place(4));
        placingMode = 3;
