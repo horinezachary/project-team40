@@ -1,10 +1,32 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
 
+@font-face {
+  font-family: 'gunplay';
+  src: url('../fonts/gunplay_rg.ttf') format('truetype');
+}
+
+body {
+    background: url(background_gradient.png);
+    background-repeat-y: no-repeat;
+    margin: 0px;
+}
+footer {
+    float: bottom;
+    background-color: #000;
+    color: #fff;
+    padding-bottom: 10px;
+    padding-top: 20px;
+    padding-left: 10px;
+    width: 100%;
+    position:fixed;
+    bottom:0;
+}
 .battleGrid {
     border: 1px solid black;
     border-spacing: 0px;
     display: inline-block;
+    background: url(../images/gridbg.png);
 }
 
 .battleGrid tr {
@@ -14,7 +36,8 @@
 
 .battleGrid td {
     border: 1px solid black;
-    width: 30px;
+    width: 28px;
+    height: 28px;
 }
 
 td:hover {
@@ -28,7 +51,16 @@ td:hover {
 .occupied {
     background-color: black;
 }
-
+.peg {
+    width: 23px;
+    height: 23px;
+    border-radius: 23px;
+    box-shadow: 0 1px 1px #000 inset;
+    margin: 2px;
+}
+.hidden {
+    display: none;
+}
 .hit {
     background-color: orange;
 }
@@ -38,7 +70,7 @@ td:hover {
 }
 
 .miss {
-    background-color: blue;
+    background-color: white;
 }
 
 #game-wrapper {
@@ -55,18 +87,20 @@ td:hover {
     float: left;
     margin-top: 20%;
     text-align: center;
-    font-family: "Avenir Next", sans-serif;
+    font-family: 'gunplay', sans-serif;
     color: #fff;
-    background-color: #b00;
+    background-image: url("title_gradient_h_2.png");
+    background-repeat: repeat-y;
     margin-left: 75px;
 }
 
 #right-panel {
     position: absolute;
     width: 275px;
+    height: 730px;
     padding: 8px;
     margin-left: 650px;
-    margin-top: 42px;
+    margin-top: 44px;
     text-align: center;
     color: #0f0;
 
@@ -76,6 +110,7 @@ td:hover {
     background: #000;
     border: 4px solid #ccc;
     padding: 4px;
+    margin-bottom: 10px;
 }
 
 #central-boards-box {
@@ -90,7 +125,9 @@ td:hover {
     display: block;
     margin: 8px auto;
     width: 300px;
-    background-color: #b00;
+    background-image: url("title_gradient_v_2.png");
+    background-repeat: repeat-x;
+    font-family: 'gunplay', sans-serif;
     font-weight: bold;
     font-size: 25px;
     text-align: center;
@@ -117,9 +154,24 @@ td:hover {
     height: 302px;
     width: 25px;
     position: relative;
-    left: 50px;
+    left: 60px;
     top: 7px;
     margin-right: -25px;
+}
+
+.left-pane-low {
+    left: 0px;
+    display: flex;
+    flex-direction: row;
+}
+.ship-container {
+    float: left;
+    height: 302px;
+    width: 25px;
+    position: relative;
+    left: 0px;
+    top: 7px;
+    margin-right: 20px;
 }
 
 .left-pane div {
@@ -142,20 +194,22 @@ td:hover {
     margin-right: -25px;
 }
 
-.peg {
-    width: 20px;
-    height: 20px;
-    border-radius: 20px;
-    box-shadow: 0 1px 1px #000 inset;
-    margin: 2px;
-}
-
 .red {
     background-color: #f00;
 }
 
 .white {
     background-color: #fff;
+}
+
+.ship-container {
+    center;
+    list-style-type: none;
+    padding-inline-start: 20px;
+}
+.ship-button {
+    margin: 0px;
+    border-width: 0px;
 }
 .Game-over,
 .modal {
@@ -177,7 +231,7 @@ td:hover {
     padding: 20px;
     border: 1px solid black;
     width: 750px;
-}*/
+}
 
 #instructions{
     margin-left:15px;

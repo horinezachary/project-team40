@@ -31,8 +31,7 @@
                 </h2>
             </div>
         </div>
-        <div style="height:312px"></div>
-        <div class="black-grey-box">
+        <div class="black-grey-box" style="height: 678px">
             <h3>Battle Report</h3>
             <div style="text-align:left" id="battleReport">
                 Welcome. Please place your ships.
@@ -83,8 +82,26 @@
         <div class="right-pane">
             oh wow some cool stuff here
         </div>
-        <hr/>
-        <div class="left-pane">Ships probably go in here?</div>
+        <hr style="border-style: outset; border-width: thick; background-color: dimgray; border-color: darkgray"/>
+        <div class="left-pane left-pane-low">
+            <ul class="ship-container">
+                <li><input type="image" class="ship-button" id="place_minesweeper" src="/assets/images/smallShip.png"/></li>
+                <li><input type="image" class="ship-button" id="place_destroyer" src="/assets/images/mediumShip.png"/></li>
+                <li><input type="image" class="ship-button" id="place_battleship" src="/assets/images/largeShip.png"/></li>
+            </ul>
+            <div class="alpha-container">
+                <div>A</div>
+                <div>B</div>
+                <div>C</div>
+                <div>D</div>
+                <div>E</div>
+                <div>F</div>
+                <div>G</div>
+                <div>H</div>
+                <div>I</div>
+                <div>J</div>
+            </div>
+        </div>
         <div class="right-pane">
             <div class="peg red"></div>
             <div class="peg red"></div>
@@ -111,13 +128,6 @@
     </div>
     <div class="player-name-box">PLAYER</div>
 </div>
-
-<ul>
-    <li><button id="place_minesweeper">Place Minesweeper</button></li>
-    <li><button id="place_destroyer">Place Destroyer</button></li>
-    <li><button id="place_battleship">Place Battleship</button></li>
-    <li id="is_vertical">Vertical (Press v)</li>
-</ul>
 
 <script type="text/javascript" src="/assets/game.js"></script>
 <script>
