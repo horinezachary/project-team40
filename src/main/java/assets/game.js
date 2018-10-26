@@ -137,6 +137,14 @@ function cellClick() {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
 
+            setDisabled(shipType);
+
+            //Once a ship is successfully place, a report is sent to battle report
+            let s="Player placed "+shipType+" at: " +newRow+""+newCol+"<br/>";//format output
+            handleBattleReport(s);
+            // lockout this ship type now that it's placed
+
+
             redrawGrid();
             placedShips++;
 
@@ -160,6 +168,16 @@ function cellClick() {
 
         })
     }
+}
+
+function setDisabled(shipType) {
+    if (shipType === "MINESWEEPER"){shipId = "place_minesweeper";}
+    else if (shipType === "DESTROYER"){shipId = "place_destroyer";}
+    else if (shipType === "BATTLESHIP"){shipId = "place_battleship";}
+    else {console.warn("!! Unknown ship found in lockout code, '"+shipType+"' !!"); return;} // warn of an unknown ship type
+
+    document.getElementById(shipId).disabled = true;
+    document.getElementById(shipId).classList.add("ship-placed");
 }
 
 function sendXhr(method, url, data, handler) {
