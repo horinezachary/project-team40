@@ -148,9 +148,9 @@ function cellClick() {
 
 function setDisabled(shipType) {
     if (shipType === "MINESWEEPER"){shipId = "place_minesweeper";}
-    if (shipType === "DESTROYER"){shipId = "place_destroyer";}
-    if (shipType === "BATTLESHIP"){shipId = "place_battleship";}
-    else {console.warn("!! Unknown ship found in lockout code, '"+shipType+"' !!");} // warn of an unknown ship type
+    else if (shipType === "DESTROYER"){shipId = "place_destroyer";}
+    else if (shipType === "BATTLESHIP"){shipId = "place_battleship";}
+    else {console.warn("!! Unknown ship found in lockout code, '"+shipType+"' !!"); return;} // warn of an unknown ship type
 
     document.getElementById(shipId).disabled = true;
     document.getElementById(shipId).classList.add("ship-placed");
