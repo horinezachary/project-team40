@@ -109,13 +109,10 @@ function cellClick() {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
 
-            //Once a ship is successfully place, a report is sent to battle report
-            let s="Player placed "+shipType+" at: " +newRow+""+newCol+"<br/>";//format output
-            handleBattleReport(s);
-
             redrawGrid();
             placedShips++;
 
+            //Once a ship is successfully place, a report is sent to battle report
             let p="<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>";//format output
             handleBattleReport(p);
 
