@@ -140,9 +140,13 @@ td:hover {
     margin: 4px auto;
 }
 
+#text {
+    display: none;
+}
+
 .top-pane div {
     display: inline-block;
-    width: 30px;
+    width: 32px;
     margin: 0;
     padding: 0;
     color: #fff;
@@ -159,24 +163,19 @@ td:hover {
     margin-right: -25px;
 }
 
-.left-pane-low {
-    left: 0px;
-    display: flex;
-    flex-direction: row;
-}
 .ship-container {
-    float: left;
     height: 302px;
-    width: 25px;
+    width: 0;
     position: relative;
-    left: 0px;
+    left: 15px;
     top: 7px;
-    margin-right: 20px;
+    float: left;
+    overflow: visible;
 }
 
 .left-pane div {
     display: block;
-    height: 30px;
+    height: 32px;
     margin: 0;
     padding: 0;
     color: #fff;
@@ -202,18 +201,16 @@ td:hover {
     background-color: #fff;
 }
 
-.ship-container {
-    center;
-    list-style-type: none;
-    padding-inline-start: 20px;
-}
 .ship-button {
     margin: 0px;
     border-width: 0px;
+    transition: 0.3s;
 }
+
 .ship-placed {
     opacity: 0.5;
 }
+
 .Game-over,
 .modal {
     display: none;
@@ -241,18 +238,29 @@ td:hover {
 #instructions{
     margin-left:15px;
 }
-#myBtn{
+#myBtn {
     background-color:black;
-    border-width: 0px;
     color:#0f0;
+    border: 1px solid #0f0;
+    border-radius: 8px;
+    width: 200px;
+    padding: 8px;
+    transition: 0.3s;
+}
+
+#myBtn:hover {
+    box-shadow: 0 0 15px #0f0 inset;
     cursor: pointer;
 }
+
 .modal-content{
     background-color: black;
     margin: 15% auto;
     padding: 20px;
     border: 2px solid #0f0;
     width: 750px;
+    border: 2px double #0f0;
+    border-radius: 8px;
 }
 
 #Reload{
@@ -262,6 +270,13 @@ td:hover {
     position:absolute;
     margin-top:40px;
     margin-left:41px;
+    padding: 8px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+#Reload:hover {
+    border-color: #0f0;
     cursor: pointer;
     padding: 10px;
 }
@@ -276,28 +291,31 @@ td:hover {
    width:50%;
    position:relative;
    top:250px;
+   border: 2px double #0f0;
+   border-radius: 8px;
 }
 #Surrendertext {
-    border-bottom: 1px solid #0f0;
-    border-left: 1px solid #0f0;
-    border-right: 1px solid #0f0;
+    border-top: 0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
  }
  #Gameend {
     padding-top: 10px;
-    border-left: 1px solid #0f0;
-    border-top: 1px solid #0f0;
-    border-right: 1px solid #0f0;
+    border-bottom: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
  }
 .close{
     color: #0f0;
     float: right;
     font-size:28px;
     font-weight:bold;
+    transition: 0.3s;
 }
 
 .close:hover,
 .close:focus{
-    color: #aaa;
+    color: #fff;
     text-decoration:none;
     cursor:pointer;
 }
@@ -305,4 +323,30 @@ td:hover {
 #battleReport{
     max-height: 600px;
     overflow: auto;
+}
+
+.animate-this {
+    animation: highlight-animation forwards 1.3s;
+}
+
+/* Highlighting at the Start of the Game */
+@keyframes highlight-animation {
+	0% {
+		box-shadow: 0 0 0 #0f0;
+	}
+	50% {
+	    box-shadow: 0 0 50px #0f0;
+	}
+	100% {
+	    box-shadow: 0 0 0 0 #0f0;
+	}
+}
+
+/* alpha-container thing */
+.alpha-container {
+    margin-left:-15px;
+}
+
+.ship-button:hover {
+    box-shadow: 0 0 20px #fff !important;
 }

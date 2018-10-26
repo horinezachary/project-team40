@@ -10,15 +10,17 @@
             <div class ="modal-content">
                 <span class="close">&times;</span>
                 <h1 id="instructions">Instructions for Battleship</h1>
-                <ul class="no-bullet-list">
-                    <li>The object of Battleship is to try and sink all of the other player's before they sink all of your ships.</li>
-                    <li>All of the other player's ships are somewhere on his/her board.</li>
-                    <li>You try and hit them by clicking the coordinates of one of the squares on the board.</li>
-                    <li>The other player also tries to hit your ships by calling out coordinates.</li>
-                    <li>Neither you nor the other player can see the other's board so you must try to guess where they are.</li>
-                    <li>Each board in the physical game has two grids:  the lower (horizontal) section for the player's ships and the upper part (vertical during play) for recording the player's guesses.</li>
-                    <li>Press V to turn the ship vertically</li>
-                        <ul>
+                <ul style="text-align:left">
+                    <li>The object of Battleship is to try and sink all of the other player' ships before they sink all of your own.</li>
+                    <li>All of the other player's ships are somewhere on their board.</li>
+                    <li>Try and hit them by clicking the coordinates of one of the squares on the upper board.</li>
+                    <li>The other player will also try to hit your ships by calling out coordinates.</li>
+                    <li>You cannot see the other's board, so you must try to guess where their ships are.</li>
+                    <li>Each board in the game has two grids:<br/>
+                        - the lower section for the player's ships<br/>
+                        - the upper for recording the player's guesses.</li>
+                    <li>Press 'V' to rotate your ship during placement.</li>
+                 </ul>
             </div>
 
         </div>
@@ -54,16 +56,7 @@
     <div id="central-boards-box">
 
         <div class="top-pane">
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
-            <div>5</div>
-            <div>6</div>
-            <div>7</div>
-            <div>8</div>
-            <div>9</div>
-            <div>10</div>
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div>
         </div>
         <div class="left-pane">
             <div>A</div>
@@ -83,24 +76,22 @@
             <!--Currently unfilled pane-->
         </div>
         <hr style="border-style: outset; border-width: thick; background-color: dimgray; border-color: darkgray"/>
-        <div class="left-pane left-pane-low">
-            <ul class="ship-container">
-                <li><input type="image" class="ship-button" id="place_minesweeper" src="/assets/images/smallShip.png"/></li>
-                <li><input type="image" class="ship-button" id="place_destroyer" src="/assets/images/mediumShip.png"/></li>
-                <li><input type="image" class="ship-button" id="place_battleship" src="/assets/images/largeShip.png"/></li>
-            </ul>
-            <div class="alpha-container">
-                <div>A</div>
-                <div>B</div>
-                <div>C</div>
-                <div>D</div>
-                <div>E</div>
-                <div>F</div>
-                <div>G</div>
-                <div>H</div>
-                <div>I</div>
-                <div>J</div>
-            </div>
+        <div class="ship-container">
+            <input type="image" class="ship-button animate-this" id="place_minesweeper" src="/assets/images/smallShip.png"/>
+            <input type="image" class="ship-button animate-this" id="place_destroyer" src="/assets/images/mediumShip.png"/>
+            <input type="image" class="ship-button animate-this" id="place_battleship" src="/assets/images/largeShip.png"/>
+        </div>
+        <div class="left-pane">
+            <div>A</div>
+            <div>B</div>
+            <div>C</div>
+            <div>D</div>
+            <div>E</div>
+            <div>F</div>
+            <div>G</div>
+            <div>H</div>
+            <div>I</div>
+            <div>J</div>
         </div>
         <div class="right-pane">
             <div class="peg red"></div>
@@ -112,24 +103,17 @@
             <div class="peg white"></div>
             <div class="peg white"></div>
         </div>
-        <table id="player" class="battleGrid"></table>
+        <table id="player" class="battleGrid animate-this"></table>
         <div class="top-pane">
-            <div>1</div>
-            <div>2</div>
-            <div>3</div>
-            <div>4</div>
-            <div>5</div>
-            <div>6</div>
-            <div>7</div>
-            <div>8</div>
-            <div>9</div>
-            <div>10</div>
+            <div>1</div><div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div><div>9</div><div>10</div>
         </div>
     </div>
     <div class="player-name-box">PLAYER</div>
 </div>
 
 <script type="text/javascript" src="/assets/game.js"></script>
+<!--For popover dismissable 'toast'-->
+<script type="text/javascript" src="/assets/toast.js"></script>
 <script>
     initGame();
 </script>

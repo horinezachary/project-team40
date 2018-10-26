@@ -1,0 +1,36 @@
+/**
+ * toast.css
+ *
+ * Contains styling for temporary 'toast' notifications
+ */
+
+.toast {
+    transition: 0.3s;
+    background: #000;
+    color: #fff;
+    width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 5px 5px #000;
+    position: fixed;
+    left: 0;
+    right: 0;
+    margin: 8px auto;
+    text-align: center;
+    padding: 8px;
+    animation: toast-animate-in forwards 0.3s ease;
+}
+
+.toast.fadeout {
+    opacity: 0;
+}
+
+@keyframes toast-animate-in {
+	0% {
+		top: 100px;
+		opacity: 0;
+	}
+	100% {
+	    top: 0px;
+	    opacity: 1;
+	}
+}
