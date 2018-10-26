@@ -30,7 +30,8 @@ footer {
 
 .battleGrid td {
     border: 1px solid black;
-    width: 30px;
+    width: 28px;
+    height: 28px;
 }
 
 td:hover {
@@ -44,7 +45,16 @@ td:hover {
 .occupied {
     background-color: black;
 }
-
+.peg {
+    width: 23px;
+    height: 23px;
+    border-radius: 23px;
+    box-shadow: 0 1px 1px #000 inset;
+    margin: 2px;
+}
+.hidden {
+    display: none;
+}
 .hit {
     background-color: orange;
 }
@@ -54,7 +64,7 @@ td:hover {
 }
 
 .miss {
-    background-color: blue;
+    background-color: white;
 }
 
 #game-wrapper {
@@ -143,7 +153,7 @@ td:hover {
 .left-pane-bottom {
     float: left;
     height: 302px;
-    width: 50px;
+    width: 25px;
     position: relative;
     left: 10px;
     top: 7px;
@@ -168,14 +178,6 @@ td:hover {
     left: -50px;
     top: 7px;
     margin-right: -25px;
-}
-
-.peg {
-    width: 20px;
-    height: 20px;
-    border-radius: 20px;
-    box-shadow: 0 1px 1px #000 inset;
-    margin: 2px;
 }
 
 .red {

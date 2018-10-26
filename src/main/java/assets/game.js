@@ -8,8 +8,12 @@ function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
         let row = document.createElement('tr');
         for (j=0; j<10; j++) {
+            let peg = document.createElement('div');
+            peg.classList.add("peg");
+            peg.classList.add("hidden");
             let column = document.createElement('td');
             column.addEventListener("click", cellClick);
+            column.appendChild(peg);
             row.appendChild(column);
         }
         table.appendChild(row);
@@ -27,7 +31,9 @@ function markHits(board, elementId, surrenderText) {
             className = "sink";
         else if (attack.result === "SURRENDER")
             alert(surrenderText);
-        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
+        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.add(className);
+        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.remove("hidden");
+
     });
 }
 
