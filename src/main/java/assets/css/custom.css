@@ -282,3 +282,8 @@ td:hover {
     text-decoration:none;
     cursor:pointer;
 }
+
+#battleReport{
+    max-height: 600px;
+    overflow: auto;
+}
