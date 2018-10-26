@@ -154,18 +154,24 @@ td:hover {
     height: 302px;
     width: 25px;
     position: relative;
-    left: 50px;
+    left: 60px;
     top: 7px;
     margin-right: -25px;
 }
-.left-pane-bottom {
+
+.left-pane-low {
+    left: 0px;
+    display: flex;
+    flex-direction: row;
+}
+.ship-container {
     float: left;
     height: 302px;
     width: 25px;
     position: relative;
-    left: 10px;
+    left: 0px;
     top: 7px;
-    margin-right: -25px;
+    margin-right: 20px;
 }
 
 .left-pane div {
