@@ -3,6 +3,23 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical = false;
+var modal = document.getElementById("playModal");
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function(){
+    modal.style.display = "block";
+}
+
+span.onclick = function(){
+    modal.style.display = "none";
+}
+
+document.onclick = function(e){
+    if(e.target == modal){
+        modal.style.display = "none";
+    }
+}
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {

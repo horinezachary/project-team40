@@ -170,12 +170,19 @@ td:hover {
     background-color: rgb(0,0,0);
     background-color: rgb(0,0,0,0.4);
 }
+#instructions{
+    margin-left:15px;
+}
+#myBtn{
+    background-color:black;
+    color:#0f0;
+}
 .modal-content{
-    background-color: white;
+    background-color: black;
     margin: 15% auto;
     padding: 20px;
     border: 1px solid black;
-    width: 80%;
+    width: 750px;
 }
 
 .close{
