@@ -8,6 +8,7 @@ var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
 var Endmodal = document.getElementById("SurrenderModal");
 var gameStart = false;
+var reloadbtn = document.getElementById("Reload");
 
 btn.onclick = function(){
     Playmodal.style.display = "block";
@@ -22,6 +23,7 @@ document.onclick = function(e){
         Playmodal.style.display = "none";
     }
 }
+
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -49,7 +51,10 @@ function markHits(board, elementId, surrenderText) {
             var text = document.createTextNode(surrenderText);
             document.getElementById("Surrendertext").appendChild(text);
             gameStart = false;
-           // alert(surrenderText);
+            Reload.onclick = function(){
+                window.location.reload();
+            }
+
            }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
     });
