@@ -4,6 +4,7 @@ var game;
 var shipType;
 var vertical = false;
 var battleHistory = "";
+
 var Playmodal = document.getElementById("playModal");
 var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
@@ -114,9 +115,16 @@ function cellClick() {
 
             redrawGrid();
             placedShips++;
+
+            let s="<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>";//format output
+            handleBattleReport(s);
+
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+
+                let n= "<span class='shipsPlacedBR'>All ships have been placed. Begin attack on the enemy!</span><br/>";
+                handleBattleReport(n);
             }
             // clear placing mode, so hitting 'V' again
             // doesn't reshow our ship on the screen
@@ -127,7 +135,7 @@ function cellClick() {
             game = data;
             redrawGrid();
 
-            let m = "Player attacked opponent at "+newRow+""+newCol+"<br/>";
+            let m = "<span class='shipsPlacedBR'>Player attacked opponent at "+newRow+""+newCol+"</span><br/>";
             handleBattleReport(m);
         })
     }
@@ -190,7 +198,7 @@ function numCharInvert(toLett, inp)
        }
 }
 
-/*
+ /*
     Writes to the 'battleReport' element. Its single parameter 'newText' is a string
     which is appended to the end of the already existing string 'battleHistory'
 */
