@@ -41,6 +41,8 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
+    let counter = 0;//tracks current iteration
+
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
@@ -61,7 +63,33 @@ function markHits(board, elementId, surrenderText) {
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.add(className);
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.remove("hidden");
 
+        //on the last iteration, write the attacked square
+        if(counter == (board.attacks.length - 1))
+        {
+            writeBRAttack(elementId, attack.location.row, attack.location.column, attack.result);
+        }
+        counter++;
     });
+}
+
+/*
+    writes the result of an attack
+*/
+function writeBRAttack(attacker, locY, locX, attRes)
+{
+    let newRow = numCharInvert(true, locY);//turn row from number to letter
+    let newCol = numCharInvert(false, locX);//turn  col from letter to number
+    let oppElem = "";
+
+
+    if(attacker == "opponent"){
+        oppElem = "PLAYER";
+    }
+    else{
+        oppElem = "OPPONENT"
+    }
+
+    handleBattleReport(oppElem+" attacked "+newRow+""+newCol+" and "+attRes+"!<br/>");
 }
 
 function redrawGrid() {
@@ -113,15 +141,13 @@ function cellClick() {
             placedShips++;
 
             //Once a ship is successfully place, a report is sent to battle report
-            let p="<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>";//format output
-            handleBattleReport(p);
+            handleBattleReport("<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>");
 
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
 
-                let n= "<span class='shipsPlacedBR'>All ships have been placed. Begin attack on the enemy!</span><br/>";
-                handleBattleReport(n);
+                handleBattleReport("<span class='shipsPlacedBR'>All ships have been placed. Begin attack on the enemy!</span><br/>");
             }
             // clear placing mode, so hitting 'V' again
             // doesn't reshow our ship on the screen
@@ -132,8 +158,6 @@ function cellClick() {
             game = data;
             redrawGrid();
 
-            let m = "<span class='shipsPlacedBR'>Player attacked opponent at "+newRow+""+newCol+"</span><br/>";
-            handleBattleReport(m);
         })
     }
 }
