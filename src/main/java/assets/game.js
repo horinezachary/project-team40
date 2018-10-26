@@ -4,6 +4,24 @@ var game;
 var shipType;
 var vertical = false;
 var battleHistory = "";
+var Playmodal = document.getElementById("playModal");
+var btn = document.getElementById("myBtn");
+var span = document.getElementsByClassName("close")[0];
+var Endmodal = document.getElementById("SurrenderModal");
+var gameStart = false;
+var reloadbtn = document.getElementById("Reload");
+
+ btn.onclick = function(){
+    Playmodal.style.display = "block";
+}
+ span.onclick = function(){
+    Playmodal.style.display = "none";
+}
+ document.onclick = function(e){
+    if(e.target == Playmodal){
+        Playmodal.style.display = "none";
+    }
+}
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -26,8 +44,15 @@ function markHits(board, elementId, surrenderText) {
             className = "hit";
         else if (attack.result === "SUNK")
             className = "sink";
-        else if (attack.result === "SURRENDER")
-            alert(surrenderText);
+         else if (attack.result === "SURRENDER" && gameStart == true){
+                   Endmodal.style.display = "block";
+                   var text = document.createTextNode(surrenderText);
+                   document.getElementById("Surrendertext").appendChild(text);
+                   gameStart = false;
+                   Reload.onclick = function(){
+                       window.location.reload();
+                   }
+          }
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add(className);
     });
 }
@@ -176,6 +201,7 @@ var placingMode = 0;
 function initGame() {
     makeGrid(document.getElementById("opponent"), false);
     makeGrid(document.getElementById("player"), true);
+    gameStart = true;
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
         shipType = "MINESWEEPER";
        registerCellListener(place(2));
