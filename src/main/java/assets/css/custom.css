@@ -291,17 +291,19 @@ td:hover {
    width:50%;
    position:relative;
    top:250px;
+   border: 2px double #0f0;
+   border-radius: 8px;
 }
 #Surrendertext {
-    border-bottom: 1px solid #0f0;
-    border-left: 1px solid #0f0;
-    border-right: 1px solid #0f0;
+    border-top: 0px;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
  }
  #Gameend {
     padding-top: 10px;
-    border-left: 1px solid #0f0;
-    border-top: 1px solid #0f0;
-    border-right: 1px solid #0f0;
+    border-bottom: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
  }
 .close{
     color: #0f0;
