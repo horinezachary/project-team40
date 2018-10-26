@@ -1,5 +1,11 @@
 /* Add additional stylesheets below
 -------------------------------------------------- */
+
+@font-face {
+  font-family: 'gunplay';
+  src: url('../fonts/gunplay_rg.ttf') format('truetype');
+}
+
 body {
     background: url(background_gradient.png);
     background-repeat-y: no-repeat;
@@ -81,7 +87,7 @@ td:hover {
     float: left;
     margin-top: 20%;
     text-align: center;
-    font-family: "Avenir Next", sans-serif;
+    font-family: 'gunplay', sans-serif;
     color: #fff;
     background-image: url("title_gradient_h_2.png");
     background-repeat: repeat-y;
@@ -120,6 +126,7 @@ td:hover {
     width: 300px;
     background-image: url("title_gradient_v_2.png");
     background-repeat: repeat-x;
+    font-family: 'gunplay', sans-serif;
     font-weight: bold;
     font-size: 25px;
     text-align: center;
