@@ -108,6 +108,8 @@ function cellClick() {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
 
+            setDisabled(shipType);
+
             //Once a ship is successfully place, a report is sent to battle report
             let s="Player placed "+shipType+" at: " +newRow+""+newCol+"<br/>";//format output
             handleBattleReport(s);
@@ -131,6 +133,15 @@ function cellClick() {
             handleBattleReport(m);
         })
     }
+}
+
+function setDisabled(shipType) {
+    if (shipType === "MINESWEEPER"){shipId = "place_minesweeper";}
+    if (shipType === "DESTROYER"){shipId = "place_destroyer";}
+    if (shipType === "BATTLESHIP"){shipId = "place_battleship";}
+
+    document.getElementById(shipId).disabled = true;
+    document.getElementById(shipId).classList.add("ship-placed");
 }
 
 function sendXhr(method, url, data, handler) {
@@ -209,22 +220,16 @@ function initGame() {
     makeGrid(document.getElementById("player"), true);
     gameStart = true;
     document.getElementById("place_minesweeper").addEventListener("click", function(e) {
-    document.getElementById("place_minesweeper").disabled = true;
-    document.getElementById("place_minesweeper").classList.add("ship-placed");
         shipType = "MINESWEEPER";
        registerCellListener(place(2));
        placingMode = 1;
     });
     document.getElementById("place_destroyer").addEventListener("click", function(e) {
-    document.getElementById("place_destroyer").disabled = true;
-    document.getElementById("place_destroyer").classList.add("ship-placed");
         shipType = "DESTROYER";
        registerCellListener(place(3));
        placingMode = 2;
     });
     document.getElementById("place_battleship").addEventListener("click", function(e) {
-    document.getElementById("place_battleship").disabled = true;
-    document.getElementById("place_battleship").classList.add("ship-placed");
         shipType = "BATTLESHIP";
        registerCellListener(place(4));
        placingMode = 3;
