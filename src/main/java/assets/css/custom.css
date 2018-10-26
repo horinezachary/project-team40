@@ -105,6 +105,10 @@ td:hover {
     color: #0f0;
 
 }
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* make scrollbar invisible */
+}
 
 .black-grey-box {
     background: #000;

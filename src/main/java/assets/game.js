@@ -249,11 +249,11 @@ function numCharInvert(toLett, inp)
 */
 function handleBattleReport(newText)
 {
-    battleHistory = battleHistory + newText;
+    battleHistory = newText + battleHistory;
     var br = document.getElementById("battleReport");
     br.innerHTML = battleHistory;;
 
-    br.scrollTop = br.scrollHeight;
+    //br.scrollTop = br.scrollHeight;
 }
 
 // Tracks and restores placing when 'V' is pressed
