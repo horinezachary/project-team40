@@ -3,14 +3,39 @@
 
 <div id="game-wrapper">
     <div id="right-panel">
-        <div class="black-grey-box">How to play?</div>
+        <div class="black-grey-box">
+            <button id="myBtn">How to play?</button>
+        </div>
+        <div id="playModal" class="modal">
+            <div class ="modal-content">
+                <span class="close">&times;</span>
+                <h1 id="instructions">Instructions for Battleship</h1>
+                <ul>
+                    <li>The object of Battleship is to try and sink all of the other player's before they sink all of your ships.</li>
+                    <li>All of the other player's ships are somewhere on his/her board.</li>
+                    <li>You try and hit them by clicking the coordinates of one of the squares on the board.</li>
+                    <li>The other player also tries to hit your ships by calling out coordinates.</li>
+                    <li>Neither you nor the other player can see the other's board so you must try to guess where they are.</li>
+                    <li>Each board in the physical game has two grids:  the lower (horizontal) section for the player's ships and the upper part (vertical during play) for recording the player's guesses.</li>
+                    <li>Press V for turn the ship vertically</li>
+                        <ul>
+            </div>
+
+        </div>
+
+        <div id="SurrenderModal" class="Game-over">
+            <div class=Modal-s">
+                <h1 id="Gameend">The Game is Over!</h1>
+                <h2 id="Surrendertext">
+                    <button id="Reload">Restart Match</button>
+                </h2>
+            </div>
+        </div>
         <div style="height:312px"></div>
         <div class="black-grey-box">
             <h3>Battle Report</h3>
-            <div style="text-align:left">
-                somebody attacked...<br/>
-                somebody missed...<br/>
-                somebody made an invalid move...
+            <div style="text-align:left" id="battleReport">
+                Welcome. Please place your ships.
             </div>
         </div>
     </div>
