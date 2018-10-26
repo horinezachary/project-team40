@@ -41,6 +41,8 @@ function makeGrid(table, isPlayer) {
 }
 
 function markHits(board, elementId, surrenderText) {
+    let counter = 0;//tracks current iteration
+
     board.attacks.forEach((attack) => {
         let className;
         if (attack.result === "MISS")
@@ -61,20 +63,33 @@ function markHits(board, elementId, surrenderText) {
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.add(className);
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.remove("hidden");
 
-        //this section deals with writing history to the battle board
-                let newRow = numCharInvert(true, attack.location.row);//turn row from number to letter
-                let newCol = numCharInvert(false, attack.location.column);//turn  col from letter to number
-                let oppElem = "";
-
-                if(elementId == "opponent"){
-                    oppElem = "PLAYER";
-                }
-                else{
-                    oppElem = "OPPONENT"
-                }
-
-                handleBattleReport(oppElem+" attacked "+newRow+""+newCol+" and "+attack.result+"!<br/>");
+        //on the last iteration, write the attacked square
+        if(counter == (board.attacks.length - 1))
+        {
+            writeBRAttack(elementId, attack.location.row, attack.location.column, attack.result);
+        }
+        counter++;
     });
+}
+
+/*
+    writes the result of an attack
+*/
+function writeBRAttack(attacker, locY, locX, attRes)
+{
+    let newRow = numCharInvert(true, locY);//turn row from number to letter
+    let newCol = numCharInvert(false, locX);//turn  col from letter to number
+    let oppElem = "";
+
+
+    if(attacker == "opponent"){
+        oppElem = "PLAYER";
+    }
+    else{
+        oppElem = "OPPONENT"
+    }
+
+    handleBattleReport(oppElem+" attacked "+newRow+""+newCol+" and "+attRes+"!<br/>");
 }
 
 function redrawGrid() {
