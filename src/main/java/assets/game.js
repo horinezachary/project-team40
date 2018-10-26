@@ -116,8 +116,8 @@ function cellClick() {
             redrawGrid();
             placedShips++;
 
-            let s="<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>";//format output
-            handleBattleReport(s);
+            let p="<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>";//format output
+            handleBattleReport(p);
 
             if (placedShips == 3) {
                 isSetup = false;
@@ -205,7 +205,10 @@ function numCharInvert(toLett, inp)
 function handleBattleReport(newText)
 {
     battleHistory = battleHistory + newText;
-    document.getElementById("battleReport").innerHTML = battleHistory;
+    var br = document.getElementById("battleReport");
+    br.innerHTML = battleHistory;;
+
+    br.scrollTop = br.scrollHeight;
 }
 
 // Tracks and restores placing when 'V' is pressed
