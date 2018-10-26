@@ -4,6 +4,7 @@ var game;
 var shipType;
 var vertical = false;
 var battleHistory = "";
+
 var Playmodal = document.getElementById("playModal");
 var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
@@ -113,12 +114,22 @@ function cellClick() {
             //Once a ship is successfully place, a report is sent to battle report
             let s="Player placed "+shipType+" at: " +newRow+""+newCol+"<br/>";//format output
             handleBattleReport(s);
+            // lockout this ship type now that it's placed
+
 
             redrawGrid();
             placedShips++;
+
+            //Once a ship is successfully place, a report is sent to battle report
+            let p="<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>";//format output
+            handleBattleReport(p);
+
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
+
+                let n= "<span class='shipsPlacedBR'>All ships have been placed. Begin attack on the enemy!</span><br/>";
+                handleBattleReport(n);
             }
             // clear placing mode, so hitting 'V' again
             // doesn't reshow our ship on the screen
@@ -129,7 +140,7 @@ function cellClick() {
             game = data;
             redrawGrid();
 
-            let m = "Player attacked opponent at "+newRow+""+newCol+"<br/>";
+            let m = "<span class='shipsPlacedBR'>Player attacked opponent at "+newRow+""+newCol+"</span><br/>";
             handleBattleReport(m);
         })
     }
@@ -139,6 +150,7 @@ function setDisabled(shipType) {
     if (shipType === "MINESWEEPER"){shipId = "place_minesweeper";}
     if (shipType === "DESTROYER"){shipId = "place_destroyer";}
     if (shipType === "BATTLESHIP"){shipId = "place_battleship";}
+    else {console.warn("!! Unknown ship found in lockout code, '"+shipType+"' !!");} // warn of an unknown ship type
 
     document.getElementById(shipId).disabled = true;
     document.getElementById(shipId).classList.add("ship-placed");
@@ -201,14 +213,17 @@ function numCharInvert(toLett, inp)
        }
 }
 
-/*
+ /*
     Writes to the 'battleReport' element. Its single parameter 'newText' is a string
     which is appended to the end of the already existing string 'battleHistory'
 */
 function handleBattleReport(newText)
 {
     battleHistory = battleHistory + newText;
-    document.getElementById("battleReport").innerHTML = battleHistory;
+    var br = document.getElementById("battleReport");
+    br.innerHTML = battleHistory;;
+
+    br.scrollTop = br.scrollHeight;
 }
 
 // Tracks and restores placing when 'V' is pressed
