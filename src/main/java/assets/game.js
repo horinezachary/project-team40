@@ -61,7 +61,19 @@ function markHits(board, elementId, surrenderText) {
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.add(className);
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.remove("hidden");
 
-        handleBattleReport(className+"!<br/>");
+        //this section deals with writing history to the battle board
+                let newRow = numCharInvert(true, attack.location.row);//turn row from number to letter
+                let newCol = numCharInvert(false, attack.location.column);//turn  col from letter to number
+                let oppElem = "";
+
+                if(elementId == "opponent"){
+                    oppElem = "PLAYER";
+                }
+                else{
+                    oppElem = "OPPONENT"
+                }
+
+                handleBattleReport(oppElem+" attacked "+newRow+""+newCol+" and "+attack.result+"!<br/>");
     });
 }
 
@@ -129,7 +141,6 @@ function cellClick() {
     } else {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
-            handleBattleReport("<span class='shipsPlacedBR'>Player attacked opponent at "+newRow+""+newCol+"</span><br/>");
             redrawGrid();
 
         })
