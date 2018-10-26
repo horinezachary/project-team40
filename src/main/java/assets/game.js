@@ -125,6 +125,10 @@ function cellClick() {
 
                 let n= "<span class='shipsPlacedBR'>All ships have been placed. Begin attack on the enemy!</span><br/>";
                 handleBattleReport(n);
+
+                // visually indicate it's time to start attacking
+                document.getElementById("opponent").className+=" animate-this";
+                (new Toast("All pieces placed, being your attack!", "#0f0")).show();
             }
             // clear placing mode, so hitting 'V' again
             // doesn't reshow our ship on the screen
@@ -145,7 +149,8 @@ function sendXhr(method, url, data, handler) {
     var req = new XMLHttpRequest();
     req.addEventListener("load", function(event) {
         if (req.status != 200) {
-            alert("Cannot complete the action");
+            // show a toast
+            (new Toast("Cannot complete the action!", "#e00")).show();
             return;
         }
         handler(JSON.parse(req.responseText));
@@ -265,4 +270,6 @@ function initGame() {
 
         }
     });
+
+    (new Toast("Place your ships to start the game!", "#0f0")).show();
 };
