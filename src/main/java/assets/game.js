@@ -137,13 +137,8 @@ function cellClick() {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
 
+            // lock out this ship type
             setDisabled(shipType);
-
-            //Once a ship is successfully place, a report is sent to battle report
-            let s="Player placed "+shipType+" at: " +newRow+""+newCol+"<br/>";//format output
-            handleBattleReport(s);
-            // lockout this ship type now that it's placed
-
 
             redrawGrid();
             placedShips++;
