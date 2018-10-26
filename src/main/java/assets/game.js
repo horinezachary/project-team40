@@ -3,6 +3,7 @@ var placedShips = 0;
 var game;
 var shipType;
 var vertical = false;
+var battleHistory = "";
 
 function makeGrid(table, isPlayer) {
     for (i=0; i<10; i++) {
@@ -67,12 +68,20 @@ function cellClick() {
     let col = String.fromCharCode(this.cellIndex + 65);
     console.log(col);
     console.log(row);
+
+    let newRow = numCharInvert(true, row);//turn row from number to letter
+    let newCol = numCharInvert(false, col);//turn  col from letter to number
+
     if (isSetup) {
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
 
             redrawGrid();
             placedShips++;
+
+            let s="Player placed "+shipType+" at: " +newRow+""+newCol+"<br/>";//format output
+            handleBattleReport(s);
+
             if (placedShips == 3) {
                 isSetup = false;
                 registerCellListener((e) => {});
@@ -85,6 +94,9 @@ function cellClick() {
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
             redrawGrid();
+
+            let m = "Player attacked opponent at "+newRow+""+newCol+"<br/>";
+            handleBattleReport(m);
         })
     }
 }
@@ -129,6 +141,30 @@ function place(size) {
             cell.classList.toggle("placed");
         }
     }
+}
+
+/*
+    converts a number to a letter from A - J or a letter to a number from 1 - 10
+    'toLet' is a boolean which determined if 'inp' will be converted to a number or letter.
+*/
+function numCharInvert(toLett, inp)
+{
+    var a = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"];
+    if(toLett == false){
+        return a.indexOf(inp)+1;
+    }
+    else{
+        return a[inp-1];
+       }
+}
+ /*
+    Writes to the 'battleReport' element. Its single parameter 'newText' is a string
+    which is appended to the end of the already existing string 'battleHistory'
+*/
+function handleBattleReport(newText)
+{
+    battleHistory = battleHistory + newText;
+    document.getElementById("battleReport").innerHTML = battleHistory;
 }
 
 // Tracks and restores placing when 'V' is pressed
