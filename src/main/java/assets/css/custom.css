@@ -124,6 +124,15 @@ td:hover {
     top: 7px;
     margin-right: -25px;
 }
+.left-pane-bottom {
+    float: left;
+    height: 302px;
+    width: 50px;
+    position: relative;
+    left: 10px;
+    top: 7px;
+    margin-right: -25px;
+}
 
 .left-pane div {
     display: block;
@@ -159,4 +168,8 @@ td:hover {
 
 .white {
     background-color: #fff;
+}
+.ship-button {
+    margin: 0px;
+    border-width: 0px;
 }
