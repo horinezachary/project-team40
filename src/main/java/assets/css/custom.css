@@ -3,6 +3,18 @@
 body {
     background: url(background_gradient.png);
     background-repeat-y: no-repeat;
+    margin: 0px;
+}
+footer {
+    float: bottom;
+    background-color: #000;
+    color: #fff;
+    padding-bottom: 10px;
+    padding-top: 20px;
+    padding-left: 10px;
+    width: 100%;
+    position:fixed;
+    bottom:0;
 }
 .battleGrid {
     border: 1px solid black;
