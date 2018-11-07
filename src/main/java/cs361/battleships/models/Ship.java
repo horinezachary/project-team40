@@ -20,6 +20,7 @@ public class Ship {
 	public Ship(String kind) {
         //save the ship string
         shipType = kind;
+		occupiedSquares = new ArrayList<>();
 	}
 
 	public List<Square> getOccupiedSquares() {

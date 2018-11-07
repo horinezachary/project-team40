@@ -5,5 +5,6 @@ public class Battleship extends Ship {
 		super();
 		length = 4;
 		health = length;
+		shipType = "BATTLESHIP";
 	}
 }

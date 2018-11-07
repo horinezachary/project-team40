@@ -5,6 +5,7 @@ public class Minesweeper extends Ship {
 		super();
 		length = 2;
 		health = length;
+		shipType = "MINESWEEPER";
 
 	}
 }
