@@ -18,25 +18,6 @@ public class Ship {
     }
 	
 	public Ship(String kind) {
-		//use the string given to set the length of the ship
-		switch(kind) {
-            case "BATTLESHIP":
-                length = 4;
-                break;
-            case "DESTROYER":
-                length = 3;
-                break;
-            case "MINESWEEPER":
-                length = 2;
-                break;
-            default:
-                length = 0;
-                break;
-        }
-
-        // health equivalent to length
-        health = length;
-
         //save the ship string
         shipType = kind;
 		occupiedSquares = new ArrayList<>();

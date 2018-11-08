@@ -22,32 +22,32 @@ public class BoardTest {
     @Test
     public void testInvalidPlacement() {
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 11, 'C', true));
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 6, 'J', false));
+        assertFalse(board.placeShip(new Minesweeper(), 11, 'C', true));
+        assertFalse(board.placeShip(new Minesweeper(), 6, 'J', false));
     }
     @Test
     public void testPartialInvalidPlacement() { //tests if the ship will be rejected if it hangs off the edge
         Board board = new Board();
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 10, 'J', true));
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 6, 'J', false));
+        assertFalse(board.placeShip(new Minesweeper(), 10, 'J', true));
+        assertFalse(board.placeShip(new Minesweeper(), 6, 'J', false));
     }
     @Test
     public void testNormalPlacement() {
         Board board = new Board();
-        assertTrue(board.placeShip(new Ship("MINESWEEPER"), 6, 'D', false));
+        assertTrue(board.placeShip(new Minesweeper(), 6, 'D', false));
     }
     @Test
     public void testOverlapPlacement() {
         Board board = new Board();
-        assertTrue(board.placeShip(new Ship("MINESWEEPER"), 6, 'D', false));
-        assertFalse(board.placeShip(new Ship("MINESWEEPER"), 6, 'E', false));
+        assertTrue(board.placeShip(new Minesweeper(), 6, 'D', false));
+        assertFalse(board.placeShip(new Destroyer(), 6, 'E', false));
     }
     @Test
     public void testShipTypes() {
         Board board = new Board();
-        assertTrue(board.placeShip(new Ship("MINESWEEPER"), 1, 'A', false));
-        assertTrue(board.placeShip(new Ship("DESTROYER"), 2, 'A', false));
-        assertTrue(board.placeShip(new Ship("BATTLESHIP"), 3, 'A', false));
+        assertTrue(board.placeShip(new Minesweeper(), 1, 'A', false));
+        assertTrue(board.placeShip(new Destroyer(), 2, 'A', false));
+        assertTrue(board.placeShip(new Battleship(), 3, 'A', false));
     }
 
     @Test
@@ -69,7 +69,7 @@ public class BoardTest {
         // Tests adding a single ship and getting it back from the board
         Board board = new Board();
         List<Ship> ships = new ArrayList<>();
-        ships.add(new Ship("MINESWEEPER"));
+        ships.add(new Minesweeper());
         board.setShips(ships);
         assertEquals(1, board.getShips().size());
     }
@@ -79,14 +79,14 @@ public class BoardTest {
         // Tests adding a duplicate ship, which should return false
         Board b = new Board();
         // setup initial ships
-        assertTrue(b.placeShip(new Ship("MINESWEEPER"), 1, 'A', false));
-        assertTrue(b.placeShip(new Ship("DESTROYER"), 2, 'A', false));
-        assertTrue(b.placeShip(new Ship("BATTLESHIP"), 3, 'A', false));
+        assertTrue(b.placeShip(new Minesweeper(), 1, 'A', false));
+        assertTrue(b.placeShip(new Destroyer(), 2, 'A', false));
+        assertTrue(b.placeShip(new Battleship(), 3, 'A', false));
 
         // test duplicating them, should all return false
-        assertFalse(b.placeShip(new Ship("MINESWEEPER"), 4, 'A', false));
-        assertFalse(b.placeShip(new Ship("DESTROYER"), 5, 'A', false));
-        assertFalse(b.placeShip(new Ship("BATTLESHIP"), 6, 'A', false));
+        assertFalse(b.placeShip(new Minesweeper(), 4, 'A', false));
+        assertFalse(b.placeShip(new Destroyer(), 5, 'A', false));
+        assertFalse(b.placeShip(new Battleship(), 6, 'A', false));
     }
 
     @Test
@@ -135,7 +135,7 @@ public class BoardTest {
         List<Ship> ships = new ArrayList<>();
 
         // create a new minesweeper to set
-        Ship s = new Ship("MINESWEEPER");
+        Ship s = new Minesweeper();
         List<Square> spaces = new ArrayList<>();
         spaces.add(new Square(1,'A'));
         spaces.add(new Square(1,'B'));
@@ -158,7 +158,7 @@ public class BoardTest {
 
         // add 3 ships
         for(int x = 0; x < 3; x++) {
-            Ship s = new Ship("MINESWEEPER");
+            Ship s = new Minesweeper();
             List<Square> spaces = new ArrayList<>();
             spaces.add(new Square(x+1, 'A'));
             spaces.add(new Square(x+1, 'B'));
@@ -190,7 +190,7 @@ public class BoardTest {
         List<Ship> ships = new ArrayList<>();
 
         // create a new minesweeper to set
-        Ship s = new Ship("MINESWEEPER");
+        Ship s = new Minesweeper();
         List<Square> spaces = new ArrayList<>();
         spaces.add(new Square(1,'A'));
         spaces.add(new Square(1,'B'));

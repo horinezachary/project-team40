@@ -17,15 +17,27 @@ public class Game {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
     public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
+        Ship s2;
+        switch(ship.getShipType()) {
+            case "BATTLESHIP":
+                ship = new Battleship();
+                s2 = new Battleship();
+                break;
+            case "DESTROYER":
+                ship = new Destroyer();
+                s2 = new Destroyer();
+                break;
+            case "MINESWEEPER":
+                ship = new Minesweeper();
+                s2 = new Minesweeper();
+                break;
+            default:
+                return false;
+        }
 
         boolean successful = playersBoard.placeShip(ship, x, y, isVertical);
-
-
         if (!successful)
             return false;
-
-        // setup a new ship for the bot
-        Ship s2 = new Ship(ship.getShipType());
 
         boolean opponentPlacedSuccessfully;
         do {
