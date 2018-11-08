@@ -155,7 +155,7 @@ function cellClick() {
 
                 // visually indicate it's time to start attacking
                 document.getElementById("opponent").className+=" animate-this";
-                (new Toast("All pieces placed, being your attack!", "#0f0")).show();
+                (new Toast("All pieces placed, begin your attack!", "#0f0")).show();
             }
             // clear placing mode, so hitting 'V' again
             // doesn't reshow our ship on the screen
