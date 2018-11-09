@@ -360,3 +360,15 @@ td:hover {
     margin-top: 30px;
     cursor: pointer;
 }
+
+.attackHit{
+    color: orange;
+}
+
+.attackMiss{
+    color: #fff
+}
+
+.attackSunk{
+    color: #ff0000;
+}

@@ -1,9 +1,9 @@
-var isSetup = true;
-var placedShips = 0;
+var isSetup = true;//determines whether all ships have been placed (false when they have)
+var placedShips = 0;//tracks the number of placed player ship. max of 3
 var game;
-var shipType;
+var shipType;//when a ship is detected as 'hit', holds the type of ship
 var vertical = false;
-var battleHistory = "";
+var battleHistory = "";//holds string to display to battle log
 
 var Playmodal = document.getElementById("playModal");
 var btn = document.getElementById("myBtn");
@@ -24,10 +24,13 @@ var reloadbtn = document.getElementById("Reload");
     }
 }
 
+/*
+    Creates the playable grid
+*/
 function makeGrid(table, isPlayer) {
-    for (i=0; i<10; i++) {
+    for (i=0; i<10; i++) {//create row
         let row = document.createElement('tr');
-        for (j=0; j<10; j++) {
+        for (j=0; j<10; j++) {//create column
             let peg = document.createElement('div');
             peg.classList.add("peg");
             peg.classList.add("hidden");
@@ -40,6 +43,9 @@ function makeGrid(table, isPlayer) {
     }
 }
 
+/*
+    Interprets attacks on the clicked square.
+*/
 function markHits(board, elementId, surrenderText) {
     let counter = 0;//tracks current iteration
 
@@ -60,6 +66,8 @@ function markHits(board, elementId, surrenderText) {
                        window.location.reload();
                    }
           }
+
+        //adds the colored pegs on the square
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.add(className);
         document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.remove("hidden");
 
@@ -89,8 +97,23 @@ function writeBRAttack(attacker, locY, locX, attRes)
         oppElem = "OPPONENT"
     }
 
-    handleBattleReport(oppElem+" attacked "+newRow+""+newCol+" and "+attRes+"!<br/>");
+    let attText = oppElem+" attacked "+newRow+""+newCol+" and ";
+
+    if(attRes == "MISS"){
+        attText = attText+" <span class='attackMiss'>MISSED</span>";
+    }
+    else if(attRes == "HIT"){
+        attText = attText+" <span class='attackHit'>HIT</span>"
+    }
+    else{
+        attText = attText+" <span class='attackSunk'>SUNK SHIP</span>";
+    }
+
+    attText = attText+"!<br/>";
+
+    handleBattleReport(attText);
 }
+
 
 function redrawGrid() {
     Array.from(document.getElementById("opponent").childNodes).forEach((row) => row.remove());
@@ -123,6 +146,12 @@ function registerCellListener(f) {
     oldListener = f;
 }
 
+/*
+    This function determines what happens when a cell is clicked.
+    It first checks if all player ships have been placed. If they have not, it interprets the action
+    as an attempt to place a ship to that square. If all ships have been placed, the action is instead
+    interpreted as an attack.
+*/
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
@@ -133,7 +162,7 @@ function cellClick() {
      let newCol = numCharInvert(false, col);//turn  col from letter to number
 
     //isSetup determines whether all player battle ships have been placed
-    if (isSetup) {
+    if (isSetup) {//interpret action as an attempt to place a ship
         sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
             game = data;
 
@@ -143,15 +172,14 @@ function cellClick() {
             redrawGrid();
             placedShips++;
 
-            //Once a ship is successfully place, a report is sent to battle report
+            //Once a ship is successfully placed, a report is sent to battle report
             handleBattleReport("<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>");
 
-            if (placedShips == 3) {
+            if (placedShips == 3) {//all ships have been placed
                 isSetup = false;
                 registerCellListener((e) => {});
-              
-                let n= "<span class='shipsPlacedBR'>All ships have been placed. Begin attack on the enemy!</span><br/>";
-                handleBattleReport(n);
+
+                handleBattleReport("<span class='shipsPlacedBR'>All ships have been placed. Begin attack on the enemy!</span><br/>");
 
                 // visually indicate it's time to start attacking
                 document.getElementById("opponent").className+=" animate-this";
@@ -161,7 +189,7 @@ function cellClick() {
             // doesn't reshow our ship on the screen
             placingMode = 0;
         });
-    } else {
+    } else {//interpret action as an attack
         sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
             game = data;
             redrawGrid();
