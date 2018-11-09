@@ -6,6 +6,5 @@ public class Minesweeper extends Ship {
 		length = 2;
 		health = length;
 		shipType = "MINESWEEPER";
-
 	}
 }

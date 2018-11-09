@@ -9,6 +9,7 @@ public class Ship {
 
     int health;
     int length;
+    boolean armor;
     String shipType;
 
 	@JsonProperty private List<Square> occupiedSquares;
@@ -21,6 +22,7 @@ public class Ship {
         //save the ship string
         shipType = kind;
 		occupiedSquares = new ArrayList<>();
+		armor = false;
 	}
 
 	public List<Square> getOccupiedSquares() {
@@ -38,10 +40,23 @@ public class Ship {
     }
 
     public void decrementHealth() {
-	    health--;
+        health--;
     }
+
+    public void forceSink(){
+        health = 0;
+	}
 
     public int getHealth() {
 	    return health;
     }
+
+    public void setArmor(boolean armor) {
+	    this.armor = armor;
+    }
+
+    public boolean getArmor() {
+	    return armor;
+    }
+
 }

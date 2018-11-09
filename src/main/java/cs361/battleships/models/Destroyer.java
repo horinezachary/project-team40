@@ -6,5 +6,6 @@ public class Destroyer extends Ship{
 		length = 3;
 		health = length;
 		shipType = "DESTROYER";
+		armor = true;
 	}
 }

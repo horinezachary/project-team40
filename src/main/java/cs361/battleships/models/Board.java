@@ -21,6 +21,7 @@ public class Board {
 	public Board() {
 		boardarray = new Square[BOARDSIZE_X][BOARDSIZE_Y];
 		occupied = new boolean[BOARDSIZE_X][BOARDSIZE_Y];
+
 		for (int i = 0; i < boardarray.length; i++) {
             for (int j = 0; j < boardarray[0].length; j++) {
                 //sets row values as 1 thru 10 and column values as 'A' thru 'J'
@@ -71,15 +72,29 @@ public class Board {
 		        if ((xint+i < BOARDSIZE_X) && (yint) < BOARDSIZE_Y && !occupied[xint+i][yint]) {
                     //System.out.println(xint+i+","+ (yint));
 			        //add the square to the ship square list and set the square as occupied
-                    shipsquares.add(boardarray[xint+i][yint]);
-                }
+
+					if (i == (ship.getLength() - 2)) {
+						// make this square a captain's quarters
+						boardarray[xint+i][yint].setCaptainsQuarters(true);
+
+					}
+
+					// add square to ship
+					shipsquares.add(boardarray[xint+i][yint]);
+				}
                 else return false;
             }
             else{   //check if the values exist within the array bounds, and make sure that the square isn't occupied
                 if ((xint < BOARDSIZE_X) &&((yint+i) < BOARDSIZE_Y) && (!occupied[xint][yint+i])) {
-                    //System.out.println(xint+","+ (yint+i));
-	                //add the square to the ship square list and set the square as occupied
-                    shipsquares.add(boardarray[xint][yint+i]);
+					//add the square to the ship square list and set the square as occupied
+					if (i == (ship.getLength() - 2)) {
+						// make this square a captain's quarters
+						boardarray[xint][yint+i].setCaptainsQuarters(true);
+
+					}
+
+					// add square to ship
+					shipsquares.add(boardarray[xint][yint+i]);
                 }
                 else return false;
             }
@@ -102,12 +117,28 @@ public class Board {
 		for(Result check: attacks) { //begin iterating through attack list
 			if(
 					check.getLocation() != null &&
-							check.getLocation().getRow() == x &&
-							check.getLocation().getColumn() == y
+					!check.getLocation().getCaptain() &&
+					check.getLocation().getRow() == x &&
+					check.getLocation().getColumn() == y
 			) {
 				// already attacked this space, return invalid
 				r.setResult(AtackStatus.INVALID);
 				return r;
+
+			} else if(
+					check.getLocation() != null &&
+					check.getLocation().getCaptain() &&
+					check.getLocation().getRow() == x &&
+					check.getLocation().getColumn() == y &&
+					check.getResult() == AtackStatus.MISS
+			) {
+				// FOR SPRINT #3
+				// attacking a previously 'captained' space that was missed
+				// we're going to update the result so it registers as a SINK properly
+				// If this change is NOT made the previously 'missed' captain's quarters space
+				// does not register a sink or hit, it remains missed while the rest is updated visually.
+				check.setResult(AtackStatus.SUNK);
+
 			}
 		}
 
@@ -121,12 +152,29 @@ public class Board {
 				for(Square shipSquare: squares) {
 					if(shipSquare.getRow() == x && shipSquare.getColumn() == y) {
 						// Hit! mark this ship down health
-						ship.decrementHealth();
+						if(shipSquare.getCaptain() && ship.getArmor()) {
+							// hit captain's quarters but counts as a miss, was still armored
+							ship.setArmor(false);
 
-						// set the ship hit in this result
-						r.setShip(ship);
+							// readjust 'Result' location to show it was a captain's quarter
+							Square lloc = r.getLocation();
+							lloc.setCaptainsQuarters(true);
+							r.setLocation(lloc);
 
-						didHit = true;
+						} else if(shipSquare.getCaptain() && !ship.getArmor()) {
+							// hit unarmored captain's quarters, sink the ship
+							ship.forceSink();
+							didHit = true;
+							r.setShip(ship);
+
+						} else {
+							// normal hit
+							ship.decrementHealth();
+							didHit = true;
+							r.setShip(ship);
+
+						}
+
 						break;
 
 					}
@@ -202,7 +250,7 @@ public class Board {
 		this.attacks = attacks;
 	}
 
-    private void printBoard (){ //method for printing out the board on the backend
+    /*private void printBoard (){ //method for printing out the board on the backend
 		setOccupied();
 	    for (int i = 0; i < boardarray.length;i++){
 	        System.out.print("|");
@@ -212,7 +260,7 @@ public class Board {
             }
             System.out.print("\n");
         }
-    }
+    }*/
     private void setOccupied(){
 		for (int i = 0; i < ships.size(); i++){
 			List <Square> shipSquares = ships.get(i).getOccupiedSquares();

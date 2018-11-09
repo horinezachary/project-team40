@@ -6,5 +6,6 @@ public class Battleship extends Ship {
 		length = 4;
 		health = length;
 		shipType = "BATTLESHIP";
+		armor = true;
 	}
 }
