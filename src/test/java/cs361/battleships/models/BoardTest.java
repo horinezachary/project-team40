@@ -16,7 +16,7 @@ public class BoardTest {
         Board board = new Board();
         board.attack(5, 'A');
         Result r = board.attack(5, 'A');
-        assertEquals(AtackStatus.INVALID, r.getResult());
+        assertEquals(AttackStatus.INVALID, r.getResult());
     }
 
     @Test
@@ -107,13 +107,13 @@ public class BoardTest {
         Board board = new Board();
 
         Result r = board.attack(-1,'A');
-        assertEquals(AtackStatus.INVALID, r.getResult());
+        assertEquals(AttackStatus.INVALID, r.getResult());
 
         r = board.attack(0,'A');
-        assertEquals(AtackStatus.INVALID, r.getResult());
+        assertEquals(AttackStatus.INVALID, r.getResult());
 
         r = board.attack(11,'A');
-        assertEquals(AtackStatus.INVALID, r.getResult());
+        assertEquals(AttackStatus.INVALID, r.getResult());
     }
 
     /**
@@ -123,7 +123,7 @@ public class BoardTest {
     public void testAttackMiss() {
         Board board = new Board();
         Result r = board.attack(1,'A');
-        assertEquals(AtackStatus.MISS, r.getResult());
+        assertEquals(AttackStatus.MISS, r.getResult());
     }
 
     /**
@@ -145,7 +145,7 @@ public class BoardTest {
 
         board.setShips(ships);
         Result r = board.attack(1,'A');
-        assertEquals(AtackStatus.HIT, r.getResult());
+        assertEquals(AttackStatus.HIT, r.getResult());
     }
 
     /**
@@ -170,15 +170,15 @@ public class BoardTest {
         // sink the 2nd ship
         board.attack(1,'A');
         Result r = board.attack(1,'B');
-        assertEquals(AtackStatus.SUNK, r.getResult());
+        assertEquals(AttackStatus.SUNK, r.getResult());
 
         // check to see that the last 2 events were sunk, preceded by 1 hits
         // 2nd hit became a sunk automatically
         List<Result> attacks = board.getAttacks();
         assertEquals(3, attacks.size());
-        assertEquals(AtackStatus.HIT, attacks.get(0).getResult());
-        assertEquals(AtackStatus.SUNK, attacks.get(1).getResult());
-        assertEquals(AtackStatus.SUNK, attacks.get(2).getResult());
+        assertEquals(AttackStatus.HIT, attacks.get(0).getResult());
+        assertEquals(AttackStatus.SUNK, attacks.get(1).getResult());
+        assertEquals(AttackStatus.SUNK, attacks.get(2).getResult());
     }
 
     @Test
@@ -203,7 +203,7 @@ public class BoardTest {
         // Attack the captain's quarters of the 2nd ship
         board.attack(1, 'C');
         Result r = board.attack(1, 'C');
-        assertEquals(AtackStatus.SUNK, r.getResult());
+        assertEquals(AttackStatus.SUNK, r.getResult());
     }
 
     @Test
@@ -226,7 +226,7 @@ public class BoardTest {
         // Attack the captain's quarters of the 2nd ship
         Result r = board.attack(1, 'A');
         //Result r = board.attack(1, 'C');
-        assertEquals(AtackStatus.SUNK, r.getResult());
+        assertEquals(AttackStatus.SUNK, r.getResult());
     }
 
     @Test
@@ -251,7 +251,7 @@ public class BoardTest {
         board.attack(1, 'A');
         Result r = board.attack(1, 'B');
         //Result r = board.attack(1, 'C');
-        assertEquals(AtackStatus.INVALID, r.getResult());
+        assertEquals(AttackStatus.INVALID, r.getResult());
     }
 
     /**
@@ -274,7 +274,7 @@ public class BoardTest {
         board.setShips(ships);
         board.attack(1,'A');
         Result r = board.attack(1,'B');
-        assertEquals(AtackStatus.SURRENDER, r.getResult());
+        assertEquals(AttackStatus.SURRENDER, r.getResult());
     }
 
     /**

@@ -5,7 +5,6 @@ public class Square {
 
 	private int row;
     private char column;
-    private boolean occupied;
     private boolean captain;
 
 	public Square() {}
@@ -13,7 +12,6 @@ public class Square {
 	public Square(int row, char column) {
 		this.row = row;
 		this.column = column;
-		this.occupied = false;
 		this.captain = false;
 	}
 

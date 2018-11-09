@@ -3,7 +3,7 @@ package cs361.battleships.models;
 public class Result {
 
 	// stores the status of the last attack
-	private AtackStatus attackStatus;
+	private AttackStatus attackStatus;
 
 	//store ship
 	private Ship sShip;
@@ -11,11 +11,11 @@ public class Result {
 	//store attack location
 	private Square loc;
 
-	public AtackStatus getResult() {
+	public AttackStatus getResult() {
 		return attackStatus;
 	}
 
-	public void setResult(AtackStatus result) {
+	public void setResult(AttackStatus result) {
 		attackStatus = result;
 	}
 

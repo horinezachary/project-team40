@@ -2,11 +2,8 @@ package cs361.battleships.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.swing.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.lang.Math;
-import static cs361.battleships.models.AtackStatus.*;
+import static cs361.battleships.models.AttackStatus.*;
 
 public class Game {
 
@@ -68,6 +65,14 @@ public class Game {
         return true;
     }
 
+
+    /**
+     * Performs sonar of the enemy player's board
+     *
+     * @param x X coordinate to perform the sonar at
+     * @param y Y coordinate to perform the sonar at
+     * @return
+     */
     public boolean sonar(int x, char y) {
         if(!opponentsBoard.getSonarEnabled() || opponentsBoard.getSonarCount() <= 0) {
             // sonar is not enabled yet or no more sonars left
