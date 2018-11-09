@@ -401,3 +401,11 @@ td:hover {
 .sweep-scan-enabled img:hover {
     box-shadow: 0 0 5px #000;
 }
+
+.sonarDetectedS{
+    color: #ff0000;
+}
+
+.sonarDetectedN{
+    color: #004fff;
+}

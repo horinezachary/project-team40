@@ -43,11 +43,17 @@ function makeGrid(table, isPlayer) {
     }
 }
 
+// tracker vars for handling newly detected ships via sonar
+var sonarDetectedTotal = 0;
+var sonarNewlyDetected = false;
+
 /*
     Interprets attacks on the clicked square.
 */
 function markHits(board, elementId, surrenderText) {
     let counter = 0;//tracks current iteration
+    let sonarOcc = false;
+    let sonarDetected = 0;
 
     board.attacks.forEach((attack) => {
         let className;
@@ -70,6 +76,7 @@ function markHits(board, elementId, surrenderText) {
 
         } else if(attack.result == "SONAR_OCCUPIED") {
             className = "sonar-occupied";
+            sonarDetected++;
 
         } else {
             alert("Unrecognized attack result of '"+attack.result+"'. Set up handling for this!");
@@ -94,8 +101,17 @@ function markHits(board, elementId, surrenderText) {
         //on the last iteration, write the attacked square
         if(counter == (board.attacks.length - 1))
         {
+            if(sonarDetectedTotal < sonarDetected) {
+                sonarNewlyDetected = true;
+                sonarDetectedTotal = sonarDetected;
+            }
+
+
             writeBRAttack(elementId, attack.location.row, attack.location.column, attack.result);
+
+            sonarNewlyDetected = false;
         }
+
         counter++;
     });
 }
@@ -125,8 +141,14 @@ function writeBRAttack(attacker, locY, locX, attRes)
     else if(attRes == "HIT"){
         attText = attText+" <span class='attackHit'>HIT</span>"
     }
-    else{
+    else if (attRes == "SUNK"){
         attText = attText+" <span class='attackSunk'>SUNK SHIP</span>";
+    }
+    else if(sonarNewlyDetected){ // overrides sonar empty
+        attText = "PLAYER <span class='sonarDetectedS'> SONAR SWEEP DETECTED A SHIP</span>";
+    }
+    else if (attRes == "SONAR_EMPTY"){
+        attText = "PLAYER <span class='sonarDetectedN'> SONAR SWEEP EMPTY</span>";
     }
 
     attText = attText+"!<br/>";
@@ -185,8 +207,6 @@ function toggleSonarMode(e) {
 function cellClick() {
     let row = this.parentNode.rowIndex + 1;
     let col = String.fromCharCode(this.cellIndex + 65);
-    console.log(col);
-    console.log(row);
 
      let newRow = numCharInvert(true, row);//turn row from number to letter
      let newCol = numCharInvert(false, col);//turn  col from letter to number
