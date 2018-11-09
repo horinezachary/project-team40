@@ -51,6 +51,11 @@ td:hover {
 .occupied {
     background-color: black;
 }
+
+.occupied-captain {
+    border-color: #0f0 !important;
+}
+
 .peg {
     width: 23px;
     height: 23px;
