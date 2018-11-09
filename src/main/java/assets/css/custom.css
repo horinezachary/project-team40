@@ -61,16 +61,25 @@ td:hover {
 .hidden {
     display: none;
 }
+
+.sonar-empty {
+    background-color: grey;
+}
+
+.sonar-occupied {
+    background-color: black;
+}
+
+.miss {
+    background-color: white;
+}
+
 .hit {
     background-color: orange;
 }
 
 .sink {
     background-color: red;
-}
-
-.miss {
-    background-color: white;
 }
 
 #game-wrapper {
@@ -358,6 +367,12 @@ td:hover {
 #sweepScan{
     margin-left: -25px;
     margin-top: 30px;
+    opacity: 0.25;
+    transition: 0.3s;
+}
+
+.sweep-scan-enabled {
+    opacity: 1 !important;
     cursor: pointer;
 }
 
@@ -371,4 +386,13 @@ td:hover {
 
 .attackSunk{
     color: #ff0000;
+}
+
+.sweep-scan-enabled img {
+    border-radius: 35px;
+    transition: 0.3s;
+}
+
+.sweep-scan-enabled img:hover {
+    box-shadow: 0 0 5px #000;
 }

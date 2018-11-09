@@ -57,19 +57,39 @@ function markHits(board, elementId, surrenderText) {
             className = "hit";
         else if (attack.result === "SUNK")
             className = "sink";
-         else if (attack.result === "SURRENDER" && gameStart == true){
-                   Endmodal.style.display = "block";
-                   var text = document.createTextNode(surrenderText);
-                   document.getElementById("Surrendertext").appendChild(text);
-                   gameStart = false;
-                   Reload.onclick = function(){
-                       window.location.reload();
-                   }
-          }
+        else if (attack.result === "SURRENDER" && gameStart == true) {
+           Endmodal.style.display = "block";
+           var text = document.createTextNode(surrenderText);
+           document.getElementById("Surrendertext").appendChild(text);
+           gameStart = false;
+           Reload.onclick = function(){
+               window.location.reload();
+           }
+        } else if(attack.result == "SONAR_EMPTY") {
+            className = "sonar-empty";
+
+        } else if(attack.result == "SONAR_OCCUPIED") {
+            className = "sonar-occupied";
+
+        } else {
+            alert("Unrecognized attack result of '"+attack.result+"'. Set up handling for this!");
+
+        }
+
+        var i1 = attack.location.row-1;
+        if(i1 < 0) {
+            alert("Invalid attack row of "+i1);
+            return;
+        }
+        var i2 = attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0);
+        if(i2 < 0) {
+            alert("Invalid attack column of "+i2);
+            return;
+        }
 
         //adds the colored pegs on the square
-        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.add(className);
-        document.getElementById(elementId).rows[attack.location.row-1].cells[attack.location.column.charCodeAt(0) - 'A'.charCodeAt(0)].childNodes[0].classList.remove("hidden");
+        document.getElementById(elementId).rows[i1].cells[i2].childNodes[0].classList.add(className);
+        document.getElementById(elementId).rows[i1].cells[i2].childNodes[0].classList.remove("hidden");
 
         //on the last iteration, write the attacked square
         if(counter == (board.attacks.length - 1))
@@ -146,6 +166,13 @@ function registerCellListener(f) {
     oldListener = f;
 }
 
+var usingSonar = false;
+
+function toggleSonarMode(e) {
+    // toggle using sonar mode
+    usingSonar = usingSonar ? false : true;
+}
+
 /*
     This function determines what happens when a cell is clicked.
     It first checks if all player ships have been placed. If they have not, it interprets the action
@@ -189,12 +216,43 @@ function cellClick() {
             // doesn't reshow our ship on the screen
             placingMode = 0;
         });
-    } else {//interpret action as an attack
-        sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
-            game = data;
-            redrawGrid();
+    } else {
+        if(!usingSonar) {
+            sendXhr("POST", "/attack", {game: game, x: row, y: col}, function(data) {
+                if(data.opponentsBoard.sonarEnabled && !game.opponentsBoard.sonarEnabled) {
+                    // enable the sonar button with green highlight
+                    var ss = document.getElementById("sweepScan");
+                    ss.className = "sweep-scan-enabled";
+                    ss.addEventListener("click", toggleSonarMode);
+                    ss.childNodes[0].src = "/assets/images/sweep2.png";
+                    ss.childNodes[0].className = "animate-this";
+                    (new Toast("Sonar Pulse Available!", "#0f0")).show();
+                }
+                game = data;
+                redrawGrid();
+            });
 
-        })
+        } else {
+            // make a call for the sonar button
+            usingSonar = false;
+            sendXhr("POST", "/sonar", {game: game, x: row, y: col}, function(data) {
+                game = data;
+                redrawGrid();
+
+                // swap the img source to the next one down
+                if(game.opponentsBoard.sonarCount == 1) {
+                    // 1 left
+                    document.getElementById("sweepScanImg").src = "/assets/images/sweep1.png";
+
+                } else {
+                    // 0 left, disable & remove event listener again
+                    document.getElementById("sweepScanImg").src = "/assets/images/sweep0.png";
+                    document.getElementById("sweepScan").className = "";
+                    document.getElementById("sweepScan").removeEventListener("click", toggleSonarMode);
+
+                }
+            });
+        }
     }
 }
 
