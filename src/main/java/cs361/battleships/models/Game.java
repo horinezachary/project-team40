@@ -68,6 +68,24 @@ public class Game {
         return true;
     }
 
+    public boolean sonar(int x, char y) {
+        if(!opponentsBoard.getSonarEnabled() || opponentsBoard.getSonarCount() <= 0) {
+            // sonar is not enabled yet or no more sonars left
+            return false;
+
+        }
+
+        // perform the sonar on the player's board
+        if(!opponentsBoard.sonar(x, y-64)) {
+            // sonar failed for some reason
+            System.out.println("* sonar failed for player");
+            return false;
+
+        }
+
+        return true;
+    }
+
     char randCol() {
 	    String column = "ABCDEFGHIJ";
 	    int x = (int)(Math.random()*10);

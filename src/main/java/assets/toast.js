@@ -19,7 +19,7 @@
         html+=this.msg;
         html+="</div>";
 
-        document.getElementsByTagName("body")[0].insertAdjacentHTML("afterbegin", html);
+        document.getElementsByTagName("body")[0].insertAdjacentHTML("beforeend", html);
 
         var e = document.getElementById("toast"+ToastCount);
 

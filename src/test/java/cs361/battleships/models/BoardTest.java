@@ -276,4 +276,83 @@ public class BoardTest {
         Result r = board.attack(1,'B');
         assertEquals(AtackStatus.SURRENDER, r.getResult());
     }
+
+    /**
+     * Tests default sonar values when a new board is created
+     */
+    @Test
+    public void testSonarDefaults() {
+        Board b = new Board();
+        assertFalse(b.getSonarEnabled());
+        assertEquals(2, b.getSonarCount());
+
+        b.setSonarEnabled(true);
+        b.setSonarCount(1);
+
+        assertTrue(b.getSonarEnabled());
+        assertEquals(1, b.getSonarCount());
+
+    }
+
+    @Test
+    public void testSonarPulses() {
+        Board b = new Board();
+        b.setSonarEnabled(true);
+        assertFalse(b.sonar(0,1));
+        assertFalse(b.sonar(1,0));
+        assertFalse(b.sonar(1,11));
+        assertFalse(b.sonar(11,1));
+        assertFalse(b.sonar(0,0));
+        assertFalse(b.sonar(11,11));
+
+        assertTrue(b.sonar(4, 3)); // 4,C
+
+        // check that we were given 13 results
+        List<Result> results = b.getAttacks();
+
+        assertEquals(13, results.size());
+
+        // check each set
+        int x = 0;
+        assertEquals(2, results.get(x).getLocation().getRow());
+        assertEquals('C', results.get(x++).getLocation().getColumn());
+
+        assertEquals(6, results.get(x).getLocation().getRow());
+        assertEquals('C', results.get(x++).getLocation().getColumn());
+
+        assertEquals(4, results.get(x).getLocation().getRow());
+        assertEquals('A', results.get(x++).getLocation().getColumn());
+
+        assertEquals(4, results.get(x).getLocation().getRow());
+        assertEquals('E', results.get(x++).getLocation().getColumn());
+
+        assertEquals(3, results.get(x).getLocation().getRow());
+        assertEquals('B', results.get(x++).getLocation().getColumn());
+
+        assertEquals(4, results.get(x).getLocation().getRow());
+        assertEquals('B', results.get(x++).getLocation().getColumn());
+
+        assertEquals(5, results.get(x).getLocation().getRow());
+        assertEquals('B', results.get(x++).getLocation().getColumn());
+
+        assertEquals(3, results.get(x).getLocation().getRow());
+        assertEquals('C', results.get(x++).getLocation().getColumn());
+
+        assertEquals(4, results.get(x).getLocation().getRow());
+        assertEquals('C', results.get(x++).getLocation().getColumn());
+
+        assertEquals(5, results.get(x).getLocation().getRow());
+        assertEquals('C', results.get(x++).getLocation().getColumn());
+
+        assertEquals(3, results.get(x).getLocation().getRow());
+        assertEquals('D', results.get(x++).getLocation().getColumn());
+
+        assertEquals(4, results.get(x).getLocation().getRow());
+        assertEquals('D', results.get(x++).getLocation().getColumn());
+
+        assertEquals(5, results.get(x).getLocation().getRow());
+        assertEquals('D', results.get(x).getLocation().getColumn());
+
+
+    }
 }

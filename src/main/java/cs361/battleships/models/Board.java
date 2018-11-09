@@ -7,6 +7,9 @@ public class Board {
     private Square[][] boardarray;
     private boolean[][] occupied;
 
+    private boolean sonarEnabled;
+    private int sonarCount;
+
     final int BOARDSIZE_X = 10;
     final int BOARDSIZE_Y = 10;
 
@@ -29,9 +32,23 @@ public class Board {
                 occupied[i][j] = false;
             }
         }
-        ships = new ArrayList<Ship>();
+        ships = new ArrayList<>();
     	attacks = new ArrayList<>();
-		//printBoard();
+
+    	// set default sonar stats
+		sonarEnabled = false;
+		sonarCount = 2;
+	}
+
+	/**
+	 * Returns whether the coordinates given lie on the board
+	 *
+	 * @param x	X coordinate
+	 * @param y	Y Coordinate
+	 * @return	Whether the given 2d coord lies on the board
+	 */
+	private boolean areCoordinatesOnBoard(int x, int y) {
+		return x >= 1 && x <= 10 && y >= 1 && y <= 10;
 	}
 
 	/**
@@ -117,9 +134,11 @@ public class Board {
 		for(Result check: attacks) { //begin iterating through attack list
 			if(
 					check.getLocation() != null &&
-					!check.getLocation().getCaptain() &&
 					check.getLocation().getRow() == x &&
-					check.getLocation().getColumn() == y
+					check.getLocation().getColumn() == y &&
+					check.getResult() != AtackStatus.SONAR_EMPTY &&
+					check.getResult() != AtackStatus.SONAR_OCCUPIED &&
+					!check.getLocation().getCaptain()
 			) {
 				// already attacked this space, return invalid
 				r.setResult(AtackStatus.INVALID);
@@ -193,6 +212,7 @@ public class Board {
 						rr.setLocation(sq);
 						rr.setShip(ship);
 						rr.setResult(AtackStatus.SUNK);
+						setSonarEnabled(true);
 						attacks.add(rr);
 					}
 
@@ -231,6 +251,63 @@ public class Board {
 		return r;
 	}
 
+	private Result getSonarHitSquare(int x, int y) {
+		Result r = new Result();
+		r.setResult(occupied[x-1][y-1] ? AtackStatus.SONAR_OCCUPIED : AtackStatus.SONAR_EMPTY);
+		r.setLocation(new Square(x, (char) (y + 64)));
+		return r;
+	}
+
+	public boolean sonar(int x, int y) {
+
+		if(!areCoordinatesOnBoard(x,y)) {
+			// out of bounds sonar attempt
+			System.out.println("* sonar out of bounds "+x+", "+y);
+			return false;
+
+		}
+
+		setOccupied();
+
+		List<Result> results = new ArrayList<>();
+
+		// 4 outlier square coords are
+		if(areCoordinatesOnBoard(x-2, y)) {
+			results.add(getSonarHitSquare(x-2,y));
+		}
+
+		if(areCoordinatesOnBoard(x+2, y)) {
+			results.add(getSonarHitSquare(x+2,y));
+		}
+
+		if(areCoordinatesOnBoard(x, y-2)) {
+			results.add(getSonarHitSquare(x,y-2));
+		}
+
+		if(areCoordinatesOnBoard(x, y+2)) {
+			results.add(getSonarHitSquare(x,y+2));
+		}
+
+		int xx = x - 1;
+		int yy = y - 1;
+
+		for(int z = 0; z < 3; z++) {
+			for(int q = 0; q < 3; q++) {
+				if(areCoordinatesOnBoard(xx+q, yy+z)) {
+					results.add(getSonarHitSquare(xx+q,yy+z));
+
+				}
+			}
+		}
+
+		// add all these results to display
+		attacks.addAll(results);
+
+		// sonar succeeded, decrement sonar count
+		setSonarCount(getSonarCount()-1);
+		return true;
+	}
+
 	public List<Ship> getShips() {
 		return ships;
 	}
@@ -250,18 +327,7 @@ public class Board {
 		this.attacks = attacks;
 	}
 
-    /*private void printBoard (){ //method for printing out the board on the backend
-		setOccupied();
-	    for (int i = 0; i < boardarray.length;i++){
-	        System.out.print("|");
-	        for (int j = 0; j < boardarray[0].length; j++){
-                if(!occupied[i][j]){System.out.print("O|");}
-                else{System.out.print("X|");}
-            }
-            System.out.print("\n");
-        }
-    }*/
-    private void setOccupied(){
+    private void setOccupied() {
 		for (int i = 0; i < ships.size(); i++){
 			List <Square> shipSquares = ships.get(i).getOccupiedSquares();
 			for (int j = 0; j < shipSquares.size(); j++){
@@ -271,4 +337,20 @@ public class Board {
 			}
 		}
     }
+
+    public void setSonarEnabled(boolean enabled) {
+		sonarEnabled = enabled;
+	}
+
+	public boolean getSonarEnabled() {
+		return sonarEnabled;
+	}
+
+	public void setSonarCount(int count) {
+		sonarCount = count;
+	}
+
+	public int getSonarCount() {
+		return sonarCount;
+	}
 }
