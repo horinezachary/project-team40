@@ -4,8 +4,9 @@ package cs361.battleships.models;
 public class Square {
 
 	private int row;
-	private char column;
-	private boolean occupied;
+    private char column;
+    private boolean occupied;
+    private boolean captain;
 
 	public Square() {}
 
@@ -13,6 +14,7 @@ public class Square {
 		this.row = row;
 		this.column = column;
 		this.occupied = false;
+		this.captain = false;
 	}
 
 	public char getColumn() {
@@ -22,7 +24,20 @@ public class Square {
 	public void setColumn(char column) {
 		this.column = column;
 	}
-	
+
+    /**
+     * Sets whether this square is a captain's quarters
+     *
+     * @param isCaptainQuarters Whether this square should be a captain's quarters
+     */
+	public void setCaptainsQuarters(boolean isCaptainQuarters) {
+	    this.captain = isCaptainQuarters;
+    }
+
+	public boolean getCaptain() {
+		return captain;
+	}
+
 	public int getRow() {
 		return row;
 	}

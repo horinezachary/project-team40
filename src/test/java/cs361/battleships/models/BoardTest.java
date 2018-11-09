@@ -181,6 +181,79 @@ public class BoardTest {
         assertEquals(AtackStatus.SUNK, attacks.get(2).getResult());
     }
 
+    @Test
+    public void testCaptainwithArmor(){
+        Board board = new Board();
+        List<Ship> ships = new ArrayList<>();
+
+        for(int x = 0; x < 3; x++){
+            Ship s = new Battleship();
+            Square captain = new Square(x+1, 'C');
+            captain.setCaptainsQuarters(true);
+            List<Square> spaces = new ArrayList<>();
+            spaces.add(new Square(x+1, 'A'));
+            spaces.add(new Square(x+1, 'B'));
+            spaces.add(captain);
+            spaces.add(new Square(x+1, 'D'));
+            s.setOccupiedSquares(spaces);
+            ships.add(s);
+        }
+
+        board.setShips(ships);
+        // Attack the captain's quarters of the 2nd ship
+        board.attack(1, 'C');
+        Result r = board.attack(1, 'C');
+        assertEquals(AtackStatus.SUNK, r.getResult());
+    }
+
+    @Test
+    public void TestCaptainwithoutArmor(){
+        Board board = new Board();
+        List<Ship> ships = new ArrayList<>();
+
+        for(int x = 0; x < 3; x++){
+            Ship s = new Minesweeper();
+            Square captain = new Square(x+1, 'A');
+            captain.setCaptainsQuarters(true);
+            List<Square> spaces = new ArrayList<>();
+            spaces.add(new Square(x+1, 'B'));
+            spaces.add(captain);
+            s.setOccupiedSquares(spaces);
+            ships.add(s);
+        }
+
+        board.setShips(ships);
+        // Attack the captain's quarters of the 2nd ship
+        Result r = board.attack(1, 'A');
+        //Result r = board.attack(1, 'C');
+        assertEquals(AtackStatus.SUNK, r.getResult());
+    }
+
+    @Test
+    // Attacks a portion of the ship that was auto-sunk by the captain method
+    public void TestAttackonCaptainSunk(){
+        Board board = new Board();
+        List<Ship> ships = new ArrayList<>();
+
+        for(int x = 0; x < 3; x++){
+            Ship s = new Minesweeper();
+            Square captain = new Square(x+1, 'A');
+            captain.setCaptainsQuarters(true);
+            List<Square> spaces = new ArrayList<>();
+            spaces.add(new Square(x+1, 'B'));
+            spaces.add(captain);
+            s.setOccupiedSquares(spaces);
+            ships.add(s);
+        }
+
+        board.setShips(ships);
+        // Attack the captain's quarters of the 2nd ship
+        board.attack(1, 'A');
+        Result r = board.attack(1, 'B');
+        //Result r = board.attack(1, 'C');
+        assertEquals(AtackStatus.INVALID, r.getResult());
+    }
+
     /**
      * Tests attack surrender
      */
