@@ -379,7 +379,18 @@ td:hover {
 .sweep-scan-enabled {
     opacity: 1 !important;
     cursor: pointer;
+}
 
+.attackHit{
+    color: orange;
+}
+
+.attackMiss{
+    color: #fff
+}
+
+.attackSunk{
+    color: #ff0000;
 }
 
 .sweep-scan-enabled img {
