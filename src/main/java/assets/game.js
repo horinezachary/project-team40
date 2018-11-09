@@ -247,6 +247,7 @@ function cellClick() {
                     var ss = document.getElementById("sweepScan");
                     ss.className = "sweep-scan-enabled";
                     ss.addEventListener("click", toggleSonarMode);
+                    ss.title = "Click here and select a space to perform a sonar pulse.";
                     ss.childNodes[0].src = "/assets/images/sweep2.png";
                     ss.childNodes[0].className = "animate-this";
                     (new Toast("Sonar Pulse Available!", "#0f0")).show();
@@ -270,6 +271,7 @@ function cellClick() {
                 } else {
                     // 0 left, disable & remove event listener again
                     document.getElementById("sweepScanImg").src = "/assets/images/sweep0.png";
+                    document.getElementById("sweepScanImg").title = "";
                     document.getElementById("sweepScan").className = "";
                     document.getElementById("sweepScan").removeEventListener("click", toggleSonarMode);
 
