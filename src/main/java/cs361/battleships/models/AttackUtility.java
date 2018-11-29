@@ -27,9 +27,9 @@ public class AttackUtility {
 
             }
         }
+        r = board.useWeapon(board, x, y, r);
 
-
-        if(x >= 1 && x <= 10 && y >= 'A' && y <= 'J') {
+        /*if(x >= 1 && x <= 10 && y >= 'A' && y <= 'J') {
             // loop over each ship to check for a hit
             for(Ship ship: board.getShips()) {
                 // get this ship's squares
@@ -38,6 +38,7 @@ public class AttackUtility {
                 for(Square shipSquare: squares) {
                     if(shipSquare.getRow() == x && shipSquare.getColumn() == y) {
                         // Hit! mark this ship down health
+                        //if()
                         didHit = checkAndUpdateForHit(r, ship, shipSquare);
                         break;
 
@@ -57,6 +58,7 @@ public class AttackUtility {
                         rr.setLocation(sq);
                         rr.setShip(ship);
                         rr.setResult(AttackStatus.SUNK);
+                      //  board.setLaserEnabled(true);
                         board.setSonarEnabled(true);
                         board.addAttack(rr);
                     }
@@ -93,7 +95,7 @@ public class AttackUtility {
 
         }
 
-        board.addAttack(r);
+        board.addAttack(r);*/
         return r;
     }
 
