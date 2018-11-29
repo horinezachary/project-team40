@@ -78,7 +78,11 @@ function markHits(board, elementId, surrenderText) {
             className = "sonar-occupied";
             sonarDetected++;
 
-        } else {
+        } else if(attack.result == "UNDERWATER"){
+                className = "underwater";
+
+        }
+          else {
             alert("Unrecognized attack result of '"+attack.result+"'. Set up handling for this!");
 
         }
@@ -150,7 +154,9 @@ function writeBRAttack(attacker, locY, locX, attRes)
     else if (attRes == "SONAR_EMPTY"){
         attText = "PLAYER <span class='sonarDetectedN'> SONAR SWEEP EMPTY</span>";
     }
-
+    else if (attRes == "UNDERWATER"){
+        attText = attText+" <span class ='attackUnderHit'>UNDERWATER</span>";
+    }
     attText = attText+"!<br/>";
 
     handleBattleReport(attText);

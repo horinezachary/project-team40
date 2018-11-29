@@ -1,9 +1,9 @@
 package cs361.battleships.models;
 
 public abstract class Weapon {
-    protected boolean Pierce;
+    //protected boolean Pierce;
     public Weapon(){
-        Pierce = false;
+
     }
 
     public abstract Result Fire(Board board, int x, char y, Result r);
