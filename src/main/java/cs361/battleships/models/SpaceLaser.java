@@ -21,6 +21,7 @@ public class SpaceLaser extends Weapon {
                         //if()
                         if(ship.getShipType() == "SUBMARINE"){
                             // Call new function for submarine?
+                            // Given the logic of game, it returns "true" when something is hit, but THESE functions are the ones that add the hit to the board's attack array.
                             checkAndUpdateForHit(r, ship, shipSquare);
                             r = HitandRemoval(ship, board, r);
                             subhit = true;
@@ -50,7 +51,7 @@ public class SpaceLaser extends Weapon {
             return r;
 
         }
-        board.addAttack(r);
+        board.addAttack(r); // This one adds the attackStatus MISS, the rest are added by the "HitandRemoval" function/
         return r;
     }
 
