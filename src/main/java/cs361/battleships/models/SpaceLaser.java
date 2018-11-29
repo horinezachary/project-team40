@@ -8,6 +8,7 @@ public class SpaceLaser extends Weapon {
     }
 
     public Result Fire(Board board, int x, char y, Result r) {
+        boolean subhit = false;
         if(x >= 1 && x <= 10 && y >= 'A' && y <= 'J') {
             // loop over each ship to check for a hit
             for(Ship ship: board.getShips()) {
@@ -18,53 +19,29 @@ public class SpaceLaser extends Weapon {
                     if(shipSquare.getRow() == x && shipSquare.getColumn() == y) {
                         // Hit! mark this ship down health
                         //if()
+                        if(ship.getShipType() == "SUBMARINE"){
+                            // Call new function for submarine?
+                            checkAndUpdateForHit(r, ship, shipSquare);
+                            r = HitandRemoval(ship, board, r);
+                            subhit = true;
+                            break;
+                        }
                         didHit = checkAndUpdateForHit(r, ship, shipSquare);
                         break;
 
                     }
                 }
-
-                if(didHit && ship.getHealth() == 0) {
-                    // hit and SUNK, remove this ship
-                    board.removeShip(ship);
-
-                    // mark each part of this ship as SUNK
-                    // CSS of 'sink' class will take precedence over hit
-                    // turning all affected pieces red
-                    Result rr = new Result();
-                    for(Square sq: ship.getOccupiedSquares()) {
-                        rr = new Result();
-                        rr.setLocation(sq);
-                        rr.setShip(ship);
-                        rr.setResult(AttackStatus.SUNK);
-                        //board.setLaserEnabled(true);
-                        //board.setSonarEnabled(true);
-                        board.addAttack(rr);
-                    }
-
-                    // check to see if the game is over
-                    if(board.getShips().size() > 0) {
-                        // at least one more ship, return our last sunken result
-                        return rr;
-
-                    } else {
-                        // this was the last ship, game over!
-                        r.setResult(AttackStatus.SURRENDER);
-                        board.addAttack(r);
-                        return r;
-
-                    }
-
-                } else if(didHit) {
-                    // just a hit, not sunk
-                    r.setResult(AttackStatus.HIT);
-                    board.addAttack(r);
+                if(didHit) {
+                    r = HitandRemoval(ship, board, r);
                     return r;
-
                 }
+
             }
 
             // valid coordinates, determine if there is a ship here
+            if(subhit){
+                return r;
+            }
             r.setResult(AttackStatus.MISS);
 
         } else {

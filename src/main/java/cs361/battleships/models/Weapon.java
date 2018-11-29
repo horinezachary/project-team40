@@ -8,7 +8,7 @@ public abstract class Weapon {
 
     public abstract Result Fire(Board board, int x, char y, Result r);
 
-    public Result HitandRemoval(Ship ship, boolean didHit, Board board, Result r){
+    public Result HitandRemoval(Ship ship, Board board, Result r){
         if(ship.getHealth() == 0) {
             // hit and SUNK, remove this ship
             board.removeShip(ship);
