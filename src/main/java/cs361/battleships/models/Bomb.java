@@ -22,8 +22,11 @@ public class Bomb extends Weapon{
 
                     }
                 }
-
-                if(didHit && ship.getHealth() == 0) {
+                if(didHit) {
+                    r = HitandRemoval(ship, true, board, r);
+                    return r;
+                }
+               /*if(didHit && ship.getHealth() == 0) {
                     // hit and SUNK, remove this ship
                     board.removeShip(ship);
 
@@ -60,11 +63,11 @@ public class Bomb extends Weapon{
                     board.addAttack(r);
                     return r;
 
-                }
+                }*/
             }
 
             // valid coordinates, determine if there is a ship here
-            r.setResult(AttackStatus.MISS);
+           r.setResult(AttackStatus.MISS);
 
         } else {
             // invalid coordinates, return early without adding this result
