@@ -95,6 +95,41 @@ public class Game {
         return true;
     }
 
+    /**
+     * Moves the ships on the player's board
+     * @param direction String for the direction to move ships
+     *                  ("N","S","E","W")
+     * @return true if successful, false if fails
+     */
+    public boolean moveShips(String direction){
+        if(!opponentsBoard.getFleetMoveEnabled() || opponentsBoard.getFleetMovecount() <= 0) {
+            // unable to move ships as of this time
+            return false;
+
+        }
+
+        int X = 0; int Y = 1;
+        int[] WEST = {-1,0}; int[] EAST = {1,0}; int[] NORTH = {0,-1}; int[] SOUTH = {0,1};
+        int[] dir;
+        switch (direction) {
+            case "N":
+                dir = NORTH;
+                break;
+            case "S":
+                dir = SOUTH;
+                break;
+            case "E":
+                dir = EAST;
+                break;
+            case "W":
+                dir = WEST;
+                break;
+            default:
+                return false;
+        }
+        return playersBoard.moveShips(dir[X],dir[Y]);
+    }
+
     char randCol() {
 	    String column = "ABCDEFGHIJ";
 	    int x = (int)(Math.random()*10);

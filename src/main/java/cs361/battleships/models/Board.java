@@ -1,7 +1,6 @@
 package cs361.battleships.models;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Board {
     private Square[][] boardarray;
@@ -9,6 +8,8 @@ public class Board {
 	private Weapon w;
     private boolean sonarEnabled;
     private int sonarCount;
+    private boolean fleetMoveEnabled;
+    private int fleetMovecount;
 
     final int BOARDSIZE_X = 10;
     final int BOARDSIZE_Y = 10;
@@ -38,6 +39,10 @@ public class Board {
     	// set default sonar stats
 		sonarEnabled = false;
 		sonarCount = 2;
+
+		// fleet move disabled by default
+		fleetMovecount = 2;
+		fleetMoveEnabled = false;
 
 	}
 
@@ -233,6 +238,56 @@ public class Board {
 		return r;
 	}
 
+	/**
+	 * Moves ships on board. Checks to see if any of the ships would have a square off the board
+	 *
+	 * @param x value to increment x by
+	 * @param y value to increment y by
+	 *
+	 * @return true if successful, false if not possible
+	 */
+	public boolean moveShips(int x, int y){
+		List<Ship> movedShips = new ArrayList<>();
+		for (int i = 0; i < ships.size(); i++){
+			Ship temp = ships.get(i);
+			List<Square> squares = temp.getOccupiedSquares();
+			boolean hasCollision = false;
+			for (int j = 0; j < squares.size(); j++){
+				//System.out.println((squares.get(j).getColumn()-65+x) + ", " + (squares.get(j).getRow()+y));
+				if (areCoordinatesOnBoard(squares.get(j).getColumn()-65+x, squares.get(j).getRow()+y)){
+					continue;
+				}
+				else{
+					hasCollision = true;
+				}
+			}
+			if (hasCollision){
+				for (int j = 0; j < squares.size(); j++) {
+					int checkX = (int)(squares.get(j).getColumn())-64-x;
+					int checkY = squares.get(j).getRow()-y;
+					setOccupied();
+					if (isOccupied(checkX,checkY) && !temp.occupiesSpace(checkX,(char)(checkY+65))){
+						return false;
+					}
+				}
+			}
+			else{
+				movedShips.add(temp);
+			}
+		}
+		if (movedShips.size() == 0){
+			return false;
+		}
+		for (int i = 0; i < movedShips.size(); i++) {
+			movedShips.get(i).move(x, y);
+		}
+
+		setFleetMovecount(getFleetMovecount()-1);
+
+		return true;
+	}
+
+
 	public List<Ship> getShips() {
 		return ships;
 	}
@@ -272,6 +327,7 @@ public class Board {
 	 * for a given square.
 	 */
     public void setOccupied() {
+    	occupied = new boolean[BOARDSIZE_X][BOARDSIZE_Y];
 		for (int i = 0; i < ships.size(); i++){
 			List <Square> shipSquares = ships.get(i).getOccupiedSquares();
 			for (int j = 0; j < shipSquares.size(); j++){
@@ -286,6 +342,22 @@ public class Board {
 
 	public boolean getSonarEnabled() {
 		return sonarEnabled;
+	}
+
+	public void setFleetMoveEnabled(boolean enabled) {
+    	fleetMoveEnabled = enabled;
+	}
+
+	public boolean getFleetMoveEnabled() {
+    	return fleetMoveEnabled;
+	}
+
+	public void setFleetMovecount(int count) {
+    	fleetMovecount = count;
+	}
+
+	public int getFleetMovecount() {
+    	return fleetMovecount;
 	}
 
 	public void setSonarCount(int count) {

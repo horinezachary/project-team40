@@ -25,6 +25,7 @@ public abstract class Weapon {
                 //board.setLaserEnabled(true);
                 board.setWeapon(1);
                 board.setSonarEnabled(true);
+                board.setFleetMoveEnabled(true);
                 board.addAttack(rr);
             }
 

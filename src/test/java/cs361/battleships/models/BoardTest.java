@@ -359,8 +359,80 @@ public class BoardTest {
 
         assertEquals(5, results.get(x).getLocation().getRow());
         assertEquals('D', results.get(x).getLocation().getColumn());
+    }
 
+    @Test
+    public void testMoveShips(){
+        Board b = new Board();
+        List<Ship> ships = new ArrayList<>();
 
+        // create a new minesweeper to set
+        Ship m = new Minesweeper();
+        List<Square> spaces = new ArrayList<>();
+        spaces.add(new Square(1,'A'));
+        spaces.add(new Square(1,'B'));
+        m.setOccupiedSquares(spaces);
+
+        ships.add(m);
+        b.setShips(ships);
+
+        assertEquals(2, b.getFleetMovecount());
+        assertEquals(false, b.moveShips(-1, 0));
+        printBoard(b);
+        assertEquals(false, b.moveShips( 0,-1));
+        printBoard(b);
+        assertEquals(true,  b.moveShips( 1, 0));
+        assertEquals(1, b.getFleetMovecount());
+        printBoard(b);
+        assertEquals(true,  b.moveShips( 0, 1));
+        assertEquals(0, b.getFleetMovecount());
+        printBoard(b);
+
+        //reset location
+        assertEquals(true,  b.moveShips(0,-1));
+        assertEquals(-1, b.getFleetMovecount());
+        //assertEquals(true,  b.moveShips(-1,0));
+        printBoard(b);
+
+        Ship d = new Destroyer();
+        spaces = new ArrayList<>();
+        spaces.add(new Square(5,'C'));
+        spaces.add(new Square(5,'D'));
+        spaces.add(new Square(5,'E'));
+        d.setOccupiedSquares(spaces);
+        b.addShip(d);
+
+        assertEquals(true, b.moveShips( 1, 0));
+        assertEquals(true, b.moveShips(-1, 0));
+        assertEquals(true, b.moveShips( 0,-1));
+        assertEquals(true, b.moveShips( 0, 1));
+        printBoard(b);
+
+        Ship battle = new Battleship();
+        spaces = new ArrayList<>();
+        spaces.add(new Square(1,'C'));
+        spaces.add(new Square(1,'D'));
+        spaces.add(new Square(1,'E'));
+        spaces.add(new Square(1,'F'));
+        battle.setOccupiedSquares(spaces);
+        b.addShip(battle);
+
+        assertEquals(false, b.moveShips(-1,0));
+        printBoard(b);
+
+    }
+
+    public void printBoard(Board b){
+        b.setOccupied();
+        for (int i = 0; i < b.BOARDSIZE_X; i++){
+            System.out.print("|");
+            for (int j = 0; j < b.BOARDSIZE_Y; j++){
+                if(b.isOccupied(i,j)){System.out.print("X|");}
+                else{System.out.print(" |");}
+            }
+            System.out.print("\n");
+        }
+        System.out.print("\n");
     }
 
     @Test

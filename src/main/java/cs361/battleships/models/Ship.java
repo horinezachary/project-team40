@@ -60,7 +60,22 @@ public class Ship {
     public boolean getArmor() {
 	    return armor;
     }
-
+  
+    /**
+     * Moves the ship by the values in x and y
+     * @param x
+     * @param y
+     */
+    public void move(int x, int y){
+        //System.out.print("MOVE:");
+	    for (int i = 0; i < occupiedSquares.size(); i++){
+	        Square square = occupiedSquares.get(i);
+	        //System.out.print((char)((int)square.getColumn()+x) + "," + (square.getRow()+y) + " : ");
+	        square.setColumn((char)((int)square.getColumn()+x));
+            square.setRow(square.getRow()+y);
+        }
+	    //System.out.print("\n");
+    }
     public void setSubmerged(boolean s) {
 	    submerged = s;
     }
