@@ -1,5 +1,6 @@
 package cs361.battleships.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpaceLaser extends Weapon {
@@ -14,7 +15,8 @@ public class SpaceLaser extends Weapon {
 
         if(x >= 1 && x <= 10 && y >= 'A' && y <= 'J') {
             // loop over each ship to check for a hit
-            for(Ship ship: board.getShips()) {
+            for(int index = 0; index < board.getShips().size(); index++) {
+                Ship ship = board.getShips().get(index);
                 // get this ship's squares
                 boolean didHit = false;
                 List<Square> squares = ship.getOccupiedSquares();
@@ -41,11 +43,15 @@ public class SpaceLaser extends Weapon {
                     // store this result if it's the new highest result
                     // the space laser can hit multiple targets, and we want to return
                     // the highest damaging result specifically
-                    if(r.getResult() == AttackStatus.HIT && highestResult == null) {
+                    if(r.getResult() == AttackStatus.SURRENDER) {
+                        // highest precedence
                         highestResult = r;
 
-                    } else if(r.getResult() == AttackStatus.SUNK) {
-                        // always override for SUNK
+                    } else if (r.getResult() == AttackStatus.HIT && highestResult == null) {
+                        highestResult = r;
+
+                    } else if(r.getResult() == AttackStatus.SUNK && r.getResult() != AttackStatus.SURRENDER) {
+                        // override for SUNK in other cases
                         highestResult = r;
 
                     }
