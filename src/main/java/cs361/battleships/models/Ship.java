@@ -11,6 +11,7 @@ public class Ship {
     int length;
     boolean armor;
     String shipType;
+    boolean submerged;
 
 	@JsonProperty private List<Square> occupiedSquares;
 
@@ -23,6 +24,7 @@ public class Ship {
         shipType = kind;
 		occupiedSquares = new ArrayList<>();
 		armor = false;
+        submerged = false;
 	}
 
 	public List<Square> getOccupiedSquares() {
@@ -59,4 +61,57 @@ public class Ship {
 	    return armor;
     }
 
+    public void setSubmerged(boolean s) {
+	    submerged = s;
+    }
+
+    public boolean getSubmerged() {
+	    return submerged;
+    }
+
+    /**
+     * Checks to make a given square the captain's quarters
+     *
+     * @param square    Square to check to make a captain's quarters
+     * @param i		    Index along length of ship
+     */
+    public void checkToMakeCaptainsQuarters(Square square, int i) {
+        if (i == (getLength() - 2)) {
+            // make this square a captain's quarters
+            square.setCaptainsQuarters(true);
+
+        }
+    }
+
+    /**
+     * Returns whether a ship occupies a space matching the given coordinates
+     * @param x X coordinate to check
+     * @param y Y coordinate to check
+     * @return  Whether the space is occupied by this shape at the given coords
+     */
+    public boolean occupiesSpace(int x, char y) {
+        for (Square s: occupiedSquares) {
+            if(s.getRow() == x && s.getColumn() == y) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Determines whether this ship is a duplicate of an existing one
+     *
+     * @param ship  Ship to check for duplication
+     * @param ships List of ships to check against
+     * @return whether or not the ship is a duplicate
+     */
+    public static boolean is_duplicate_ship(Ship ship, List<Ship> ships) {
+        for(Ship s: ships) {
+            if(s.getShipType().equals(ship.getShipType())) {
+                // same type
+                return true;
+            }
+        }
+        return false;
+    }
 }

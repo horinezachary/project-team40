@@ -41,10 +41,6 @@ public class Board {
 
 	}
 
-	public Result useWeapon(Board board, int x, char y, Result r){
-		return w.Fire(board, x, y, r);
-	}
-
 	/**
 	 * Returns whether the coordinates given lie on the board
 	 *
@@ -70,7 +66,72 @@ public class Board {
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
 		setOccupied();
-		return PlaceUtility.place(this, ship, x, y, isVertical);
+
+		// check for duplicate ships first
+		if(Ship.is_duplicate_ship(ship, getShips())) {
+			// can't place the same ship twice
+			return false;
+		}
+
+		int yint = ((int)y)-65;
+		int xint = x-1;
+
+		if(!areCoordinatesOnBoard(x, yint+1)) {
+			return false;
+		}
+
+		List<Square> shipsquares = new ArrayList<>();
+		for (int i = 0; i < ship.getLength(); i++){
+			if (isVertical){    //check if the values exist within the array bounds, and make sure that the square isn't occupied
+				if ((xint+i < BOARDSIZE_X) && yint < BOARDSIZE_Y && (!isOccupied(xint+i,yint) || ship.getSubmerged())) {
+					//add the square to the ship square list and set the square as occupied
+
+					ship.checkToMakeCaptainsQuarters(getSquare(xint+i,yint), i);
+
+					// add square to ship
+					shipsquares.add(getSquare(xint+i,yint));
+				}
+				else return false;
+			} else {   //check if the values exist within the array bounds, and make sure that the square isn't occupied
+				if ((xint < BOARDSIZE_X) &&((yint+i) < BOARDSIZE_Y) && (!isOccupied(xint, yint+i) || ship.getSubmerged())) {
+					//add the square to the ship square list and set the square as occupied
+
+					ship.checkToMakeCaptainsQuarters(getSquare(xint,yint+i), i);
+
+					// add square to ship
+					shipsquares.add(getSquare(xint,yint+i));
+				}
+				else return false;
+			}
+		}
+
+		// submarine condition
+		if(ship.getShipType().equals("SUBMARINE")) {
+			// add periscope
+			if(isVertical) {
+				if(yint+1 < BOARDSIZE_Y && (!isOccupied(xint+2,yint+1) || ship.getSubmerged())) {
+					// add periscope square to the ship square list
+					shipsquares.add(getSquare(xint+2,yint+1));
+
+				} else {
+					return false;
+				}
+
+			} else {
+				if(xint-1 >= 0 && ((yint+2) < BOARDSIZE_Y) && (!isOccupied(xint-1, yint+2) || ship.getSubmerged())) {
+					// add periscope square to the ship square list
+					shipsquares.add(getSquare(xint-1,yint+2));
+				} else {
+					return false;
+				}
+			}
+		}
+
+		//add the squares to the ship and the ship to the board
+		ship.setOccupiedSquares(shipsquares);
+		addShip(ship);
+
+		return true;
 	}
 
 
@@ -78,7 +139,28 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public Result attack(int x, char y) {
-		return AttackUtility.attack(this, x, y);
+		Result r = new Result();
+		r.setLocation(new Square(x,y));
+
+		for(Result check: getAttacks()) { //begin iterating through attack list
+			if(check.isResultSpaceAlreadyAttacked(x, y)) {
+				// already attacked this space, return invalid
+				r.setResult(AttackStatus.INVALID);
+				return r;
+
+			} else if(check.wasSpaceFormerlyArmoredCaptain(x, y)) {
+				// FOR SPRINT #3
+				// attacking a previously 'captained' space that was missed
+				// we're going to update the result so it registers as a SINK properly
+				// If this change is NOT made the previously 'missed' captain's quarters space
+				// does not register a sink or hit, it remains missed while the rest is updated visually.
+				check.setResult(AttackStatus.SUNK);
+
+			}
+		}
+		r = w.Fire(this, x, y, r);
+
+		return r;
 	}
 
 
@@ -91,7 +173,64 @@ public class Board {
 	 */
 	public boolean sonar(int x, int y) {
 		setOccupied();
-		return SonarUtility.sonar(this, x, y);
+		if(!areCoordinatesOnBoard(x,y)) {
+			// out of bounds sonar attempt
+			return false;
+
+		}
+
+		List<Result> results = new ArrayList<>();
+
+		// conditionally add 4 outlier sonar coordinates
+		if(areCoordinatesOnBoard(x-2, y)) {
+			results.add(getSonarHitSquare(x-2,y));
+		}
+
+		if(areCoordinatesOnBoard(x+2, y)) {
+			results.add(getSonarHitSquare(x+2,y));
+		}
+
+		if(areCoordinatesOnBoard(x, y-2)) {
+			results.add(getSonarHitSquare(x,y-2));
+		}
+
+		if(areCoordinatesOnBoard(x, y+2)) {
+			results.add(getSonarHitSquare(x,y+2));
+		}
+
+		int xx = x - 1;
+		int yy = y - 1;
+
+		// setup and add the center 9 coordinates conditionally
+		for(int z = 0; z < 3; z++) {
+			for(int q = 0; q < 3; q++) {
+				if(areCoordinatesOnBoard(xx+q, yy+z)) {
+					results.add(getSonarHitSquare(xx+q,yy+z));
+
+				}
+			}
+		}
+
+		// add all these results from the sonar pulse to display
+		addAttacks(results);
+
+		// decrement sonar count & return success
+		setSonarCount(getSonarCount()-1);
+		return true;
+	}
+
+	/**
+	 * Returns the sonar pulse result (occupied or empty) for a given space on the board
+	 *
+	 * @param x     X coordinate of square to scan
+	 * @param y	    Y coordinate of square to scan
+	 * @return	Result object containing status of sonar pulse on this square
+	 */
+	public Result getSonarHitSquare(int x, int y) {
+		Result r = new Result();
+		r.setResult(isOccupied(x-1,y-1) ? AttackStatus.SONAR_OCCUPIED : AttackStatus.SONAR_EMPTY);
+		r.setLocation(new Square(x, (char) (y + 64)));
+		return r;
 	}
 
 	public List<Ship> getShips() {
@@ -132,7 +271,7 @@ public class Board {
 	 * Used by the sonar pulse logic to determine whether a scan returns EMPTY or OCCUPIED
 	 * for a given square.
 	 */
-    private void setOccupied() {
+    public void setOccupied() {
 		for (int i = 0; i < ships.size(); i++){
 			List <Square> shipSquares = ships.get(i).getOccupiedSquares();
 			for (int j = 0; j < shipSquares.size(); j++){
