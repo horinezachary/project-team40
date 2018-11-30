@@ -38,4 +38,9 @@ public enum AttackStatus {
 	 */
 	SONAR_OCCUPIED
 
+	/**
+	 * The result if it's a surface attack
+	 */
+
+
 }

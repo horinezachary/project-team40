@@ -409,3 +409,9 @@ td:hover {
 .sonarDetectedN{
     color: #004fff;
 }
+
+#LaserWeapon{
+    position:relative;
+    margin-left:-30px;
+}
+

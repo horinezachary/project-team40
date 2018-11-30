@@ -1,9 +1,10 @@
 package cs361.battleships.models;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class SpaceLaser extends Weapon {
+
     public SpaceLaser(){
         WeaponName = "SpaceLaser";
     }

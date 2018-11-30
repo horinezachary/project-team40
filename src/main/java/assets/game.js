@@ -253,7 +253,14 @@ function cellClick() {
                     ss.title = "Click here and select a space to perform a sonar pulse.";
                     ss.childNodes[0].src = "/assets/images/sweep2.png";
                     ss.childNodes[0].className = "animate-this";
-                    (new Toast("Sonar Pulse Available!", "#0f0")).show();
+                    (new Toast("Sonar Pulse and Laser Weapon Enabled!", "#0f0")).show();
+
+                    var LS = document.getElementById("LaserWeapon");
+                    LS.title = "ION Cannon Available";
+                    LS.childNodes[0].src = "/assets/images/Ret2.png";
+                    LS.childNodes[0].className = "animate-this";
+                    //(new Toast("Laser Weapon Enabled", "#0f0")).show();
+
                 }
                 game = data;
                 redrawGrid();
@@ -279,6 +286,7 @@ function cellClick() {
                     document.getElementById("sweepScan").removeEventListener("click", toggleSonarMode);
 
                 }
+
             });
         }
     }
