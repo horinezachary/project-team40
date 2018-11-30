@@ -573,4 +573,40 @@ public class BoardTest {
         assertEquals(1, d.getHealth());
         assertEquals(4, s.getHealth());
     }
+
+    @Test
+    public void testSinkSubmarine() {
+        Board b = new Board();
+        Submarine s = new Submarine();
+        b.placeShip(s, 1, 'C', true);
+        // 1st attack
+        Result r = b.attack(1,'C');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(4, s.getHealth());
+
+        // 2nd attack
+        r = b.attack(2,'C');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(3, s.getHealth());
+
+        // 3rd attack
+        r = b.attack(3,'C');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(2, s.getHealth());
+
+        // 4th attack (should be a miss since it's an armored CQ)
+        r = b.attack(4,'C');
+        assertEquals(AttackStatus.MISS, r.getResult());
+        assertEquals(2, s.getHealth());
+
+        // 5th attack on the periscope
+        r = b.attack(3,'D');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(1, s.getHealth());
+
+        // 6th attack on unarmored CQ, should sink (returns surrender since it's the only board on the ship)
+        r = b.attack(4,'C');
+        assertEquals(AttackStatus.SURRENDER, r.getResult());
+        assertEquals(0, s.getHealth());
+    }
 }
