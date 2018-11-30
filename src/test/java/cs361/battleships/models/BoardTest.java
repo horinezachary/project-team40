@@ -89,6 +89,11 @@ public class BoardTest {
         assertFalse(b.placeShip(new Battleship(), 6, 'A', false));
     }
 
+    /*@Test
+    public void testbuildWeapon() {
+        Board boar
+    }*/
+
     @Test
     public void testAddingAttack() {
         // Tests adding a single attack and getting it back from the board
@@ -115,6 +120,7 @@ public class BoardTest {
         r = board.attack(11,'A');
         assertEquals(AttackStatus.INVALID, r.getResult());
     }
+
 
     /**
      * Tests attack miss
@@ -354,5 +360,62 @@ public class BoardTest {
         assertEquals('D', results.get(x).getLocation().getColumn());
 
 
+    }
+
+    @Test
+    public void testLaserCreation(){
+        Board board = new Board();
+        List<Ship> ships = new ArrayList<>();
+
+        // add 3 ships
+        for(int x = 0; x < 3; x++) {
+            Ship s = new Minesweeper();
+            List<Square> spaces = new ArrayList<>();
+            spaces.add(new Square(x+1, 'A'));
+            spaces.add(new Square(x+1, 'B'));
+            s.setOccupiedSquares(spaces);
+            ships.add(s);
+        }
+
+        board.setShips(ships);
+        // sink the 2nd ship
+        board.attack(1,'A');
+        Result r = board.attack(1,'B');
+        //assertEquals(AttackStatus.SUNK, r.getResult());
+        assertEquals("SpaceLaser", board.getWeapon(board));
+
+    }
+
+    @Test
+    public void testLaserFire(){
+        Board board = new Board();
+        List<Ship> ships = new ArrayList<>();
+
+        // add 3 ships
+        for(int x = 0; x < 3; x++) {
+            Ship s = new Minesweeper();
+            List<Square> spaces = new ArrayList<>();
+            spaces.add(new Square(x+1, 'A'));
+            spaces.add(new Square(x+1, 'B'));
+            s.setOccupiedSquares(spaces);
+            ships.add(s);
+        }
+
+        board.setShips(ships);
+        // sink the 2nd ship
+        board.attack(1,'A');
+        Result r = board.attack(1,'B');
+        //assertEquals(AttackStatus.SUNK, r.getResult());
+        assertEquals("SpaceLaser", board.getWeapon(board));
+
+        board.attack(2, 'A');
+        Result d = board.attack(2, 'B');
+        assertEquals(AttackStatus.SUNK, d.getResult());
+
+        Result x = board.attack(5, 'A');
+        assertEquals(AttackStatus.MISS, x.getResult());
+
+        Result y = board.attack(11, 'A');
+        assertEquals(AttackStatus.INVALID, y.getResult());
     }
 }

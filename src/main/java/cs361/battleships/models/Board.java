@@ -6,7 +6,7 @@ import java.util.List;
 public class Board {
     private Square[][] boardarray;
     private boolean[][] occupied;
-
+	private Weapon w;
     private boolean sonarEnabled;
     private int sonarCount;
 
@@ -24,7 +24,7 @@ public class Board {
 	public Board() {
 		boardarray = new Square[BOARDSIZE_X][BOARDSIZE_Y];
 		occupied = new boolean[BOARDSIZE_X][BOARDSIZE_Y];
-
+		w = new Bomb();
 		for (int i = 0; i < boardarray.length; i++) {
             for (int j = 0; j < boardarray[0].length; j++) {
                 //sets row values as 1 thru BOARDSIZE_X and column values as 'A' thru 'J'
@@ -38,8 +38,12 @@ public class Board {
     	// set default sonar stats
 		sonarEnabled = false;
 		sonarCount = 2;
+
 	}
 
+	public Result useWeapon(Board board, int x, char y, Result r){
+		return w.Fire(board, x, y, r);
+	}
 
 	/**
 	 * Returns whether the coordinates given lie on the board
@@ -152,4 +156,24 @@ public class Board {
 	public int getSonarCount() {
 		return sonarCount;
 	}
+
+	public void setWeapon(int type){
+    	switch(type){
+			/*case 0:
+				w = new Bomb();*/
+			case 1:
+				w = new SpaceLaser();
+				break;
+			default:
+				w = new Bomb();
+		}
+	}
+
+	public String getWeapon(Board board){
+    	return board.w.getWeaponName();
+	}
+
+	/*public boolean getLaserStatus(){
+    	return laserEnabled;
+	}*/
 }
