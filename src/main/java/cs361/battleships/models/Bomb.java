@@ -15,7 +15,7 @@ public class Bomb extends Weapon{
                 boolean didHit = false;
                 List<Square> squares = ship.getOccupiedSquares();
                 for(Square shipSquare: squares) {
-                    if(shipSquare.getRow() == x && shipSquare.getColumn() == y) { //  Need to add an "underwater property" denial
+                    if(shipSquare.getRow() == x && shipSquare.getColumn() == y && !ship.getSubmerged()) { //  Need to add an "underwater property" denial
                         // Hit! mark this ship down health
                         didHit = checkAndUpdateForHit(r, ship, shipSquare);
                         break;

@@ -506,5 +506,71 @@ public class BoardTest {
         assertTrue(s.occupiesSpace(1,'C'));
         assertTrue(s.occupiesSpace(2,'D'));
         assertTrue(s.getOccupiedSquares().get(3).getCaptain());
+
+        // test place un-submerged underlying, should not work
+        b = new Board();
+        s = new Submarine();
+        s.setSubmerged(false);
+        Destroyer d = new Destroyer();
+        assertTrue(b.placeShip(d, 1, 'A', true));
+        assertFalse(b.placeShip(s, 1, 'A', true));
+
+        // test place submerged underlying, should work
+        s.setSubmerged(true);
+        assertTrue(b.placeShip(s, 1, 'A', true));
+    }
+
+    @Test
+    public void testAttackSubmarine() {
+        Board b = new Board();
+        Submarine s = new Submarine();
+        assertTrue(b.placeShip(s, 1, 'A', true));
+
+        // test attacking un-submerged w/ default weapon
+        assertEquals(5, s.getHealth());
+        Result r1 = b.attack(1,'A');
+        assertEquals(4, s.getHealth());
+
+        // test attacking submerged w/ default weapon
+        s.setSubmerged(true);
+        Result r2 = b.attack(2,'A');
+        assertEquals(4, s.getHealth());
+
+        // switch to space laser
+        b.setWeapon(1);
+
+        // attack submerged
+        Result r3 = b.attack(3,'A');
+        assertEquals(3, s.getHealth());
+
+        // attack submerged (armored position)
+        Result r4 = b.attack(4,'A');
+        assertEquals(3, s.getHealth());
+
+        // attack again, should work
+        Result r44 = b.attack(3,'B');
+        assertEquals(2, s.getHealth());
+
+        // setup with board, destroyer & submerged sub now
+        b = new Board();
+        s = new Submarine();
+        s.setSubmerged(true);
+        Destroyer d = new Destroyer();
+        assertTrue(b.placeShip(d, 1, 'A', true));
+        assertTrue(b.placeShip(s, 1, 'A', true));
+        assertEquals(3, d.getHealth());
+        assertEquals(5, s.getHealth());
+
+        // test attacking w/ default weapon
+        Result r5 = b.attack(1,'A');
+        assertEquals(5, s.getHealth());
+        assertEquals(2, d.getHealth());
+
+        // test attacking w/ laser, should penetrate
+        b.setWeapon(1);
+        Result r6 = b.attack(3,'A');
+        assertEquals(AttackStatus.HIT, r6.getResult());
+        assertEquals(1, d.getHealth());
+        assertEquals(4, s.getHealth());
     }
 }

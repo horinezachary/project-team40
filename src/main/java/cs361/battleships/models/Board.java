@@ -83,7 +83,7 @@ public class Board {
 		List<Square> shipsquares = new ArrayList<>();
 		for (int i = 0; i < ship.getLength(); i++){
 			if (isVertical){    //check if the values exist within the array bounds, and make sure that the square isn't occupied
-				if ((xint+i < BOARDSIZE_X) && yint < BOARDSIZE_Y && !isOccupied(xint+i,yint)) {
+				if ((xint+i < BOARDSIZE_X) && yint < BOARDSIZE_Y && (!isOccupied(xint+i,yint) || ship.getSubmerged())) {
 					//add the square to the ship square list and set the square as occupied
 
 					ship.checkToMakeCaptainsQuarters(getSquare(xint+i,yint), i);
@@ -93,7 +93,7 @@ public class Board {
 				}
 				else return false;
 			} else {   //check if the values exist within the array bounds, and make sure that the square isn't occupied
-				if ((xint < BOARDSIZE_X) &&((yint+i) < BOARDSIZE_Y) && (!isOccupied(xint, yint+i))) {
+				if ((xint < BOARDSIZE_X) &&((yint+i) < BOARDSIZE_Y) && (!isOccupied(xint, yint+i) || ship.getSubmerged())) {
 					//add the square to the ship square list and set the square as occupied
 
 					ship.checkToMakeCaptainsQuarters(getSquare(xint,yint+i), i);
@@ -109,7 +109,7 @@ public class Board {
 		if(ship.getShipType().equals("SUBMARINE")) {
 			// add periscope
 			if(isVertical) {
-				if(yint+1 < BOARDSIZE_Y && !isOccupied(xint+2,yint+1)) {
+				if(yint+1 < BOARDSIZE_Y && (!isOccupied(xint+2,yint+1) || ship.getSubmerged())) {
 					// add periscope square to the ship square list
 					shipsquares.add(getSquare(xint+2,yint+1));
 
@@ -118,7 +118,7 @@ public class Board {
 				}
 
 			} else {
-				if(xint-1 >= 0 && ((yint+2) < BOARDSIZE_Y) && !isOccupied(xint-1, yint+2)) {
+				if(xint-1 >= 0 && ((yint+2) < BOARDSIZE_Y) && (!isOccupied(xint-1, yint+2) || ship.getSubmerged())) {
 					// add periscope square to the ship square list
 					shipsquares.add(getSquare(xint-1,yint+2));
 				} else {
