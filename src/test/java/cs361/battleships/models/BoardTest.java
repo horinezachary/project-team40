@@ -48,6 +48,7 @@ public class BoardTest {
         assertTrue(board.placeShip(new Minesweeper(), 1, 'A', false));
         assertTrue(board.placeShip(new Destroyer(), 2, 'A', false));
         assertTrue(board.placeShip(new Battleship(), 3, 'A', false));
+        assertTrue(board.placeShip(new Submarine(), 5, 'A', false));
     }
 
     @Test
@@ -417,5 +418,234 @@ public class BoardTest {
 
         Result y = board.attack(11, 'A');
         assertEquals(AttackStatus.INVALID, y.getResult());
+    }
+
+    @Test
+    public void testPlaceMinesweeper() {
+        Board b = new Board();
+        // vertical
+        Minesweeper m = new Minesweeper();
+        assertTrue(b.placeShip(m, 1, 'A', true));
+        assertTrue(m.occupiesSpace(1,'A'));
+        assertTrue(m.occupiesSpace(2,'A'));
+
+        // horizontal
+        b = new Board();
+        m = new Minesweeper();
+        assertTrue(b.placeShip(m, 1, 'A', false));
+        assertTrue(m.occupiesSpace(1,'A'));
+        assertTrue(m.occupiesSpace(1,'B'));
+    }
+
+
+
+    @Test
+    public void testPlaceDestroyer() {
+        Board b = new Board();
+        // vertical
+        Destroyer d = new Destroyer();
+        assertTrue(b.placeShip(d, 1, 'A', true));
+        assertTrue(d.occupiesSpace(1,'A'));
+        assertTrue(d.occupiesSpace(2,'A'));
+        assertTrue(d.occupiesSpace(3,'A'));
+        assertTrue(d.getOccupiedSquares().get(1).getCaptain());
+
+        // horizontal
+        b = new Board();
+        d = new Destroyer();
+        assertTrue(b.placeShip(d, 1, 'A', false));
+        assertTrue(d.occupiesSpace(1,'A'));
+        assertTrue(d.occupiesSpace(1,'B'));
+        assertTrue(d.occupiesSpace(1,'C'));
+        assertTrue(d.getOccupiedSquares().get(1).getCaptain());
+    }
+
+    @Test
+    public void testPlaceBattleship() {
+        Board b = new Board();
+        // vertical
+        Battleship bs = new Battleship();
+        assertTrue(b.placeShip(bs, 1, 'A', true));
+        assertTrue(bs.occupiesSpace(1,'A'));
+        assertTrue(bs.occupiesSpace(2,'A'));
+        assertTrue(bs.occupiesSpace(3,'A'));
+        assertTrue(bs.occupiesSpace(4,'A'));
+        assertTrue(bs.getOccupiedSquares().get(2).getCaptain());
+
+        // horizontal
+        b = new Board();
+        bs = new Battleship();
+        assertTrue(b.placeShip(bs, 1, 'A', false));
+        assertTrue(bs.occupiesSpace(1,'A'));
+        assertTrue(bs.occupiesSpace(1,'B'));
+        assertTrue(bs.occupiesSpace(1,'C'));
+        assertTrue(bs.occupiesSpace(1,'D'));
+        assertTrue(bs.getOccupiedSquares().get(2).getCaptain());
+    }
+
+    @Test
+    public void testPlaceSubmarine() {
+        Board b = new Board();
+        // vertical
+        Submarine s = new Submarine();
+        assertTrue(b.placeShip(s, 1, 'A', true));
+        assertTrue(s.occupiesSpace(1,'A'));
+        assertTrue(s.occupiesSpace(2,'A'));
+        assertTrue(s.occupiesSpace(3,'A'));
+        assertTrue(s.occupiesSpace(3,'B'));
+        assertTrue(s.occupiesSpace(4,'A'));
+        assertTrue(s.getOccupiedSquares().get(3).getCaptain());
+
+        // horizontal
+        b = new Board();
+        s = new Submarine();
+        assertTrue(b.placeShip(s, 2, 'A', false));
+        assertTrue(s.occupiesSpace(2,'A'));
+        assertTrue(s.occupiesSpace(2,'B'));
+        assertTrue(s.occupiesSpace(2,'C'));
+        assertTrue(s.occupiesSpace(1,'C'));
+        assertTrue(s.occupiesSpace(2,'D'));
+        assertTrue(s.getOccupiedSquares().get(3).getCaptain());
+
+        // test place un-submerged underlying, should not work
+        b = new Board();
+        s = new Submarine();
+        s.setSubmerged(false);
+        Destroyer d = new Destroyer();
+        assertTrue(b.placeShip(d, 1, 'A', true));
+        assertFalse(b.placeShip(s, 1, 'A', true));
+
+        // test place submerged underlying, should work
+        s.setSubmerged(true);
+        assertTrue(b.placeShip(s, 1, 'A', true));
+    }
+
+    @Test
+    public void testAttackSubmarine() {
+        Board b = new Board();
+        Submarine s = new Submarine();
+        assertTrue(b.placeShip(s, 1, 'A', true));
+
+        // test attacking un-submerged w/ default weapon
+        assertEquals(5, s.getHealth());
+        Result r1 = b.attack(1,'A');
+        assertEquals(4, s.getHealth());
+
+        // test attacking submerged w/ default weapon
+        s.setSubmerged(true);
+        Result r2 = b.attack(2,'A');
+        assertEquals(4, s.getHealth());
+
+        // switch to space laser
+        b.setWeapon(1);
+
+        // attack submerged
+        Result r3 = b.attack(3,'A');
+        assertEquals(3, s.getHealth());
+
+        // attack submerged (armored position)
+        Result r4 = b.attack(4,'A');
+        assertEquals(3, s.getHealth());
+
+        // attack again, should work
+        Result r44 = b.attack(3,'B');
+        assertEquals(2, s.getHealth());
+
+        // setup with board, destroyer & submerged sub now
+        b = new Board();
+        s = new Submarine();
+        s.setSubmerged(true);
+        Destroyer d = new Destroyer();
+        assertTrue(b.placeShip(d, 1, 'A', true));
+        assertTrue(b.placeShip(s, 1, 'A', true));
+        assertEquals(3, d.getHealth());
+        assertEquals(5, s.getHealth());
+
+        // test attacking w/ default weapon
+        Result r5 = b.attack(1,'A');
+        assertEquals(5, s.getHealth());
+        assertEquals(2, d.getHealth());
+
+        // test attacking w/ laser, should penetrate
+        b.setWeapon(1);
+        Result r6 = b.attack(3,'A');
+        assertEquals(AttackStatus.HIT, r6.getResult());
+        assertEquals(1, d.getHealth());
+        assertEquals(4, s.getHealth());
+    }
+
+    @Test
+    public void testSinkSubmarine() {
+        Board b = new Board();
+        Submarine s = new Submarine();
+        b.placeShip(s, 1, 'C', true);
+        // 1st attack
+        Result r = b.attack(1,'C');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(4, s.getHealth());
+
+        // 2nd attack
+        r = b.attack(2,'C');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(3, s.getHealth());
+
+        // 3rd attack
+        r = b.attack(3,'C');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(2, s.getHealth());
+
+        // 4th attack (should be a miss since it's an armored CQ)
+        r = b.attack(4,'C');
+        assertEquals(AttackStatus.MISS, r.getResult());
+        assertEquals(2, s.getHealth());
+
+        // 5th attack on the periscope
+        r = b.attack(3,'D');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(1, s.getHealth());
+
+        // 6th attack on unarmored CQ, should sink (returns surrender since it's the only board on the ship)
+        r = b.attack(4,'C');
+        assertEquals(AttackStatus.SURRENDER, r.getResult());
+        assertEquals(0, s.getHealth());
+    }
+
+    @Test
+    public void testSinkSubmergedSubmarineLaser() {
+        Board b = new Board();
+        Submarine s = new Submarine();
+        s.setSubmerged(true);
+        b.setWeapon(1);
+
+        b.placeShip(s, 1, 'C', true);
+        // 1st attack
+        Result r = b.attack(1,'C');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(4, s.getHealth());
+
+        // 2nd attack
+        r = b.attack(2,'C');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(3, s.getHealth());
+
+        // 3rd attack
+        r = b.attack(3,'C');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(2, s.getHealth());
+
+        // 4th attack (should be a miss since it's an armored CQ)
+        r = b.attack(4,'C');
+        assertEquals(AttackStatus.MISS, r.getResult());
+        assertEquals(2, s.getHealth());
+
+        // 5th attack on the periscope
+        r = b.attack(3,'D');
+        assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(1, s.getHealth());
+
+        // 6th attack on unarmored CQ, should sink (returns surrender since it's the only board on the ship)
+        r = b.attack(4,'C');
+        assertEquals(AttackStatus.SURRENDER, r.getResult());
+        assertEquals(0, s.getHealth());
     }
 }
