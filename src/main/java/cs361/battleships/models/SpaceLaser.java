@@ -18,7 +18,6 @@ public class SpaceLaser extends Weapon {
                 for(Square shipSquare: squares) {
                     if(shipSquare.getRow() == x && shipSquare.getColumn() == y) {
                         // Hit! mark this ship down health
-                        //if()
                         if(ship.getShipType() == "SUBMARINE"){  //This should be changed to an underwater property, but for now this is the logic
                             // Call new function for submarine?
                             // Given the logic of game, it returns "true" when something is hit, but THESE functions are the ones that add the hit to the board's attack array.

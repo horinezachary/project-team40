@@ -48,6 +48,7 @@ public class BoardTest {
         assertTrue(board.placeShip(new Minesweeper(), 1, 'A', false));
         assertTrue(board.placeShip(new Destroyer(), 2, 'A', false));
         assertTrue(board.placeShip(new Battleship(), 3, 'A', false));
+        assertTrue(board.placeShip(new Submarine(), 5, 'A', false));
     }
 
     @Test
@@ -417,5 +418,93 @@ public class BoardTest {
 
         Result y = board.attack(11, 'A');
         assertEquals(AttackStatus.INVALID, y.getResult());
+    }
+
+    @Test
+    public void testPlaceMinesweeper() {
+        Board b = new Board();
+        // vertical
+        Minesweeper m = new Minesweeper();
+        assertTrue(b.placeShip(m, 1, 'A', true));
+        assertTrue(m.occupiesSpace(1,'A'));
+        assertTrue(m.occupiesSpace(2,'A'));
+
+        // horizontal
+        b = new Board();
+        m = new Minesweeper();
+        assertTrue(b.placeShip(m, 1, 'A', false));
+        assertTrue(m.occupiesSpace(1,'A'));
+        assertTrue(m.occupiesSpace(1,'B'));
+    }
+
+
+
+    @Test
+    public void testPlaceDestroyer() {
+        Board b = new Board();
+        // vertical
+        Destroyer d = new Destroyer();
+        assertTrue(b.placeShip(d, 1, 'A', true));
+        assertTrue(d.occupiesSpace(1,'A'));
+        assertTrue(d.occupiesSpace(2,'A'));
+        assertTrue(d.occupiesSpace(3,'A'));
+        assertTrue(d.getOccupiedSquares().get(1).getCaptain());
+
+        // horizontal
+        b = new Board();
+        d = new Destroyer();
+        assertTrue(b.placeShip(d, 1, 'A', false));
+        assertTrue(d.occupiesSpace(1,'A'));
+        assertTrue(d.occupiesSpace(1,'B'));
+        assertTrue(d.occupiesSpace(1,'C'));
+        assertTrue(d.getOccupiedSquares().get(1).getCaptain());
+    }
+
+    @Test
+    public void testPlaceBattleship() {
+        Board b = new Board();
+        // vertical
+        Battleship bs = new Battleship();
+        assertTrue(b.placeShip(bs, 1, 'A', true));
+        assertTrue(bs.occupiesSpace(1,'A'));
+        assertTrue(bs.occupiesSpace(2,'A'));
+        assertTrue(bs.occupiesSpace(3,'A'));
+        assertTrue(bs.occupiesSpace(4,'A'));
+        assertTrue(bs.getOccupiedSquares().get(2).getCaptain());
+
+        // horizontal
+        b = new Board();
+        bs = new Battleship();
+        assertTrue(b.placeShip(bs, 1, 'A', false));
+        assertTrue(bs.occupiesSpace(1,'A'));
+        assertTrue(bs.occupiesSpace(1,'B'));
+        assertTrue(bs.occupiesSpace(1,'C'));
+        assertTrue(bs.occupiesSpace(1,'D'));
+        assertTrue(bs.getOccupiedSquares().get(2).getCaptain());
+    }
+
+    @Test
+    public void testPlaceSubmarine() {
+        Board b = new Board();
+        // vertical
+        Submarine s = new Submarine();
+        assertTrue(b.placeShip(s, 1, 'A', true));
+        assertTrue(s.occupiesSpace(1,'A'));
+        assertTrue(s.occupiesSpace(2,'A'));
+        assertTrue(s.occupiesSpace(3,'A'));
+        assertTrue(s.occupiesSpace(3,'B'));
+        assertTrue(s.occupiesSpace(4,'A'));
+        assertTrue(s.getOccupiedSquares().get(3).getCaptain());
+
+        // horizontal
+        b = new Board();
+        s = new Submarine();
+        assertTrue(b.placeShip(s, 2, 'A', false));
+        assertTrue(s.occupiesSpace(2,'A'));
+        assertTrue(s.occupiesSpace(2,'B'));
+        assertTrue(s.occupiesSpace(2,'C'));
+        assertTrue(s.occupiesSpace(1,'C'));
+        assertTrue(s.occupiesSpace(2,'D'));
+        assertTrue(s.getOccupiedSquares().get(3).getCaptain());
     }
 }
