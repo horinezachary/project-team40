@@ -228,7 +228,7 @@ function cellClick() {
             //Once a ship is successfully placed, a report is sent to battle report
             handleBattleReport("<span class='shipsPlacedBR'>Player placed "+shipType+" at: " +newRow+""+newCol+"</span><br/>");
 
-            if (placedShips == 3) {//all ships have been placed
+            if (placedShips == 4) {//all ships have been placed
                 isSetup = false;
                 registerCellListener((e) => {});
 
@@ -288,6 +288,7 @@ function setDisabled(shipType) {
     if (shipType === "MINESWEEPER"){shipId = "place_minesweeper";}
     else if (shipType === "DESTROYER"){shipId = "place_destroyer";}
     else if (shipType === "BATTLESHIP"){shipId = "place_battleship";}
+    else if (shipType === "SUBMARINE"){shipId = "place_submarine";}
     else {console.warn("!! Unknown ship found in lockout code, '"+shipType+"' !!"); return;} // warn of an unknown ship type
 
     document.getElementById(shipId).disabled = true;
@@ -388,6 +389,11 @@ function initGame() {
        registerCellListener(place(4));
        placingMode = 3;
     });
+    document.getElementById("place_submarine").addEventListener("click", function(e) {
+       shipType = "SUBMARINE";
+       registerCellListener(place(5));
+           placingMode = 4;
+        });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
     });
@@ -416,6 +422,10 @@ function initGame() {
         } else if(placingMode == 3) {
             shipType = "BATTLESHIP";
            registerCellListener(place(4));
+
+        } else if(placingMode == 4) {
+                     shipType = "SUBMARINE";
+                    registerCellListener(place(5));
 
         }
     });

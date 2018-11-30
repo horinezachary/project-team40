@@ -28,6 +28,10 @@ public class Game {
                 ship = new Minesweeper();
                 s2 = new Minesweeper();
                 break;
+            case "SUBMARINE":
+                ship = new Submarine();
+                s2 = new Submarine();
+                break;
             default:
                 return false;
         }
