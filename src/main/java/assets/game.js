@@ -5,6 +5,7 @@ var shipType;//when a ship is detected as 'hit', holds the type of ship
 var vertical = false;
 var battleHistory = "";//holds string to display to battle log
 
+
 var Playmodal = document.getElementById("playModal");
 var btn = document.getElementById("myBtn");
 var span = document.getElementsByClassName("close")[0];
@@ -255,6 +256,9 @@ function cellClick() {
                     ss.childNodes[0].className = "animate-this";
                     (new Toast("Sonar Pulse and Laser Weapon Enabled!", "#0f0")).show();
 
+                    handleBattleReport("<span class='weaponUpgrade'>--Sonar pulse: ENABLED--</span><br/>");
+                    handleBattleReport("<span class='weaponUpgrade'>--Space laser: ENABLED--</span><br/>");
+
                     var LS = document.getElementById("LaserWeapon");
                     LS.title = "ION Cannon Available";
                     LS.childNodes[0].src = "/assets/images/Ret2.png";
@@ -285,6 +289,7 @@ function cellClick() {
                     document.getElementById("sweepScan").className = "";
                     document.getElementById("sweepScan").removeEventListener("click", toggleSonarMode);
 
+                    handleBattleReport("<br/><span id='sonarOffline'>--Sonar: OFFLINE--</span><br/>");
                 }
 
             });
