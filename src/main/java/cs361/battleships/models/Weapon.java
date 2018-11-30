@@ -1,9 +1,9 @@
 package cs361.battleships.models;
 
 public abstract class Weapon {
+    String WeaponName;
     //protected boolean Pierce;
     public Weapon(){
-
     }
 
     public abstract Result Fire(Board board, int x, char y, Result r);
@@ -23,7 +23,8 @@ public abstract class Weapon {
                 rr.setShip(ship);
                 rr.setResult(AttackStatus.SUNK);
                 //board.setLaserEnabled(true);
-                //board.setSonarEnabled(true);
+                board.setWeapon(1);
+                board.setSonarEnabled(true);
                 board.addAttack(rr);
             }
 
@@ -89,4 +90,7 @@ public abstract class Weapon {
 
     }
 
+    public String getWeaponName() {
+        return WeaponName;
+    }
 }

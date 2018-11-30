@@ -4,6 +4,7 @@ import java.util.List;
 
 public class Bomb extends Weapon{
     public Bomb(){
+        WeaponName = "Bomb";
     }
 
     public Result Fire(Board board, int x, char y, Result r) {

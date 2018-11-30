@@ -154,9 +154,6 @@ function writeBRAttack(attacker, locY, locX, attRes)
     else if (attRes == "SONAR_EMPTY"){
         attText = "PLAYER <span class='sonarDetectedN'> SONAR SWEEP EMPTY</span>";
     }
-    else if (attRes == "UNDERWATER"){
-        attText = attText+" <span class ='attackUnderHit'>UNDERWATER</span>";
-    }
     attText = attText+"!<br/>";
 
     handleBattleReport(attText);

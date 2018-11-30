@@ -4,7 +4,7 @@ import java.util.List;
 
 public class SpaceLaser extends Weapon {
     public SpaceLaser(){
-
+        WeaponName = "SpaceLaser";
     }
 
     public Result Fire(Board board, int x, char y, Result r) {

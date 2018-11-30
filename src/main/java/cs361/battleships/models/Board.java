@@ -7,7 +7,6 @@ public class Board {
     private Square[][] boardarray;
     private boolean[][] occupied;
 	private Weapon w;
-    private boolean laserEnabled;
     private boolean sonarEnabled;
     private int sonarCount;
 
@@ -40,8 +39,6 @@ public class Board {
 		sonarEnabled = false;
 		sonarCount = 2;
 
-		// Default laser
-		laserEnabled = false;
 	}
 
 	public Result useWeapon(Board board, int x, char y, Result r){
@@ -160,11 +157,23 @@ public class Board {
 		return sonarCount;
 	}
 
-	/*public void setLaserEnabled(boolean enabled){
-    	laserEnabled = enabled;
+	public void setWeapon(int type){
+    	switch(type){
+			/*case 0:
+				w = new Bomb();*/
+			case 1:
+				w = new SpaceLaser();
+				break;
+			default:
+				w = new Bomb();
+		}
 	}
 
-	public boolean getLaserStatus(){
+	public String getWeapon(Board board){
+    	return board.w.getWeaponName();
+	}
+
+	/*public boolean getLaserStatus(){
     	return laserEnabled;
 	}*/
 }
