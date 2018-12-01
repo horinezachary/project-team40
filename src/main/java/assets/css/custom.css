@@ -52,6 +52,10 @@ td:hover {
     background-color: black;
 }
 
+.submerged {
+    opacity: 0.5;
+}
+
 .occupied-captain {
     border-color: #0f0 !important;
 }
@@ -67,16 +71,16 @@ td:hover {
     display: none;
 }
 
+.miss {
+    background-color: white;
+}
+
 .sonar-empty {
     background-color: grey;
 }
 
 .sonar-occupied {
     background-color: black;
-}
-
-.miss {
-    background-color: white;
 }
 
 .hit {

@@ -4,6 +4,7 @@ var game;
 var shipType;//when a ship is detected as 'hit', holds the type of ship
 var vertical = false;
 var battleHistory = "";//holds string to display to battle log
+var submerged = false;
 
 
 var Playmodal = document.getElementById("playModal");
@@ -82,8 +83,10 @@ function markHits(board, elementId, surrenderText) {
         } else if(attack.result == "UNDERWATER"){
                 className = "underwater";
 
-        }
-          else {
+        } else if(attack.result == "SURRENDER") {
+            // do nothing, valid
+
+        } else {
             alert("Unrecognized attack result of '"+attack.result+"'. Set up handling for this!");
 
         }
@@ -175,6 +178,9 @@ function redrawGrid() {
         if(square.captain) {
             document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("occupied-captain");
         }
+        if(ship.submerged) {
+            document.getElementById("player").rows[square.row-1].cells[square.column.charCodeAt(0) - 'A'.charCodeAt(0)].classList.add("submerged");
+        }
     }));
     markHits(game.opponentsBoard, "opponent", "You won the game");
     markHits(game.playersBoard, "player", "You lost the game");
@@ -217,7 +223,7 @@ function cellClick() {
 
     //isSetup determines whether all player battle ships have been placed
     if (isSetup) {//interpret action as an attempt to place a ship
-        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical}, function(data) {
+        sendXhr("POST", "/place", {game: game, shipType: shipType, x: row, y: col, isVertical: vertical, submerged: submerged}, function(data) {
             game = data;
 
             // lock out this ship type
@@ -264,6 +270,9 @@ function cellClick() {
                     LS.childNodes[0].src = "/assets/images/Ret2.png";
                     LS.childNodes[0].className = "animate-this";
                     //(new Toast("Laser Weapon Enabled", "#0f0")).show();
+
+                    // update to use the laser now
+                    data.opponentsBoard.currentWeapon = 1;
 
                 }
                 game = data;
@@ -334,19 +343,38 @@ function place(size) {
             let cell;
             if(vertical) {
                 let tableRow = table.rows[row+i];
+                if(i == 4 && size == 5) {
+                    // sub periscope
+                    tableRow = table.rows[row+i-2];
+                }
                 if (tableRow === undefined) {
                     // ship is over the edge; let the back end deal with it
                     break;
                 }
                 cell = tableRow.cells[col];
+                if(i == 4 && size == 5) {
+                    // sub periscope
+                    cell = tableRow.cells[col+1];
+                }
+
             } else {
                 cell = table.rows[row].cells[col+i];
+                if(i == 4 && size == 5) {
+                    // sub periscope
+                    cell = table.rows[row-1].cells[col+i-2];
+                }
+
             }
+
             if (cell === undefined) {
                 // ship is over the edge; let the back end deal with it
                 break;
             }
             cell.classList.toggle("placed");
+            if(size == 5 && submerged) {
+                // toggle submerged visual for the sub
+                cell.classList.toggle("submerged");
+            }
         }
     }
 }
@@ -405,13 +433,15 @@ function initGame() {
     document.getElementById("place_submarine").addEventListener("click", function(e) {
        shipType = "SUBMARINE";
        registerCellListener(place(5));
-           placingMode = 4;
-        });
+       placingMode = 4;
+       (new Toast("Hit 's' to toggle placing a submerged submarine!","#0f0")).show();
+    });
     sendXhr("GET", "/game", {}, function(data) {
         game = data;
     });
 
     // Adds keydown listener to flip pieces with 'v'
+    // also for sub with s
     document.addEventListener("keydown", function(event) {
         var key = event.keyCode;
         if (key === 86 && vertical == false){
@@ -419,6 +449,11 @@ function initGame() {
         }
         else if (key === 86 && vertical == true){
             vertical = false;
+        }
+
+        if(key === 83) {
+            // 'S' to toggle the submarine being submerged
+            submerged = submerged ? false : true;
         }
 
         // Find and clear any pieces that are currently 'placed'
@@ -442,6 +477,7 @@ function initGame() {
 
         }
     });
+
 
     (new Toast("Place your ships to start the game!", "#0f0")).show();
 };

@@ -3,6 +3,8 @@ package cs361.battleships.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.lang.Math;
+import java.util.Random;
+
 import static cs361.battleships.models.AttackStatus.*;
 
 public class Game {
@@ -29,8 +31,14 @@ public class Game {
                 s2 = new Minesweeper();
                 break;
             case "SUBMARINE":
+                // preserve submerged state for player
+                boolean submerged = ship.getSubmerged();
                 ship = new Submarine();
+                ship.setSubmerged(submerged);
+
                 s2 = new Submarine();
+                // random submerged state for enemy
+                s2.setSubmerged(randVertical());
                 break;
             default:
                 return false;

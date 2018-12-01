@@ -16,7 +16,7 @@ public class BoardTest {
         Board board = new Board();
         board.attack(5, 'A');
         Result r = board.attack(5, 'A');
-        assertEquals(AttackStatus.INVALID, r.getResult());
+        assertEquals(AttackStatus.MISS, r.getResult());
     }
 
     @Test
@@ -258,7 +258,7 @@ public class BoardTest {
         board.attack(1, 'A');
         Result r = board.attack(1, 'B');
         //Result r = board.attack(1, 'C');
-        assertEquals(AttackStatus.INVALID, r.getResult());
+        assertEquals(AttackStatus.MISS, r.getResult());
     }
 
     /**
@@ -423,7 +423,7 @@ public class BoardTest {
     }
 
     public void printBoard(Board b){
-        b.setOccupied();
+        b.setOccupied(true);
         for (int i = 0; i < b.BOARDSIZE_X; i++){
             System.out.print("|");
             for (int j = 0; j < b.BOARDSIZE_Y; j++){
@@ -590,6 +590,14 @@ public class BoardTest {
         // test place submerged underlying, should work
         s.setSubmerged(true);
         assertTrue(b.placeShip(s, 1, 'A', true));
+
+        // reverse order & attempt, should also work
+        b = new Board();
+        s = new Submarine();
+        s.setSubmerged(true);
+        d = new Destroyer();
+        assertTrue(b.placeShip(s, 1, 'A', true));
+        assertTrue(b.placeShip(d, 1, 'A', true));
     }
 
     @Test
@@ -664,6 +672,11 @@ public class BoardTest {
         // 3rd attack
         r = b.attack(3,'C');
         assertEquals(AttackStatus.HIT, r.getResult());
+        assertEquals(2, s.getHealth());
+
+        // 3rd attack again (just to affirm health does not change when attacking the same spot twice)
+        r = b.attack(3,'C');
+        assertEquals(AttackStatus.MISS, r.getResult());
         assertEquals(2, s.getHealth());
 
         // 4th attack (should be a miss since it's an armored CQ)

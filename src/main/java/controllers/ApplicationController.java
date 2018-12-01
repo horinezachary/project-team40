@@ -22,6 +22,9 @@ public class ApplicationController {
     public Result placeShip(Context context, PlacementGameAction g) {
         Game game = g.getGame();
         Ship ship = new Ship(g.getShipType());
+        if(g.getShipType().equals("SUBMARINE")) {
+            ship.setSubmerged(g.isSubmerged());
+        }
         boolean result = game.placeShip(ship, g.getActionRow(), g.getActionColumn(), g.isVertical());
         if (result) {
             return Results.json().render(game);

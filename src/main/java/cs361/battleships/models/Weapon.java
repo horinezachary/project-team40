@@ -63,6 +63,13 @@ public abstract class Weapon {
      */
     public static boolean checkAndUpdateForHit(Result r, Ship ship, Square shipSquare) {
         boolean didHit = false;
+
+        if(ship.wasAttackedAt(shipSquare)) {
+            // disregard this attack
+            return didHit;
+
+        }
+
         // Hit! mark this ship down health
         if(shipSquare.getCaptain() && ship.getArmor()) {
             // hit captain's quarters but counts as a miss, was still armored
@@ -76,12 +83,14 @@ public abstract class Weapon {
         } else if(shipSquare.getCaptain() && !ship.getArmor()) {
             // hit unarmored captain's quarters, sink the ship
             ship.forceSink();
+            ship.addAttackedAt(shipSquare);
             didHit = true;
             r.setShip(ship);
 
         } else {
             // normal hit
             ship.decrementHealth();
+            ship.addAttackedAt(shipSquare);
             didHit = true;
             r.setShip(ship);
 

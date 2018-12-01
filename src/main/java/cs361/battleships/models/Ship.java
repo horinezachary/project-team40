@@ -12,6 +12,7 @@ public class Ship {
     boolean armor;
     String shipType;
     boolean submerged;
+    List<Square> attackedAt;
 
 	@JsonProperty private List<Square> occupiedSquares;
 
@@ -25,6 +26,7 @@ public class Ship {
 		occupiedSquares = new ArrayList<>();
 		armor = false;
         submerged = false;
+        attackedAt = new ArrayList<>();
 	}
 
 	public List<Square> getOccupiedSquares() {
@@ -75,6 +77,15 @@ public class Ship {
             square.setRow(square.getRow()+y);
         }
 	    //System.out.print("\n");
+
+        // adjust priorly attacked at positions
+        if(attackedAt != null) {
+            for (int q = 0; q < attackedAt.size(); q++) {
+                Square s = attackedAt.get(q);
+                s.setColumn((char) ((int) s.getColumn() + x));
+                s.setRow(s.getRow() + y);
+            }
+        }
     }
     public void setSubmerged(boolean s) {
 	    submerged = s;
@@ -82,6 +93,32 @@ public class Ship {
 
     public boolean getSubmerged() {
 	    return submerged;
+    }
+
+    public List<Square> getAttackedAt() {
+	    return attackedAt;
+    }
+
+    public void setAttackedAt(List<Square> attackedAt) {
+	    this.attackedAt = attackedAt;
+    }
+
+    public void addAttackedAt(Square s) {
+	    if(attackedAt == null) {
+	        attackedAt = new ArrayList<Square>();
+        }
+	    attackedAt.add(s);
+    }
+
+    public boolean wasAttackedAt(Square ns) {
+	    if(attackedAt != null) {
+            for (Square as : attackedAt) {
+                if (as.getRow() == ns.getRow() && as.getColumn() == ns.getColumn()) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     /**

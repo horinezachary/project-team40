@@ -5,7 +5,8 @@ import java.util.*;
 public class Board {
     private Square[][] boardarray;
     private boolean[][] occupied;
-	private Weapon w;
+    private int currentWeapon;
+	private Weapon weapon;
     private boolean sonarEnabled;
     private int sonarCount;
     private boolean fleetMoveEnabled;
@@ -25,7 +26,8 @@ public class Board {
 	public Board() {
 		boardarray = new Square[BOARDSIZE_X][BOARDSIZE_Y];
 		occupied = new boolean[BOARDSIZE_X][BOARDSIZE_Y];
-		w = new Bomb();
+		weapon = new Bomb();
+		currentWeapon = 0;
 		for (int i = 0; i < boardarray.length; i++) {
             for (int j = 0; j < boardarray[0].length; j++) {
                 //sets row values as 1 thru BOARDSIZE_X and column values as 'A' thru 'J'
@@ -70,7 +72,7 @@ public class Board {
 	DO NOT change the signature of this method. It is used by the grading scripts.
 	 */
 	public boolean placeShip(Ship ship, int x, char y, boolean isVertical) {
-		setOccupied();
+		setOccupied(false);
 
 		// check for duplicate ships first
 		if(Ship.is_duplicate_ship(ship, getShips())) {
@@ -150,8 +152,9 @@ public class Board {
 		for(Result check: getAttacks()) { //begin iterating through attack list
 			if(check.isResultSpaceAlreadyAttacked(x, y)) {
 				// already attacked this space, return invalid
-				r.setResult(AttackStatus.INVALID);
-				return r;
+				// TODO NOTHING TO DO HERE!
+				//r.setResult(AttackStatus.INVALID);
+				//return r;
 
 			} else if(check.wasSpaceFormerlyArmoredCaptain(x, y)) {
 				// FOR SPRINT #3
@@ -163,7 +166,7 @@ public class Board {
 
 			}
 		}
-		r = w.Fire(this, x, y, r);
+		r = weapon.Fire(this, x, y, r);
 
 		return r;
 	}
@@ -177,7 +180,7 @@ public class Board {
 	 * @return	Whether or not the pulse was successful
 	 */
 	public boolean sonar(int x, int y) {
-		setOccupied();
+		setOccupied(true);
 		if(!areCoordinatesOnBoard(x,y)) {
 			// out of bounds sonar attempt
 			return false;
@@ -265,7 +268,7 @@ public class Board {
 				for (int j = 0; j < squares.size(); j++) {
 					int checkX = (int)(squares.get(j).getColumn())-64-x;
 					int checkY = squares.get(j).getRow()-y;
-					setOccupied();
+					setOccupied(false);
 					if (isOccupied(checkX,checkY) && !temp.occupiesSpace(checkX,(char)(checkY+65))){
 						return false;
 					}
@@ -326,12 +329,14 @@ public class Board {
 	 * Used by the sonar pulse logic to determine whether a scan returns EMPTY or OCCUPIED
 	 * for a given square.
 	 */
-    public void setOccupied() {
+    public void setOccupied(boolean showSubmerged) {
     	occupied = new boolean[BOARDSIZE_X][BOARDSIZE_Y];
 		for (int i = 0; i < ships.size(); i++){
 			List <Square> shipSquares = ships.get(i).getOccupiedSquares();
 			for (int j = 0; j < shipSquares.size(); j++){
-				occupied[shipSquares.get(j).getRow()-1][shipSquares.get(j).getColumn()-65] = true;
+				if(!ships.get(i).getSubmerged() || showSubmerged) {
+					occupied[shipSquares.get(j).getRow() - 1][shipSquares.get(j).getColumn() - 65] = true;
+				}
 			}
 		}
     }
@@ -368,20 +373,29 @@ public class Board {
 		return sonarCount;
 	}
 
-	public void setWeapon(int type){
+	public void setWeapon(int type) {
     	switch(type){
 			/*case 0:
-				w = new Bomb();*/
+				weapon = new Bomb();*/
 			case 1:
-				w = new SpaceLaser();
+				weapon = new SpaceLaser();
 				break;
 			default:
-				w = new Bomb();
+				weapon = new Bomb();
 		}
 	}
 
 	public String getWeapon(Board board){
-    	return board.w.getWeaponName();
+    	return board.weapon.getWeaponName();
+	}
+
+	public void setCurrentWeapon(int type) {
+    	currentWeapon = type;
+    	setWeapon(type);
+	}
+
+	public int getCurrentWeapon() {
+    	return currentWeapon;
 	}
 
 	/*public boolean getLaserStatus(){
