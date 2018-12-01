@@ -135,6 +135,7 @@ public class Game {
             default:
                 return false;
         }
+
         return playersBoard.moveShips(dir[X],dir[Y]);
     }
 

@@ -263,45 +263,109 @@ public class Board {
 	 *
 	 * @return true if successful, false if not possible
 	 */
-	public boolean moveShips(int x, int y){
-		List<Ship> movedShips = new ArrayList<>();
-		for (int i = 0; i < ships.size(); i++){
-			Ship temp = ships.get(i);
-			List<Square> squares = temp.getOccupiedSquares();
-			boolean hasCollision = false;
-			for (int j = 0; j < squares.size(); j++){
-				//System.out.println((squares.get(j).getColumn()-65+x) + ", " + (squares.get(j).getRow()+y));
-				if (areCoordinatesOnBoard(squares.get(j).getColumn()-65+x, squares.get(j).getRow()+y)){
+	public boolean moveShips(int x, int y) {
+
+		// setup and clear moved array
+		int moved[] = new int[ships.size()];
+		for(int b = 0; b < ships.size(); b++) {
+			moved[b] = 0;
+		}
+
+		// 1. move all the ships, ONLY paying attention to the boundaries on the board (ignore other ships, they may move as well)
+		for(int i = 0; i < ships.size(); i++) {
+			Ship s1 = ships.get(i);
+			boolean validMove = true;
+			List<Square> squares = s1.getOccupiedSquares();
+			for(int j = 0; j < squares.size(); j++) {
+				Square tmpSquare = squares.get(j);
+
+				// pull out coordinates to check in X & Y
+				int chkX = tmpSquare.getColumn() - 64 + x;
+				int chkY = tmpSquare.getRow() + y;
+
+				if(!areCoordinatesOnBoard(chkX, chkY)) {
+					validMove = false;
+					break;
+				}
+
+			}
+
+			if(validMove) {
+				// move and record
+				s1.move(x,y);
+				moved[i] = 1;
+
+			}
+
+		}
+
+		// 2. check for collisions between individual ships in a second iteration, move any back that
+		// are now colliding
+		// Perform this check 4 times, since ships may be shifted back after another ship is checked first
+		// in the array, creating an error. Iterating the # of ship times ensures that if we only shift
+		// one ship each time, the subsequent iteration will give prior ships in the array the chance
+		// to be reevaluated properly
+		for(int c = 0; c < ships.size(); c++) {
+			for (int i = 0; i < ships.size(); i++) {
+
+				if (moved[i] == 0) {
+					// skip this ship, it didn't move before
 					continue;
+
 				}
-				else{
-					hasCollision = true;
-				}
-			}
-			if (hasCollision){
+
+				Ship s1 = ships.get(i);
+				boolean validMovedPosition = true;
+				List<Square> squares = s1.getOccupiedSquares();
 				for (int j = 0; j < squares.size(); j++) {
-					int checkX = (int)(squares.get(j).getColumn())-64-x;
-					int checkY = squares.get(j).getRow()-y;
-					setOccupied(false);
-					if (isOccupied(checkX,checkY) && !temp.occupiesSpace(checkX,(char)(checkY+65))){
-						return false;
+					Square s1Square = squares.get(j);
+					for (int q = 0; q < ships.size(); q++) {
+						Ship s2 = ships.get(q);
+						for (int qq = 0; qq < s2.getOccupiedSquares().size(); qq++) {
+							// verify it's not the same ship
+							if (!s2.getShipType().equals(s1.getShipType())) {
+								// pull out the square to check against
+								Square s2Square = s2.getOccupiedSquares().get(qq);
+
+								// compare it against the current tempSquare
+								if (s2Square.getRow() == s1Square.getRow() && s2Square.getColumn() == s1Square.getColumn()) {
+									// match, this is a collision, mark it off
+									validMovedPosition = false;
+									break;
+
+								}
+							}
+						}
+
+						// check to exit checking against other ships
+						if (!validMovedPosition) {
+							break;
+						}
 					}
+
 				}
+
+				if (!validMovedPosition) {
+					// move back
+					moved[i] = 0;
+					s1.move(-x, -y);
+
+				}
+
 			}
-			else{
-				movedShips.add(temp);
-			}
-		}
-		if (movedShips.size() == 0){
-			return false;
-		}
-		for (int i = 0; i < movedShips.size(); i++) {
-			movedShips.get(i).move(x, y);
 		}
 
-		setFleetMovecount(getFleetMovecount()-1);
+		// check if we ultimately moved anything
+		for(int u = 0; u < ships.size(); u++) {
+			if(moved[u] == 1) {
+				// decrement the # of moves we can make
+				setFleetMovecount(getFleetMovecount()-1);
+				return true;
+			}
+		}
 
-		return true;
+		// indicate nothing could be moved, so the total move was invalid
+		return false;
 	}
 
 

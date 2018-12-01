@@ -417,7 +417,7 @@ public class BoardTest {
         battle.setOccupiedSquares(spaces);
         b.addShip(battle);
 
-        assertEquals(false, b.moveShips(-1,0));
+        assertEquals(true, b.moveShips(-1,0));
         printBoard(b);
 
     }

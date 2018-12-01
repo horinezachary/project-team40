@@ -211,14 +211,14 @@ function toggleSonarMode(e) {
 
 var fleetMovements = 2;
 function moveFleet(event) {
-    var dir = event.originalTarget.getAttribute("direction");
+    var dir = event.target.getAttribute("direction");
     sendXhr("POST", "/move", {game: game, direction: dir}, function(data) {
         game = data;
         redrawGrid();
         fleetMovements--;
 
         if(fleetMovements <= 0) {
-            // disable flee movement
+            // disable fleet movement
             var e = document.getElementById("move-north");
             e.className = "compass-point disabled";
             e.removeEventListener("click", moveFleet);
