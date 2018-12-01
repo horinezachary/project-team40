@@ -208,6 +208,37 @@ function toggleSonarMode(e) {
     usingSonar = usingSonar ? false : true;
 }
 
+
+var fleetMovements = 2;
+function moveFleet(event) {
+    var dir = event.originalTarget.getAttribute("direction");
+    sendXhr("POST", "/move", {game: game, direction: dir}, function(data) {
+        game = data;
+        redrawGrid();
+        fleetMovements--;
+
+        if(fleetMovements <= 0) {
+            // disable flee movement
+            var e = document.getElementById("move-north");
+            e.className = "compass-point disabled";
+            e.removeEventListener("click", moveFleet);
+
+            e = document.getElementById("move-south");
+            e.className = "compass-point disabled";
+            e.removeEventListener("click", moveFleet);
+
+            e = document.getElementById("move-west");
+            e.className = "compass-point disabled";
+            e.removeEventListener("click", moveFleet);
+
+            e = document.getElementById("move-east");
+            e.className = "compass-point disabled";
+            e.removeEventListener("click", moveFleet);
+
+        }
+    });
+}
+
 /*
     This function determines what happens when a cell is clicked.
     It first checks if all player ships have been placed. If they have not, it interprets the action
@@ -275,6 +306,29 @@ function cellClick() {
                     data.opponentsBoard.currentWeapon = 1;
 
                 }
+
+                if(data.opponentsBoard.fleetMoveEnabled && !game.opponentsBoard.fleetMoveEnabled) {
+                    // enable fleet movement
+                    var e = document.getElementById("move-north");
+                    e.className = "compass-point animate-this";
+                    e.addEventListener("click", moveFleet);
+
+                    e = document.getElementById("move-south");
+                    e.className = "compass-point animate-this";
+                    e.addEventListener("click", moveFleet);
+
+                    e = document.getElementById("move-west");
+                    e.className = "compass-point animate-this";
+                    e.addEventListener("click", moveFleet);
+
+                    e = document.getElementById("move-east");
+                    e.className = "compass-point animate-this";
+                    e.addEventListener("click", moveFleet);
+
+                    (new Toast("Fleet Movement Enabled!", "#0f0")).show();
+
+                }
+
                 game = data;
                 redrawGrid();
             });

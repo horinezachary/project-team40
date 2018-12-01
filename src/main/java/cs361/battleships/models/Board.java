@@ -11,6 +11,7 @@ public class Board {
     private int sonarCount;
     private boolean fleetMoveEnabled;
     private int fleetMovecount;
+    private int shipsSunk;
 
     final int BOARDSIZE_X = 10;
     final int BOARDSIZE_Y = 10;
@@ -37,6 +38,7 @@ public class Board {
         }
         ships = new ArrayList<>();
     	attacks = new ArrayList<>();
+    	shipsSunk = 0;
 
     	// set default sonar stats
 		sonarEnabled = false;
@@ -46,6 +48,18 @@ public class Board {
 		fleetMovecount = 2;
 		fleetMoveEnabled = false;
 
+	}
+
+	public void incrementShipsSunk() {
+		shipsSunk++;
+	}
+
+	public void setShipsSunk(int s) {
+		shipsSunk = s;
+	}
+
+	public int getShipsSunk() {
+		return shipsSunk;
 	}
 
 	/**

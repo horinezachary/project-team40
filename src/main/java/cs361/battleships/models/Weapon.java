@@ -2,6 +2,7 @@ package cs361.battleships.models;
 
 public abstract class Weapon {
     String WeaponName;
+
     //protected boolean Pierce;
     public Weapon(){
     }
@@ -12,6 +13,7 @@ public abstract class Weapon {
         if(ship.getHealth() == 0) {
             // hit and SUNK, remove this ship
             board.removeShip(ship);
+            board.incrementShipsSunk();
 
             // mark each part of this ship as SUNK
             // CSS of 'sink' class will take precedence over hit
@@ -25,7 +27,9 @@ public abstract class Weapon {
                 //board.setLaserEnabled(true);
                 board.setWeapon(1);
                 board.setSonarEnabled(true);
-                board.setFleetMoveEnabled(true);
+                if(board.getShipsSunk() >= 2) {
+                    board.setFleetMoveEnabled(true);
+                }
                 board.addAttack(rr);
             }
 
